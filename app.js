@@ -1,5 +1,8 @@
-const express = require("express");
-const app = express();
+const express = require('express')
+const app = express()
+const path = require('path')
+const ejsMate = require('ejs-mate')
+const mongoose = require('mongoose')
 
 //====================DATABASE CONNECTION==========================
 
@@ -7,42 +10,50 @@ const app = express();
 // const dbUrl = process.env.MY_MONGODB_URI
 
 const connectDB = async () => {
-  try {
-    await mongoose.connect(dbUrl, {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-      useFindAndModify: false,
-      useCreateIndex: true,
-    });
-    console.log("DATABASE CONNECTED");
-  } catch (err) {
-    console.error(err.message);
-    process.exit(1);
-  }
-};
+   try {
+      await mongoose.connect(dbUrl, {
+         useUnifiedTopology: true,
+         useNewUrlParser: true,
+         useFindAndModify: false,
+         useCreateIndex: true,
+      })
+      console.log('DATABASE CONNECTED')
+   } catch (err) {
+      console.error(err.message)
+      process.exit(1)
+   }
+}
 // CONNECT DATABASE
-connectDB();
+// connectDB()
 
-app.use(express.json());
-app.engine("ejs", ejsMate);
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(express.static(path.join(__dirname, "public"))); //for serving static files
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-); //for parsing form data
-app.use(methodOverride("_method"));
-app.use(flash());
+app.use(express.json())
+app.engine('ejs', ejsMate)
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
+app.use(express.static(path.join(__dirname, 'public'))) //for serving static files
+// app.use(
+//    express.urlencoded({
+//       extended: true,
+//    }),
+// ) //for parsing form data
+// app.use(methodOverride('_method'))
+// app.use(flash())
 
-app.use(
-  session({
-    secret: "#sms#",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
+// app.use(
+//    session({
+//       secret: '#sms#',
+//       resave: true,
+//       saveUninitialized: true,
+//    }),
+// )
 
-const PORT = 3000;
-app.listen(PORT, () => console.log(`SERVER STARTED AT ${PORT}!`));
+app.get('/demo', (req, res) => {
+   res.render('demo.ejs')
+})
+
+app.get('/doctor', (req, res) => {
+   res.render('doctorRegister.ejs')
+})
+
+const PORT = 3000
+app.listen(PORT, () => console.log(`SERVER STARTED AT ${PORT}!`))
