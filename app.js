@@ -51,6 +51,10 @@ app.use(express.static(path.join(__dirname, 'public'))) //for serving static fil
 //    }),
 // )
 
+app.get('/', (req, res) => {
+   res.render('home.ejs')
+})
+
 app.get('/demo', (req, res) => {
    res.render('demo.ejs')
 })
@@ -73,6 +77,18 @@ app.get('/login', (req, res) => {
 
 app.get('/chat', (req, res) => {
    res.render('chat.ejs')
+})
+
+app.get('/contact', (req, res) => {
+   res.render('contact.ejs')
+})
+
+app.get('/appointment', (req, res) => {
+   res.render('appointment.ejs')
+})
+
+app.get('/doctors', (req, res) => {
+   res.render('doctors.ejs')
 })
 
 const PORT = 3000
