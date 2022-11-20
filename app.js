@@ -1,21 +1,25 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+require('dotenv').config()
 const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
+const Admin = require("./models/admin")
+const Patient = require("./models/patient")
+const Doctor = require("./models/doctor")
 
 //====================DATABASE CONNECTION==========================
 
 // const dbUrl = "mongodb://localhost:27017/edu";
-// const dbUrl = process.env.MY_MONGODB_URI
+const dbUrl = process.env.MY_MONGODB_URI;
 
 const connectDB = async () => {
    try {
       await mongoose.connect(dbUrl, {
          useUnifiedTopology: true,
          useNewUrlParser: true,
-         useFindAndModify: false,
-         useCreateIndex: true,
+         //useFindAndModify: false,
+         //useCreateIndex: true,
       })
       console.log('DATABASE CONNECTED')
    } catch (err) {
@@ -24,7 +28,7 @@ const connectDB = async () => {
    }
 }
 // CONNECT DATABASE
-// connectDB()
+connectDB();
 
 app.use(express.json())
 app.engine('ejs', ejsMate)
