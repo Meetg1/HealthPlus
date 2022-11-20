@@ -4,14 +4,14 @@ const path = require('path')
 require('dotenv').config()
 const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
-const Admin = require("./models/admin")
-const Patient = require("./models/patient")
-const Doctor = require("./models/doctor")
+const Admin = require('./models/Admin')
+const Patient = require('./models/Patient')
+const Doctor = require('./models/Doctor')
 
 //====================DATABASE CONNECTION==========================
 
 // const dbUrl = "mongodb://localhost:27017/edu";
-const dbUrl = process.env.MY_MONGODB_URI;
+const dbUrl = process.env.MY_MONGODB_URI
 
 const connectDB = async () => {
    try {
@@ -28,7 +28,7 @@ const connectDB = async () => {
    }
 }
 // CONNECT DATABASE
-connectDB();
+// connectDB()
 
 app.use(express.json())
 app.engine('ejs', ejsMate)
@@ -69,6 +69,10 @@ app.get('/patientRegister', (req, res) => {
 
 app.get('/login', (req, res) => {
    res.render('login.ejs')
+})
+
+app.get('/chat', (req, res) => {
+   res.render('chat.ejs')
 })
 
 const PORT = 3000

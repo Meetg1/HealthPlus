@@ -1,40 +1,44 @@
 <% layout('layouts/boilerplate') %>
 
-    <%- include('partials/navbar')%>
+    <link rel="stylesheet" href="../stylesheets/registerChoice.css" />
+    </head>
 
-        <link rel="stylesheet" href="../stylesheets/registerChoice.css" />
+    <body>
+        <%- include('partials/navbar')%>
 
-        <br><br><br><br>
-        <div class="container container1">
-            <div class="row">
-                <div class="col-6">
-                    <div class="card" style="width: 18rem;">
-                        <img src="../images/websitePics/doctor1.jpg" class="card-img-top" alt="..."
-                            style="height: 34vh;">
-                        <div class="card-body mt-3" style="justify-content: space-around; align-items: center;">
-                            <a href="/doctorRegister" class="appointment-btn scrollto"
-                                style="color: white;text-decoration: none;"><span class="d-none d-md-inline">Doctor
-                                    Registeration</a>
-                            <p class="card-text text-center">Register as doctor to have your profile displayed on our
-                                platform.</p>
+            <br><br><br><br>
+            <div class="container container1">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card" style="width: 18rem;">
+                            <img src="../images/websitePics/doctor1.jpg" class="card-img-top" alt="..."
+                                style="height: 34vh;">
+                            <div class="card-body mt-3" style="justify-content: space-around; align-items: center;">
+                                <a href="/doctorRegister" class="appointment-btn scrollto"
+                                    style="color: white;text-decoration: none;"><span class="d-none d-md-inline">Doctor
+                                        Registeration</a>
+                                <p class="card-text text-center">Register as doctor to have your profile displayed on
+                                    our
+                                    platform.</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-6">
-                    <div class="card pb-2" style="width: 18rem;">
-                        <img src="../images/websitePics/patient1.png" class="card-img-top" alt="...">
-                        <div class="card-body" style="justify-content: space-around; align-items: center;">
-                            <a href="/patientRegister" class="appointment-btn scrollto"
-                                style="color: white;text-decoration: none;"><span class="d-none d-md-inline">Patient
-                                    Registeration</a>
-                            <p class="card-text text-center">Register as patient to search and contact doctors on our
-                                platform.</p>
+                    <div class="col-6">
+                        <div class="card pb-2" style="width: 18rem;">
+                            <img src="../images/websitePics/patient1.png" class="card-img-top" alt="...">
+                            <div class="card-body" style="justify-content: space-around; align-items: center;">
+                                <a href="/patientRegister" class="appointment-btn scrollto"
+                                    style="color: white;text-decoration: none;"><span class="d-none d-md-inline">Patient
+                                        Registeration</a>
+                                <p class="card-text text-center">Register as patient to search and contact doctors on
+                                    our
+                                    platform.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <br><br>
+            <br><br>
 
-
-        <%- include('partials/footer')%>
+            <%- include('./partials/footer')%>
+    </body>
