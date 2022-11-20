@@ -17,7 +17,7 @@ const connectDB = async () => {
    try {
       await mongoose.connect(dbUrl, {
          useUnifiedTopology: true,
-         useNewUrlParser: true,
+         useNewUrlParser: true
          //useFindAndModify: false,
          //useCreateIndex: true,
       })
@@ -51,6 +51,10 @@ app.use(express.static(path.join(__dirname, 'public'))) //for serving static fil
 //    }),
 // )
 
+app.get('/', (req, res) => {
+   res.render('home.ejs')
+})
+
 app.get('/demo', (req, res) => {
    res.render('demo.ejs')
 })
@@ -70,6 +74,19 @@ app.get('/patientRegister', (req, res) => {
 app.get('/login', (req, res) => {
    res.render('login.ejs')
 })
+
+app.get('/contact', (req, res) => {
+   res.render('contact.ejs')
+})
+
+app.get('/appointment', (req, res) => {
+   res.render('appointment.ejs')
+})
+
+app.get('/doctors', (req, res) => {
+   res.render('doctors.ejs')
+})
+
 
 const PORT = 3000
 app.listen(PORT, () => console.log(`SERVER STARTED AT ${PORT}!`))
