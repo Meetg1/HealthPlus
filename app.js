@@ -51,8 +51,20 @@ app.get('/demo', (req, res) => {
    res.render('demo.ejs')
 })
 
-app.get('/doctor', (req, res) => {
-   res.render('doctorRegister.ejs')
+app.get('/registerChoice', (req, res) => {
+   res.render('registerChoice.ejs')
+})
+
+app.get('/doctorRegister', (req, res) => {
+   res.render('doctor/doctorRegister.ejs')
+})
+
+app.get('/patientRegister', (req, res) => {
+   res.render('patient/patientRegister.ejs')
+})
+
+app.get('/login', (req, res) => {
+   res.render('login.ejs')
 })
 
 const PORT = 3000
