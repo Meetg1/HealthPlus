@@ -15,23 +15,7 @@
 </head>
 
 <body>
-    <header id="header" class="fixed-top header-scrolled">
-        <div class="container d-flex align-items-center">
-            <h1 class="logo mr-auto"><a href="index.html">HealthPlus</a></h1>
-            <nav id="navbar" class="navbar order-last order-lg-0">
-                <ul>
-                    <li><a class="nav-link scrollto" href="#hero">Home</a></li>
-                    <li><a class="nav-link scrollto" href="#about">About</a></li>
-                    <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                    <li><a class="nav-link scrollto" href="#departments">Departments</a></li>
-                    <!-- <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
-                    <li><a class="nav-link scrollto" href="#contact">Contact</a></li> -->
-                </ul> <i class="bi bi-list mobile-nav-toggle"></i>
-            </nav>
-            <a href="#appointment" class="appointment-btn scrollto" style="color: white;text-decoration: none;"><span
-                    class="d-none d-md-inline">Make an</span> Appointment</a>
-        </div>
-    </header>
+    <%- include('partials/navbar')%>
 
     <!-- MultiStep Form -->
     <div class="container-fluid" id="grad1">
@@ -48,29 +32,23 @@
                                     <li class="active" id="account"><strong>Account</strong></li>
                                     <li id="personal"><strong>Verification</strong></li>
                                     <li id="payment"><strong>Upload</strong></li>
-                                    <!-- <li id="confirm"><strong>Finish</strong></li> -->
+                                    <li id="confirm"><strong>Slot Details</strong></li>
                                 </ul>
                                 <!-- fieldsets -->
                                 <fieldset>
                                     <div class="form-card">
                                         <h2 class="fs-title">Account Information</h2><br>
-                                        <input type="text" name="uname" id="uname" placeholder="Username*"
-                                            required="required" />
-                                        <input type="text" name="fname" id="fname" placeholder="First Name*"
-                                            required="required" />
-                                        <input type="text" name="lname" id="lname" placeholder="Last Name"
-                                            required="required" />
-                                        <input type="text" name="contact" id="contact" placeholder="Contact No.*"
-                                            required="required" />
-                                        <input type="email" name="email" id="email" placeholder="Email-Id*"
-                                            required="required" />
-                                        <input type="password" name="pwd" id="pwd" placeholder="Password*"
-                                            required="required" />
-                                        <input type="password" name="cpwd" id="cpwd" placeholder="Confirm Password*"
-                                            required="required" />
-                                    </div>
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
+                                        <input class="pqr" type="text" name="uname" id="uname" placeholder="Username*" required="required"/>
+                                        <input class="pqr" type="text" name="fname" id="fname" placeholder="First Name*" required="required"/>
+                                        <input class="pqr" type="text" name="lname" id="lname" placeholder="Last Name" required="required"/>
+                                        <input class="pqr" type="text" name="contact" id="contact" placeholder="Contact No.*" required="required"/>
+                                        <input class="pqr" type="email" name="email" id="email" placeholder="Email-Id*" required="required"/>
+                                        <input class="pqr" type="password" name="pwd" id="pwd" placeholder="Password*" required="required"/>
+                                        <input class="pqr" type="password" name="cpwd" id="cpwd" placeholder="Confirm Password*" required="required"/>
+                                    </div> 
+                                    <input id="btn7" type="button" name="next" class="next action-button" value="Next Step"/>
                                 </fieldset>
+
                                 <fieldset>
                                     <div class="form-card">
                                         <h2 class="fs-title">Verification Details</h2><br>
@@ -116,89 +94,66 @@
                                             <option>Rheumatology</option>
                                             <option>Urology</option>
                                         </select>
-                                        <input type="number" name="exp" placeholder="Years of Experience*"
-                                            required="required" />
-                                        <input type="number" name="fee" placeholder="Consultation Fee*"
-                                            required="required" />
-                                        <input type="text" name="location" placeholder="Clinic Location*"
-                                            required="required" />
-                                        <textarea name="desc" placeholder="Brief about yourself..*"
-                                            required="required"></textarea>
+                                        <input class="pqr" type="number" name="exp" placeholder="Years of Experience*" required="required"/>
+                                        <input class="pqr" type="number" name="fee" placeholder="Consultation Fee*" required="required"/>
+                                        <input class="pqr" type="text" name="location" placeholder="Clinic Location*" required="required"/>
+                                        <textarea class="pqr" name="desc" placeholder="Brief about yourself..*" required="required"></textarea>
                                         <!-- <input type="text" name="phno_2" placeholder="" required="required"/> -->
                                     </div>
-                                    <input type="button" name="previous" class="previous action-button-previous"
-                                        value="Previous" />
-                                    <input type="button" name="next" class="next action-button" value="Next Step" />
+                                    <input id="btn5" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                    <input id="btn6" type="button" name="next" class="next action-button" value="Next Step"/>
                                 </fieldset>
+
                                 <fieldset>
                                     <div class="form-card">
                                         <h2 class="fs-title">Upload Certificates</h2><br>
-                                        <input type="file" name="certificate" placeholder="" />
-                                        <!-- <div class="radio-group">
-                                        <div class='radio' data-value="credit"><img src="https://i.imgur.com/XzOzVHZ.jpg" width="200px" height="100px"></div>
-                                        <div class='radio' data-value="paypal"><img src="https://i.imgur.com/jXjwZlj.jpg" width="200px" height="100px"></div>
-                                        <br>
+                                        <input id="abc" type="file" name="certificate" placeholder=""/>
                                     </div>
-                                    <label class="pay">Card Holder Name*</label>
-                                    <input type="text" name="holdername" placeholder=""/>
-                                    <div class="row">
-                                        <div class="col-9">
-                                            <label class="pay">Card Number*</label>
-                                            <input type="text" name="cardno" placeholder=""/>
-                                        </div>
-                                        <div class="col-3">
-                                            <label class="pay">CVC*</label>
-                                            <input type="password" name="cvcpwd" placeholder="***"/>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <label class="pay">Expiry Date*</label>
-                                        </div>
-                                        <div class="col-9">
-                                            <select class="list-dt" id="month" name="expmonth">
-                                                <option selected>Month</option>
-                                                <option>January</option>
-                                                <option>February</option>
-                                                <option>March</option>
-                                                <option>April</option>
-                                                <option>May</option>
-                                                <option>June</option>
-                                                <option>July</option>
-                                                <option>August</option>
-                                                <option>September</option>
-                                                <option>October</option>
-                                                <option>November</option>
-                                                <option>December</option>
-                                            </select>
-                                            <select class="list-dt" id="year" name="expyear">
-                                                <option selected>Year</option>
-                                            </select>
-                                        </div>
-                                    </div> -->
-                                    </div>
-                                    <input type="button" name="previous" class="previous action-button-previous"
-                                        value="Previous" />
-                                    <input type="button" name="make_payment" class="next action-button"
-                                        value="Confirm" />
+                                    <input id="btn1" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                    <input id="btn2" type="button" name="make_payment" class="next action-button" value="Confirm"/>
                                 </fieldset>
-                                <!-- <fieldset>
-                                <div class="form-card">
-                                    <h2 class="fs-title text-center">Success !</h2>
-                                    <br><br>
-                                    <div class="row justify-content-center">
-                                        <div class="col-3">
-                                            <img src="https://img.icons8.com/color/96/000000/ok--v2.png" class="fit-image">
-                                        </div>
+
+                                <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title">Choose Your Session Slots</h2><br>
+                                            <div class="row">    
+                                                8:00 - 8:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 60px;">
+                                                8:30 - 9:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 60px;"> 
+                                                9.00 - 9:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 60px;"> 
+                                                9.30 - 10:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 60px;">
+                                                
+                                            
+                                                10:00 - 10:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                10:30 - 11:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                11:00 - 11:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                11:30 - 12:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                            
+                                                12:00 - 12:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                12:30 - 13:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                13:00 - 13:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                13:30 - 14.00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                            
+                                                14:00 - 14:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                14:30 - 15:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                15:00 - 15:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                15:30 - 16:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+
+                                                16:00 - 16:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                16:30 - 17:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                17:00 - 17:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                17:30 - 18:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+
+                                                18:00 - 18:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                18:30 - 19:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                19:00 - 19.30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                19.30 - 20:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+                                            </div>
                                     </div>
-                                    <br><br>
-                                    <div class="row justify-content-center">
-                                        <div class="col-7 text-center">
-                                            <h5>You Have Successfully Signed Up</h5>
-                                        </div>
+                                    <input id="btn3" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                    <input id="btn4" type="button" name="make_payment" class="next action-button" value="Confirm"/>
+                                    <!-- <input type="checkbox" name=""> -->
                                     </div>
-                                </div>
-                            </fieldset> -->
+                                </fieldset>
                             </form>
                         </div>
                     </div>
@@ -207,486 +162,437 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer id="footer">
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 footer-contact">
-                        <h3>HealthPlus</h3>
-                        <p> A108 Adam Street <br> New York, NY 535022<br> United States <br><br> <strong>Phone:</strong>
-                            +1 5589 55488 55<br> <strong>Email:</strong> info@example.com<br></p>
-                    </div>
-                    <div class="col-lg-2 col-md-6 footer-links">
-                        <h4>Useful Links</h4>
-                        <ul>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Home</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">About us</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Services</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Terms of service</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Privacy policy</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-6 footer-links">
-                        <h4>Our Services</h4>
-                        <ul>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Web Design</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Web Development</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Product Management</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Marketing</a></li>
-                            <li><i class="fa fa-chevron-right"></i> <a href="#">Graphic Design</a></li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-4 col-md-6 footer-newsletter">
-                        <h4>Join Our Newsletter</h4>
-                        <p>Tamen quem nulla quae legam multos aute sint culpa legam noster magna</p>
-                        <form action="" method="post" class="news"> <input type="email" name="email"><input
-                                type="submit" value="Subscribe"></form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container d-md-flex py-4">
-            <div class="me-md-auto text-center text-md-start">
-                <div class="copyright"> © Copyright <strong><span>HealthPlus</span></strong>. All Rights Reserved</div>
-                <!-- <div class="credits"> Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a></div> -->
-            </div>
-            <div class="social-links text-center text-md-right pt-3 pt-md-0"> <a href="#" class="twitter"><i
-                        class="fa-brands fa-twitter"></i></a> <a href="#" class="facebook"><i
-                        class="fa-brands fa-facebook"></i></a> <a href="#" class="instagram"><i
-                        class="fa-brands fa-instagram"></i></a> <a href="#" class="google-plus"><i
-                        class="fa-brands fa-skype"></i></a> <a href="#" class="linkedin"><i
-                        class="fa-brands fa-linkedin"></i></a></div>
-        </div>
-    </footer>
+    <%- include('./partials/footer')%>
 
 </body>
 
 <style>
-    *,
-    ::after,
-    ::before {
+    *, ::after, ::before {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
-
-    body {
-        font-family: "Open Sans", sans-serif;
-        color: #444444;
-        text-align: var(--bs-body-text-align);
-        background-color: var(--bs-body-bg);
-    }
-
-    #header {
-        background: #fff;
-        transition: all 0.5s;
-        z-index: 997;
-        padding: 15px 0;
-        box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
-    }
-
-    .fixed-top {
-        position: fixed;
-        top: 0;
-        right: 0;
-        left: 0;
-        z-index: 1030;
-    }
-
-    .mr-auto {
-        margin-right: auto !important;
-    }
-
-    .align-items-center {
-        align-items: center !important;
-    }
-
-    .d-flex {
-        display: flex !important;
-    }
-
-    @media (min-width: 992px) {
-
-        .container,
-        .container-lg,
-        .container-md,
-        .container-sm {
-            max-width: 960px;
-        }
-    }
-
-    #header .logo {
-        font-size: 30px;
-        margin: 0;
-        padding: 0;
-        line-height: 1;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        font-family: "Poppins", sans-serif;
-        text-decoration: none;
-    }
-
-    #header .logo a {
-        color: #2c4964;
-        text-decoration: none;
-    }
-
-    a {
-        color: #1977cc;
-        text-decoration: none;
-    }
-
-    .navbar {
-        padding: 0;
-    }
-
-    @media (min-width: 992px) {
-        .order-lg-0 {
-            order: 0 !important;
-        }
-    }
-
-    .navbar ul {
-        margin: 0;
-        padding: 0;
-        display: flex;
-        list-style: none;
-        /* align-items: center; */
-    }
-
-    .navbar>ul>li {
-        position: relative;
-        white-space: nowrap;
-        padding: 8px 0 8px 20px;
-    }
-
-    .navbar a {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 19px;
-        /* color: #2c4964; */
-        white-space: nowrap;
-        transition: 0.3s;
-        border-bottom: 2px solid #fff;
-        padding: 5px 2px;
-    }
-
-    .navbar .active,
-    .navbar .active:focus,
-    .navbar li:hover>a {
-        color: #1977cc;
-        border-color: #1977cc;
-    }
-
-    .navbar li {
-        position: relative;
-    }
-
-    .navbar a,
-    .navbar a:focus {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 14px;
-        color: #2c4964;
-        white-space: nowrap;
-        transition: 0.3s;
-        border-bottom: 2px solid #fff;
-        padding: 5px 2px;
-    }
-
-    .mobile-nav-toggle {
-        color: #2c4964;
-        font-size: 28px;
-        cursor: pointer;
-        display: none;
-        line-height: 0;
-        transition: 0.5s;
-    }
-
-    .appointment-btn {
-        margin-left: 25px;
-        background: #1977cc;
-        color: #fff;
-        border-radius: 50px;
-        padding: 8px 25px;
-        white-space: nowrap;
-        transition: 0.3s;
-        font-size: 14px;
-        display: inline-block;
-    }
-
-    .appointment-btn:hover {
-        background: #055296;
-    }
-
-    a {
-        text-decoration: none;
-    }
+body {
+    font-family: "Open Sans", sans-serif;
+    color: #444444;
+    text-align: var(--bs-body-text-align);
+    background-color: var(--bs-body-bg);
+}
+#header {
+    background: #fff;
+    transition: all 0.5s;
+    z-index: 997;
+    padding: 15px 0;
+    box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
+}
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+.mr-auto {
+    margin-right: auto!important;
+}
+.align-items-center {
+    align-items: center!important;
+}
+.d-flex {
+    display: flex!important;
+}
+@media (min-width: 992px){
+.container, .container-lg, .container-md, .container-sm {
+    max-width: 960px;
+}}
+#header .logo {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-family: "Poppins", sans-serif;
+    text-decoration: none;
+}
+#header .logo a {
+    color: #2c4964;
+    text-decoration: none;
+}
+a {
+    color: #1977cc;
+    text-decoration: none;
+}
+.navbar {
+    padding: 0;
+}
+@media (min-width: 992px){
+.order-lg-0 {
+    order: 0!important;
+}}
+.navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    /* align-items: center; */
+}
+.navbar>ul>li {
+    position: relative;
+    white-space: nowrap;
+    padding: 8px 0 8px 20px;
+}
+.navbar a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 19px;
+    /* color: #2c4964; */
+    white-space: nowrap;
+    transition: 0.3s;
+    border-bottom: 2px solid #fff;
+    padding: 5px 2px;
+}
+.navbar .active, .navbar .active:focus, .navbar li:hover>a {
+    color: #1977cc;
+    border-color: #1977cc;
+}
+.navbar li {
+    position: relative;
+}
+.navbar a, .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #2c4964;
+    white-space: nowrap;
+    transition: 0.3s;
+    border-bottom: 2px solid #fff;
+    padding: 5px 2px;
+}
+.mobile-nav-toggle {
+    color: #2c4964;
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+    line-height: 0;
+    transition: 0.5s;
+}
+.appointment-btn {
+    margin-left: 25px;
+    background: #1977cc;
+    color: #fff;
+    border-radius: 50px;
+    padding: 8px 25px;
+    white-space: nowrap;
+    transition: 0.3s;
+    font-size: 14px;
+    display: inline-block;
+}
+.appointment-btn:hover{
+    background: #055296;
+}
+a {
+    text-decoration: none;
+}
 
 
-    #grad1 {
-        margin-top: 60px;
-    }
+#grad1{
+    margin-top: 60px;
+}
+/*Background color*/
+#grad1 {
+    background: linear-gradient(to top,#f5f5ef 0%,#93a7f1 100%);
+    /* background-color: : #9C27B0; */
+    /* background-image: linear-gradient(120deg, #FF4081, #81D4FA); */
+}
 
-    /*Background color*/
-    #grad1 {
-        background: linear-gradient(to top, #f5f5ef 0%, #93a7f1 100%);
-        /* background-color: : #9C27B0; */
-        /* background-image: linear-gradient(120deg, #FF4081, #81D4FA); */
-    }
+/*form styles*/
+#msform {
+    text-align: center;
+    position: relative;
+    margin-top: 20px;
+}
 
-    /*form styles*/
-    #msform {
-        text-align: center;
-        position: relative;
-        margin-top: 20px;
-    }
+#msform fieldset .form-card {
+    background: white;
+    border: 0 none;
+    border-radius: 0px;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px 40px 30px 40px;
+    box-sizing: border-box;
+    width: 94%;
+    margin: 0 3% 20px 3%;
 
-    #msform fieldset .form-card {
-        background: white;
-        border: 0 none;
-        border-radius: 0px;
-        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-        padding: 20px 40px 30px 40px;
-        box-sizing: border-box;
-        width: 94%;
-        margin: 0 3% 20px 3%;
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
 
-        /*stacking fieldsets above each other*/
-        position: relative;
-    }
+#msform fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding-bottom: 20px;
 
-    #msform fieldset {
-        background: white;
-        border: 0 none;
-        border-radius: 0.5rem;
-        box-sizing: border-box;
-        width: 100%;
-        margin: 0;
-        padding-bottom: 20px;
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
 
-        /*stacking fieldsets above each other*/
-        position: relative;
-    }
+/*Hide all except first fieldset*/
+#msform fieldset:not(:first-of-type) {
+    display: none;
+}
 
-    /*Hide all except first fieldset*/
-    #msform fieldset:not(:first-of-type) {
-        display: none;
-    }
-
-    #msform fieldset .form-card {
-        text-align: left;
-        color: #9E9E9E;
-    }
-
-    #msform input,
-    #msform textarea {
-        padding: 0px 8px 4px 8px;
-        border: none;
-        border-bottom: 1px solid #ccc;
-        border-radius: 0px;
-        margin-bottom: 25px;
-        margin-top: 2px;
-        width: 100%;
-        box-sizing: border-box;
-        font-family: "Raleway", sans-serif;
-        color: #2C3E50;
-        font-size: 16px;
-        letter-spacing: 1px;
-    }
-
-    #msform input:focus,
-    #msform textarea:focus {
-        -moz-box-shadow: none !important;
-        -webkit-box-shadow: none !important;
-        box-shadow: none !important;
-        border: none;
-        font-weight: bold;
-        border-bottom: 2px solid skyblue;
-        outline-width: 0;
-    }
-
-    /*Blue Buttons*/
-    #msform .action-button {
-        width: 100px;
-        background: rgb(85, 173, 208);
-        font-weight: bold;
-        color: white;
-        border: 0 none;
-        border-radius: 0px;
-        cursor: pointer;
-        padding: 10px 5px;
-        margin: 10px 5px;
-    }
-
-    #msform .action-button:hover,
-    #msform .action-button:focus {
-        box-shadow: 0 0 0 2px white, 0 0 0 3px rgb(85, 173, 208);
-    }
-
-    /*Previous Buttons*/
-    #msform .action-button-previous {
-        width: 100px;
-        background: #616161;
-        font-weight: bold;
-        color: white;
-        border: 0 none;
-        border-radius: 0px;
-        cursor: pointer;
-        padding: 10px 5px;
-        margin: 10px 5px;
-    }
-
-    #msform .action-button-previous:hover,
-    #msform .action-button-previous:focus {
-        box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-    }
-
-    /*Dropdown List Exp Date*/
-    select.list-dt {
-        border: none;
-        outline: 0;
-        border-bottom: 1px solid #ccc;
-        padding: 2px 5px 3px 5px;
-        /* margin: 2px; */
-        margin-bottom: 25px;
-        width: 100%;
-        margin-top: 2px;
-        width: 100%;
-        box-sizing: border-box;
-        font-family: "Raleway", sans-serif;
-        color: #2C3E50;
-        font-size: 16px;
-        letter-spacing: 1px;
-    }
-
-    select.list-dt:focus {
-        border-bottom: 2px solid skyblue;
-    }
-
-    /*The background card*/
-    .card {
-        z-index: 0;
-        border: none;
-        border-radius: 0.5rem;
-        position: relative;
-    }
-
-    /*FieldSet headings*/
-    .fs-title {
-        font-size: 25px;
-        color: #2C3E50;
-        margin-bottom: 10px;
-        font-weight: bold;
-        text-align: left;
-    }
-
-    /*progressbar*/
-    #progressbar {
-        margin-bottom: 30px;
-        overflow: hidden;
-        color: lightgrey;
-    }
-
-    #progressbar .active {
-        color: #000000;
-    }
-
-    #progressbar li {
-        list-style-type: none;
-        font-size: 12px;
-        width: 33.333333%;
-        float: left;
-        position: relative;
-    }
-
-    /*Icons in the ProgressBar*/
-    #progressbar #account:before {
-        /* font-family: FontAwesome; */
-        content: "1";
-    }
-
-    #progressbar #personal:before {
-        /* font-family: FontAwesome; */
-        content: "2";
-    }
-
-    #progressbar #payment:before {
-        /* font-family: FontAwesome; */
-        content: "3";
-    }
-
-    /* #progressbar #confirm:before {
-    font-family: FontAwesome;
-    content: "1";
+#msform fieldset .form-card {
+    text-align: left;
+    color: #9E9E9E;
+}
+.row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+}
+@media (min-width: 992px){
+.col-lg-4 {
+    flex: 0 0 auto;
+    width: 33.333333%;
+}}
+/* #msform input, #msform textarea {
+    padding: 0px 8px 4px 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Raleway", sans-serif;
+    color: #2C3E50;
+    font-size: 16px;
+    letter-spacing: 1px;
 } */
+.pqr{
+    padding: 0px 8px 4px 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Raleway", sans-serif;
+    color: #2C3E50;
+    font-size: 16px;
+    letter-spacing: 1px; 
+}
+#btn1, #btn2, #btn3, #btn4, #btn5, #btn6, #btn7{
+    padding: 0px 8px 4px 8px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0px;
+    margin-bottom: 25px;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Raleway", sans-serif;
+    color: #2C3E50;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
 
-    /*ProgressBar before any progress*/
-    #progressbar li:before {
-        width: 50px;
-        height: 50px;
-        line-height: 45px;
-        display: block;
-        font-size: 18px;
-        color: #ffffff;
-        background: lightgray;
-        border-radius: 50%;
-        margin: 0 auto 10px auto;
-        padding: 2px;
-    }
+#msform input:focus, #msform textarea:focus {
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border: none;
+    font-weight: bold;
+    border-bottom: 2px solid skyblue;
+    outline-width: 0;
+}
 
-    /*ProgressBar connectors*/
-    #progressbar li:after {
-        content: '';
-        width: 100%;
-        height: 2px;
-        background: lightgray;
-        position: absolute;
-        left: 0;
-        top: 25px;
-        z-index: -1;
-    }
+/*Blue Buttons*/
+#msform .action-button {
+    width: 100px;
+    background: rgb(85, 173, 208);
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
+}
 
-    /*Color number of the step and the connector before it*/
-    #progressbar li.active:before,
-    #progressbar li.active:after {
-        background: rgb(28, 123, 160);
-    }
+#msform .action-button:hover, #msform .action-button:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px rgb(85, 173, 208);
+}
 
-    /*Imaged Radio Buttons*/
-    .radio-group {
-        position: relative;
-        margin-bottom: 25px;
-    }
+/*Previous Buttons*/
+#msform .action-button-previous {
+    width: 100px;
+    background: #616161;
+    font-weight: bold;
+    color: white;
+    border: 0 none;
+    border-radius: 0px;
+    cursor: pointer;
+    padding: 10px 5px;
+    margin: 10px 5px;
+}
 
-    .radio {
-        display: inline-block;
-        width: 204;
-        height: 104;
-        border-radius: 0;
-        background: lightblue;
-        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-        box-sizing: border-box;
-        cursor: pointer;
-        margin: 8px 2px;
-    }
+#msform .action-button-previous:hover, #msform .action-button-previous:focus {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
+}
 
-    .radio:hover {
-        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
-    }
+/*Dropdown List Exp Date*/
+select.list-dt {
+    border: none;
+    outline: 0;
+    border-bottom: 1px solid #ccc;
+    padding: 2px 5px 3px 5px;
+    /* margin: 2px; */
+    margin-bottom: 25px;
+    width: 100%;
+    margin-top: 2px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: "Raleway", sans-serif;
+    color: #2C3E50;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
 
-    .radio.selected {
-        box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
-    }
+select.list-dt:focus {
+    border-bottom: 2px solid skyblue;
+}
 
-    /*Fit image in bootstrap div*/
-    .fit-image {
-        width: 100%;
-        object-fit: cover;
-    }
+/*The background card*/
+.card {
+    z-index: 0;
+    border: none;
+    border-radius: 0.5rem;
+    position: relative;
+}
+
+/*FieldSet headings*/
+.fs-title {
+    font-size: 25px;
+    color: #2C3E50;
+    margin-bottom: 10px;
+    font-weight: bold;
+    text-align: left;
+}
+
+/*progressbar*/
+#progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey;
+}
+
+#progressbar .active {
+    color: #000000;
+}
+
+#progressbar li {
+    list-style-type: none;
+    font-size: 12px;
+    width: 25%;
+    float: left;
+    position: relative;
+}
+
+/*Icons in the ProgressBar*/
+#progressbar #account:before {
+    /* font-family: FontAwesome; */
+    content: "1";
+}
+
+#progressbar #personal:before {
+    /* font-family: FontAwesome; */
+    content: "2";
+}
+
+#progressbar #payment:before {
+    /* font-family: FontAwesome; */
+    content: "3";
+}
+
+#progressbar #confirm:before {
+    /* font-family: FontAwesome; */
+    content: "4";
+}
+
+/*ProgressBar before any progress*/
+#progressbar li:before {
+    width: 50px;
+    height: 50px;
+    line-height: 45px;
+    display: block;
+    font-size: 18px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 auto 10px auto;
+    padding: 2px;
+}
+
+/*ProgressBar connectors*/
+#progressbar li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: -1;
+}
+
+/*Color number of the step and the connector before it*/
+#progressbar li.active:before, #progressbar li.active:after {
+    background: rgb(28, 123, 160);
+}
+
+/*Imaged Radio Buttons*/
+.radio-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.radio {
+    display:inline-block;
+    width: 204;
+    height: 104;
+    border-radius: 0;
+    background: lightblue;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    cursor:pointer;
+    margin: 8px 2px; 
+}
+
+.radio:hover {
+    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
+}
+
+.radio.selected {
+    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+/*Fit image in bootstrap div*/
+.fit-image{
+    width: 100%;
+    object-fit: cover;
+}
 
     #footer {
         color: #444444;
