@@ -8,6 +8,16 @@ const Admin = require('./models/Admin')
 const Patient = require('./models/Patient')
 const Doctor = require('./models/Doctor')
 
+const http = require('http')
+const server = http.createServer(app)
+const socketio = require('socket.io')
+const io = socketio(server, {
+   cors: {
+      origin: ['http://localhost:3000'],
+   },
+})
+server.listen(8000)
+
 //====================DATABASE CONNECTION==========================
 
 // const dbUrl = "mongodb://localhost:27017/edu";
@@ -51,6 +61,9 @@ app.use(express.static(path.join(__dirname, 'public'))) //for serving static fil
 //    }),
 // )
 
+const { formatMessage, getRoomUsers } = require('./utils/messages')
+
+// ==================ROUTES=======================
 app.get('/', (req, res) => {
    res.render('home.ejs')
 })
@@ -75,8 +88,66 @@ app.get('/login', (req, res) => {
    res.render('login.ejs')
 })
 
-app.get('/chat', (req, res) => {
-   res.render('chat.ejs')
+// ==========================SOCKET.IO====================================
+const users = {}
+
+io.on('connection', (socket) => {
+   socket.on('joinRoom', ({ username, room }) => {
+      users[socket.id] = { username: username, room: room }
+
+      socket.join(room)
+
+      // Welcome current user
+      socket.emit('update', 'Welcome to HealthPlus!')
+
+      // Broadcast when a user connects
+      socket.broadcast
+         .to(room)
+         .emit('update', `${username} has joined the chat`)
+
+      // Send room-users info
+      io.to(room).emit('roomUsers', {
+         users: getRoomUsers(users, room),
+      })
+   })
+
+   // Listen for chatMessage
+   socket.on('chatMessage', (msg) => {
+      const user = users[socket.id]
+
+      socket
+         .to(user.room)
+         .emit('othermessage', formatMessage(user.username, msg))
+   })
+
+   // Runs when client disconnects
+   socket.on('disconnect', () => {
+      const user = users[socket.id]
+      if (user) {
+         io.to(user.room).emit('update', `${user.username} has left the chat`)
+         delete users[socket.id]
+         // Send room-users info
+         io.to(user.room).emit('roomUsers', {
+            users: getRoomUsers(users, user.room),
+         })
+      }
+   })
+})
+// ================================================================================
+
+app.get('/chat_appointment/:appointmentid&:username', async (req, res) => {
+   const appointmentid = req.params.appointmentid
+   const username = req.params.username
+
+   // if (!mongoose.isValidObjectId(appointmentid))
+   //    return res.send('No Appointment found')
+   // const foundAppointment = await Appointment.findById(appointmentid)
+
+   // if (!foundAppointment) {
+   //    return res.send('No Appointment found')
+   // }
+
+   res.render('chat.ejs', { username: username, room: appointmentid })
 })
 
 app.get('/contact', (req, res) => {
@@ -88,7 +159,7 @@ app.get('/appointment', (req, res) => {
 })
 
 app.get('/doctors', (req, res) => {
-   res.render('doctors.ejs')
+   res.render('doctor/doctors.ejs')
 })
 
 const PORT = 3000
