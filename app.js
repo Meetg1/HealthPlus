@@ -61,34 +61,9 @@ app.use(express.static(path.join(__dirname, 'public'))) //for serving static fil
 //    }),
 // )
 
+// ==========================SOCKET.IO====================================
 const { formatMessage, getRoomUsers } = require('./utils/messages')
 
-// ==================ROUTES=======================
-app.get('/', (req, res) => {
-   res.render('home.ejs')
-})
-
-app.get('/demo', (req, res) => {
-   res.render('demo.ejs')
-})
-
-app.get('/registerChoice', (req, res) => {
-   res.render('registerChoice.ejs')
-})
-
-app.get('/doctorRegister', (req, res) => {
-   res.render('doctor/doctorRegister.ejs')
-})
-
-app.get('/patientRegister', (req, res) => {
-   res.render('patient/patientRegister.ejs')
-})
-
-app.get('/login', (req, res) => {
-   res.render('login.ejs')
-})
-
-// ==========================SOCKET.IO====================================
 const users = {}
 
 io.on('connection', (socket) => {
@@ -134,6 +109,31 @@ io.on('connection', (socket) => {
    })
 })
 // ================================================================================
+
+// ==================ROUTES=======================
+app.get('/', (req, res) => {
+   res.render('home.ejs')
+})
+
+app.get('/demo', (req, res) => {
+   res.render('demo.ejs')
+})
+
+app.get('/registerChoice', (req, res) => {
+   res.render('registerChoice.ejs')
+})
+
+app.get('/doctorRegister', (req, res) => {
+   res.render('doctor/doctorRegister.ejs')
+})
+
+app.get('/patientRegister', (req, res) => {
+   res.render('patient/patientRegister.ejs')
+})
+
+app.get('/login', (req, res) => {
+   res.render('login.ejs')
+})
 
 app.get('/chat_appointment/:appointmentid&:username', async (req, res) => {
    const appointmentid = req.params.appointmentid
