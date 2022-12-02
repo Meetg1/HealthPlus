@@ -1,0 +1,187 @@
+<% layout('layouts/boilerplate') %>
+
+<body>
+
+    <link rel="stylesheet" href="../stylesheets/doctor_search.css" />
+
+    <%- include('./partials/navbar')%>
+
+    <br><br><br><br>
+<div class="d-flex justify-content-center h-100">
+    <div class="searchbar">
+      <input class="search_input" type="text" name="" placeholder="Search for Doctors...">
+      <a href="#" class="search_icon"><i class="fas fa-search"></i></a>  
+    </div>
+</div>
+
+<section class="search-sec">
+    <div class="container">
+        <form action="#" method="post" novalidate="novalidate">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <!-- <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> -->
+                            <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                <option selected disabled>Select Speciality</option>
+                                <option>Anatomical Pathology</option>
+                                <option>Anesthesiology</option>
+                                <option>Cardiology</option>
+                                <option>Cardiovascular/Thoracic Surgery</option>
+                                <option>Clinical Immunology/Allergy</option>
+                                <option>Critical Care Medicine</option>
+                                <option>Diagnostic Radiology</option>
+                                <option>Emergency Medicine</option>
+                                <option>Endocrinology and Metabolism</option>
+                                <option>Family Medicine</option>
+                                <option>Gastroenterology</option>
+                                <option>General Internal Medicine</option>
+                                <option>General Surgery</option>
+                                <option>General/Clinical Pathology</option>
+                                <option>Geriatric Medicine</option>
+                                <option>Hematology</option>
+                                <option>Medical Biochemistry</option>
+                                <option>Medical Genetics</option>
+                                <option>Medical Microbiology and Infectious Diseases</option>
+                                <option>Medical Oncology</option>
+                                <option>Nephrology</option>
+                                <option>Neurology</option>
+                                <option>Neurosurgery</option>
+                                <option>Nuclear Medicine</option>
+                                <option>Obstetrics/Gynecology</option>
+                                <option>Occupational Medicine</option>
+                                <option>Ophthalmology</option>
+                                <option>Orthopedic Surgery</option>
+                                <option>Otolaryngology</option>
+                                <option>Pediatrics</option>
+                                <option>Physical Medicine and Rehabilitation (PM & R)</option>
+                                <option>Plastic Surgery</option>
+                                <option>Psychiatry</option>
+                                <option>Public Health and Preventive Medicine (PhPm)</option>
+                                <option>Radiation Oncology</option>
+                                <option>Respirology</option>
+                                <option>Rheumatology</option>
+                                <option>Urology</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <!-- <input type="text" class="form-control search-slt" placeholder="Enter Drop City"> -->
+                            <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                <option selected disabled>Select Consultation Fee</option>
+                                <option>Upto ₹100</option>
+                                <option>₹100 - ₹200</option>
+                                <option>₹200 - ₹300</option>
+                                <option>₹300 - ₹500</option>
+                                <option>More than ₹500 </option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                <option selected disabled>Select Experience</option>
+                                <option>Less than an year</option>
+                                <option>1 - 3 years</option>
+                                <option>3 - 5 years</option>
+                                <option>5 - 10 years</option>
+                                <option>More than 10 years</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <select class="form-control search-slt" id="exampleFormControlSelect1">
+                                <option selected disabled>Select Location</option>
+                                <option>In Mumbai</option>
+                                <option>Outside Mumbai but within Maharashtra</option>
+                                <option>Outside Maharashtra</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="text-center">
+                <button type="button" class="btn wrn-btn">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<section id="doctors" class="doctors">
+    <div class="container">
+        <div class="section-title"><h2>Associated Doctors</h2><p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p></div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="member d-flex align-items-start">
+                    <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
+                    <div class="member-info"><h4>Walter White</h4> <span>Chief Medical Officer</span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                        <p style="padding-right: 15px;"><b>Years of Experience: </b>1</p>
+                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>200</p>
+                        <p><b>Location: </b>ABC Gandhi Marg</p>
+                        <!-- <div class="social"> 
+                            <a href=""><i class="fa-brands fa-twitter"></i></a> 
+                            <a href=""><i class="fa-brands fa-facebook"></i></a> 
+                            <a href=""><i class="fa-brands fa-instagram"></i></a> 
+                            <a href=""> <i class="fa-brands fa-linkedin"></i> </a>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4 mt-lg-0">
+                <div class="member d-flex align-items-start">
+                    <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-2.jpg" class="img-fluid" alt=""></div>
+                    <div class="member-info"><h4>Sarah Jhonson</h4> <span>Anesthesiologist</span><p>Aut maiores voluptates amet et quis praesentium qui senda para</p>
+                        <p style="padding-right: 15px;"><b>Years of Experience: </b>1</p>
+                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>200</p>
+                        <p><b>Location: </b>ABC Gandhi Marg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="member d-flex align-items-start">
+                    <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-3.jpg" class="img-fluid" alt=""></div>
+                    <div class="member-info"><h4>William Anderson</h4> <span>Cardiology</span><p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
+                        <p style="padding-right: 15px;"><b>Years of Experience: </b>1</p>
+                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>200</p>
+                        <p><b>Location: </b>ABC Gandhi Marg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="member d-flex align-items-start">
+                    <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-4.jpg" class="img-fluid" alt=""></div>
+                    <div class="member-info"><h4>Amanda Jepson</h4> <span>Neurosurgeon</span><p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
+                        <p style="padding-right: 15px;"><b>Years of Experience: </b>1</p>
+                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>200</p>
+                        <p><b>Location: </b>ABC Gandhi Marg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="member d-flex align-items-start">
+                    <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-4.jpg" class="img-fluid" alt=""></div>
+                    <div class="member-info"><h4>Amanda Jepson</h4> <span>Neurosurgeon</span><p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
+                        <p style="padding-right: 15px;"><b>Years of Experience: </b>1</p>
+                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>200</p>
+                        <p><b>Location: </b>ABC Gandhi Marg</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mt-4">
+                <div class="member d-flex align-items-start">
+                    <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-4.jpg" class="img-fluid" alt=""></div>
+                    <div class="member-info"><h4>Amanda Jepson</h4> <span>Neurosurgeon</span><p>Dolorum tempora officiis odit laborum officiis et et accusamus</p>
+                        <p style="padding-right: 15px;"><b>Years of Experience: </b>1</p>
+                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>200</p>
+                        <p><b>Location: </b>ABC Gandhi Marg</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<br><br>
+
+    <%- include('./partials/footer')%>
+
+</body>
+
+

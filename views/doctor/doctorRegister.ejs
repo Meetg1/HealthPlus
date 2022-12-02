@@ -48,7 +48,7 @@
                                     </div> 
                                     <input id="btn7" type="button" name="next" class="next action-button" value="Next Step"/>
                                 </fieldset>
-
+    
                                 <fieldset>
                                     <div class="form-card">
                                         <h2 class="fs-title">Verification Details</h2><br>
@@ -95,7 +95,7 @@
                                             <option>Urology</option>
                                         </select>
                                         <input class="pqr" type="number" name="exp" placeholder="Years of Experience*" required="required"/>
-                                        <input class="pqr" type="number" name="fee" placeholder="Consultation Fee*" required="required"/>
+                                        <input class="pqr" type="number" name="fee" placeholder="Consultation Fee (in ₹)*" required="required"/>
                                         <input class="pqr" type="text" name="location" placeholder="Clinic Location*" required="required"/>
                                         <textarea class="pqr" name="desc" placeholder="Brief about yourself..*" required="required"></textarea>
                                         <!-- <input type="text" name="phno_2" placeholder="" required="required"/> -->
@@ -103,24 +103,39 @@
                                     <input id="btn5" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
                                     <input id="btn6" type="button" name="next" class="next action-button" value="Next Step"/>
                                 </fieldset>
-
+    
                                 <fieldset>
                                     <div class="form-card">
-                                        <h2 class="fs-title">Upload Certificates</h2><br>
-                                        <input id="abc" type="file" name="certificate" placeholder=""/>
+                                        <h2 class="fs-title">Upload Personal Certificates</h2><br>
+                                        Aadhar Card* &nbsp; <input id="abc" type="file" name="certificate" placeholder="" required/><br><br><br>
+                                        PAN Card*&nbsp;  <input id="abc" type="file" name="certificate" placeholder="" required/><br><br><br>
+                                        Graduation Marksheet* &nbsp; <input id="abc" type="file" name="certificate" placeholder="" required/>
                                     </div>
                                     <input id="btn1" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
                                     <input id="btn2" type="button" name="make_payment" class="next action-button" value="Confirm"/>
                                 </fieldset>
-
+    
                                 <fieldset>
+                                    <div class="form-card">
+                                        <h2 class="fs-title">Choose Your Session Days</h2><br>
+                                            <div class="row">    
+                                                Monday &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                Tuesday &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                Wednesday &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                Thursday &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                Friday &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                Saturday &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                Sunday &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
+                                            </div>
+                                    </div>
+                                    <br>
                                     <div class="form-card">
                                         <h2 class="fs-title">Choose Your Session Slots</h2><br>
                                             <div class="row">    
-                                                8:00 - 8:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 60px;">
-                                                8:30 - 9:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 60px;"> 
-                                                9.00 - 9:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 60px;"> 
-                                                9.30 - 10:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 60px;">
+                                                08:00 - 08:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
+                                                08:30 - 09:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                09.00 - 09:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
+                                                09.30 - 10:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
                                                 
                                             
                                                 10:00 - 10:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
@@ -137,12 +152,12 @@
                                                 14:30 - 15:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
                                                 15:00 - 15:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
                                                 15:30 - 16:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-
+    
                                                 16:00 - 16:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
                                                 16:30 - 17:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
                                                 17:00 - 17:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
                                                 17:30 - 18:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-
+    
                                                 18:00 - 18:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
                                                 18:30 - 19:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
                                                 19:00 - 19.30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
@@ -165,6 +180,9 @@
     <%- include('../partials/footer')%>
 
 </body>
+
+
+
 
 <style>
     *, ::after, ::before {

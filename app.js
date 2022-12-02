@@ -158,8 +158,20 @@ app.get('/appointment', (req, res) => {
    res.render('appointment.ejs')
 })
 
-app.get('/doctors', (req, res) => {
-   res.render('doctor/doctors.ejs')
+app.get('/admin/doctors', (req, res) => {
+   res.render('doctors.ejs')
+})
+
+app.get('/search', (req, res) => {
+   res.render('doctor_search.ejs')
+})
+
+app.get('/register/success', (req, res) => {
+   res.render('register_success.ejs')
+})
+
+app.get('/register/pending', (req, res) => {
+   res.render('register_pending.ejs')
 })
 
 const PORT = 3000
