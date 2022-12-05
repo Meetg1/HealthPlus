@@ -157,6 +157,10 @@ app.get('/doctorRegister', (req, res) => {
    res.render('doctor/doctorRegister.ejs')
 })
 
+app.get('/admin/doctorVerification', (req, res) => {
+   res.render('doctor/doctor_verification.ejs')
+})
+
 app.post('/doctorRegister', async (req, res) => {
 
    try {

@@ -68,6 +68,9 @@
                             <input class="input--style-3" id="cpswd" type="password" placeholder="Confirm Password"
                                 name="cpswd" required="required">
                         </div>
+                        <div class="login-text" style="color: white;">
+                            &nbsp;<input type="checkbox" id="myCheckbox" required="required" style="margin-right: 5px;">I agree to give consent to HealthPlus to store my medical records on blockchain and abide by all <a class="tnc" href="" style="text-decoration: none;">Terms and Conditions.</a>
+                        </div><br>
                         <div class="p-t-10">
                             <button class="btn btn--pill btn--green" type="submit">Register</button>
                         </div>
@@ -134,28 +137,23 @@
 </body>
 
 <style>
-    *,
-    ::after,
-    ::before {
+    *, ::after, ::before {
         box-sizing: border-box;
     }
-
-    body {
+        body {
         font-family: "Open Sans", sans-serif;
         color: #444444;
         margin: 0;
         text-align: var(--bs-body-text-align);
         background-color: var(--bs-body-bg);
     }
-
-    #header {
+        #header {
         background: #fff;
         transition: all 0.5s;
         z-index: 997;
         padding: 15px 0;
         box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
     }
-
     .fixed-top {
         position: fixed;
         top: 0;
@@ -163,29 +161,19 @@
         left: 0;
         z-index: 1030;
     }
-
     .mr-auto {
-        margin-right: auto !important;
+        margin-right: auto!important;
     }
-
     .align-items-center {
-        align-items: center !important;
+        align-items: center!important;
     }
-
     .d-flex {
-        display: flex !important;
+        display: flex!important;
     }
-
-    @media (min-width: 992px) {
-
-        .container,
-        .container-lg,
-        .container-md,
-        .container-sm {
-            max-width: 960px;
-        }
-    }
-
+    @media (min-width: 992px){
+    .container, .container-lg, .container-md, .container-sm {
+        max-width: 960px;
+    }}
     #header .logo {
         font-size: 30px;
         margin: 0;
@@ -196,27 +184,21 @@
         font-family: "Poppins", sans-serif;
         text-decoration: none;
     }
-
     #header .logo a {
         color: #2c4964;
         text-decoration: none;
     }
-
     a {
         color: #1977cc;
         text-decoration: none;
     }
-
     .navbar {
         padding: 0;
     }
-
-    @media (min-width: 992px) {
-        .order-lg-0 {
-            order: 0 !important;
-        }
-    }
-
+    @media (min-width: 992px){
+    .order-lg-0 {
+        order: 0!important;
+    }}
     .navbar ul {
         margin: 0;
         padding: 0;
@@ -224,13 +206,11 @@
         list-style: none;
         /* align-items: center; */
     }
-
     .navbar>ul>li {
         position: relative;
         white-space: nowrap;
         padding: 8px 0 8px 20px;
     }
-
     .navbar a {
         display: flex;
         align-items: center;
@@ -242,20 +222,14 @@
         border-bottom: 2px solid #fff;
         padding: 5px 2px;
     }
-
-    .navbar .active,
-    .navbar .active:focus,
-    .navbar li:hover>a {
+    .navbar .active, .navbar .active:focus, .navbar li:hover>a {
         color: #1977cc;
         border-color: #1977cc;
     }
-
     .navbar li {
         position: relative;
     }
-
-    .navbar a,
-    .navbar a:focus {
+    .navbar a, .navbar a:focus {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -266,7 +240,6 @@
         border-bottom: 2px solid #fff;
         padding: 5px 2px;
     }
-
     .mobile-nav-toggle {
         color: #2c4964;
         font-size: 28px;
@@ -275,7 +248,6 @@
         line-height: 0;
         transition: 0.5s;
     }
-
     .appointment-btn {
         margin-left: 25px;
         background: #1977cc;
@@ -287,37 +259,29 @@
         font-size: 14px;
         display: inline-block;
     }
-
-    .appointment-btn:hover {
+    .appointment-btn:hover{
         background: #055296;
     }
-
     a {
         text-decoration: none;
     }
-
     .p-b-100 {
         padding-bottom: 100px;
     }
-
     .p-t-180 {
         padding-top: 180px;
     }
-
     .bg-gra-01 {
         /* background: linear-gradient(to top,#fbc2eb 0%,#a18cd1 100%); */
         /* background: linear-gradient(to top,#f5f5ef 0%,#828186 100%); */
-        background: linear-gradient(to top, #f5f5ef 0%, #93a7f1 100%);
+        background: linear-gradient(to top,#f5f5ef 0%,#93a7f1 100%);
     }
-
     .wrapper--w780 {
         max-width: 780px;
     }
-
     .wrapper {
         margin: 0 auto;
     }
-
     .card-3 {
         /* background: #000; */
         background: #055296;
@@ -325,11 +289,9 @@
         width: 100%;
         display: table;
     }
-
-    .card {
+    .card{
         overflow: hidden;
     }
-
     .card-3 .card-heading {
         /* background: url(https://colorlib.com/etc/regform/colorlib-regform-3/images/bg-heading-03.jpg) top left/cover no-repeat; */
         /* background: url("D:/Extra files/HealthPlus Frontend/doctor1.jpg") top left/cover no-repeat; */
@@ -338,35 +300,30 @@
         width: 50%;
         background-position: 35% 50%;
         /* background-position-x: left;
-    background-position-y: center; */
+        background-position-y: center; */
     }
-
     .card-3 .card-body {
         padding: 57px 65px;
         padding-bottom: 65px;
         display: table-cell;
     }
-
     .register-title {
         font-size: 24px;
         color: #fff;
         font-weight: 400;
         margin-bottom: 36px;
     }
-
     .input-group {
         position: relative;
         margin-bottom: 33px;
-        border-bottom: 1px solid rgba(255, 255, 255, .2);
+        border-bottom: 1px solid rgba(255,255,255,.2);
     }
-
     .input--style-3 {
         padding: 5px 0;
         font-size: 16px;
         color: #ccc;
         background: 0 0;
     }
-
     .input--style-3 {
         outline: none;
         margin: 0;
@@ -374,62 +331,58 @@
         box-shadow: none;
         width: 100%;
     }
-
-    ::placeholder {
+    .tnc{
+        color: white;
+    }
+    .tnc:hover{
+        color: rgba(255, 255, 255, 0.677);
+    }
+    ::placeholder{
         color: rgba(248, 245, 245, 0.855);
     }
-
     .p-t-10 {
         padding-top: 10px;
     }
-
     .btn--green {
         background: #57b846;
     }
-
     .btn--pill {
         border-radius: 20px;
     }
-
     .btn {
         display: inline-block;
         line-height: 40px;
         padding: 0 33px;
-        font-family: Poppins, Arial, helvetica neue, sans-serif;
+        font-family: Poppins,Arial,helvetica neue,sans-serif;
         cursor: pointer;
         color: #fff;
         transition: all .4s ease;
         font-size: 18px;
     }
-
     button {
         outline: none;
         /* background: 0 0; */
         border: none;
     }
-
-    .login-link {
+    .login-link{
         text-decoration: none;
         color: rgb(230, 185, 8);
     }
-
-    .login-link:hover {
+    .login-link:hover{
         text-decoration: none;
         color: rgb(170, 137, 5);
     }
-
+    
     #footer {
         color: #444444;
         font-size: 14px;
         background: #f1f7fd;
     }
-
     #footer .footer-top {
         padding: 60px 0 30px 0;
         background: #fff;
         box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
     }
-
     .row {
         --bs-gutter-x: 1.5rem;
         --bs-gutter-y: 0;
@@ -439,18 +392,14 @@
         margin-right: calc(-.5 * var(--bs-gutter-x));
         margin-left: calc(-.5 * var(--bs-gutter-x));
     }
-
     footer .footer-top .footer-contact {
         margin-bottom: 30px;
     }
-
-    @media (min-width: 992px) {
-        .col-lg-3 {
-            flex: 0 0 auto;
-            width: 25%;
-        }
-    }
-
+    @media (min-width: 992px){
+    .col-lg-3 {
+        flex: 0 0 auto;
+        width: 25%;
+    }}
     #footer .footer-top .footer-contact p {
         font-size: 14px;
         line-height: 24px;
@@ -458,11 +407,9 @@
         font-family: "Raleway", sans-serif;
         color: #777777;
     }
-
     #footer .footer-top .footer-links {
         margin-bottom: 30px;
     }
-
     #footer .footer-top h4 {
         font-size: 16px;
         font-weight: bold;
@@ -470,26 +417,22 @@
         position: relative;
         padding-bottom: 12px;
     }
-
     #footer .footer-top .footer-links ul {
         list-style: none;
         padding: 0;
         margin: 0;
     }
-
     #footer .footer-top .footer-links ul li {
         padding: 10px 0;
         display: flex;
         align-items: center;
     }
-
     #footer .footer-top .footer-links ul i {
         padding-right: 2px;
         color: #1c84e3;
         font-size: 15px;
         line-height: 1;
     }
-
     #footer .footer-top .footer-links ul a {
         color: #777777;
         transition: 0.3s;
@@ -498,11 +441,9 @@
         margin-left: 5px;
         text-decoration: none;
     }
-
     #footer .footer-top .footer-links ul a:hover {
         color: #2d8dbd;
     }
-
     #footer .footer-newsletter h4 {
         font-size: 16px;
         font-weight: bold;
@@ -510,12 +451,10 @@
         position: relative;
         padding-bottom: 12px;
     }
-
     p {
         margin-top: 0;
         margin-bottom: 1rem;
     }
-
     #footer .footer-newsletter form {
         margin-top: 30px;
         background: #fff;
@@ -525,19 +464,17 @@
         text-align: left;
         border: 1px solid #bfdcf7;
     }
-
     #footer .footer-newsletter form input[type=email] {
         border: 0;
         padding: 4px 8px;
         width: calc(100% - 100px);
     }
-
     #footer .footer-newsletter form input[type=submit] {
         position: absolute;
         top: 0;
         right: 0;
         bottom: 0;
-        border: 0;
+        border: 0; 
         font-size: 16px;
         padding: 0 20px;
         background: #1977cc;
@@ -545,23 +482,17 @@
         transition: 0.3s;
         border-radius: 50px;
     }
-
-    @media (min-width: 768px) {
-        .me-md-auto {
-            margin-right: auto !important;
-        }
-    }
-
-    @media (min-width: 768px) {
-        .pt-md-0 {
-            padding-top: 0 !important;
-        }
-    }
-
+    @media (min-width: 768px){
+    .me-md-auto {
+        margin-right: auto!important;
+    }}
+    @media (min-width: 768px){
+    .pt-md-0 {
+        padding-top: 0!important;
+    }}
     .text-center {
-        text-align: center !important;
+        text-align: center!important;
     }
-
     #footer .social-links a {
         font-size: 18px;
         display: inline-block;
@@ -577,15 +508,12 @@
         transition: 0.3s;
         text-decoration: none;
     }
-
-    @media (min-width: 768px) {
-        .d-md-flex {
-            display: flex !important;
-        }
-    }
-
+    @media (min-width: 768px){
+    .d-md-flex {
+        display: flex!important;
+    }}
     .py-4 {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1.5rem !important;
-    }
-</style>
+        padding-top: 1.5rem!important;
+        padding-bottom: 1.5rem!important;
+    } 
+    </style>
