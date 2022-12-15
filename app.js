@@ -9,6 +9,10 @@ const Patient = require('./models/Patient')
 const Doctor = require('./models/Doctor')
 const multer = require('multer')
 const { v1: uuidv1 } = require('uuid')
+const bodyParser = require('body-parser')
+const expressValidator = require('express-validator')
+const fileUpload = require('express-fileupload')
+const crypto = require('crypto')
 
 const http = require('http')
 const server = http.createServer(app)
@@ -40,7 +44,10 @@ const connectDB = async () => {
    }
 }
 // CONNECT DATABASE
-// connectDB()
+connectDB()
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.use(express.json())
 app.engine('ejs', ejsMate)
@@ -54,6 +61,8 @@ app.use(express.static(path.join(__dirname, 'public'))) //for serving static fil
 // ) //for parsing form data
 // app.use(methodOverride('_method'))
 // app.use(flash())
+
+app.use(fileUpload())
 
 // app.use(
 //    session({
@@ -76,6 +85,26 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({ storage: storage })
+
+// Express Validator Middleware
+app.use(
+   expressValidator({
+      errorFormatter: function (param, msg, value) {
+         var namespace = param.split('.'),
+            root = namespace.shift(),
+            formParam = root
+
+         while (namespace.length) {
+            formParam += '[' + namespace.shift() + ']'
+         }
+         return {
+            param: formParam,
+            msg: msg,
+            value: value,
+         }
+      },
+   }),
+)
 
 // ==========================SOCKET.IO====================================
 const { formatMessage, getRoomUsers } = require('./utils/messages')
@@ -148,6 +177,80 @@ app.get('/registerChoice', (req, res) => {
 
 app.get('/doctorRegister', (req, res) => {
    res.render('doctor/doctorRegister.ejs')
+})
+
+app.get('/admin/doctorVerification', (req, res) => {
+   res.render('doctor/doctor_verification.ejs')
+})
+
+app.post('/doctorRegister', async (req, res) => {
+   try {
+      let uploadFile
+      let uploadPath
+      let newFileName
+
+      if (!req.files || Object.keys(req.files).length === 0) {
+         console.log('No Files were uploaded.')
+      } else {
+         uploadFile = req.files.certificate
+         newFileName = Date.now() + uploadFile.name
+
+         uploadPath =
+            require('path').resolve('./') +
+            '/public/doctorCertificates/' +
+            newFileName
+
+         uploadFile.mv(uploadPath, function (err) {
+            if (err) return res.status(500).send(err)
+         })
+      }
+
+      // req.checkBody("username","Username is required").notEmpty();
+      // req.checkBody("first_name","First name is required").notEmpty();
+      // req.checkBody("last_name","Last name is required").notEmpty();
+      // req.checkBody("phone","Enter a valid Contact No.").isMobilePhone('en-IN');
+      // req.checkBody("email","Enter a valid Email-id").isEmail();
+      // req.checkBody("password","Password must be of minimum 6 characters").isLength({ min:6 })
+      // req.checkBody("cpassword","Passwords do not match").equals(req.body.password);
+      // req.checkBody("specialty","Select a specialty").notEmpty();
+      // req.checkBody("yearsOfExperience","Years of Experience is required").notEmpty();
+      // req.checkBody("consultationFee","Consultation Fee is required").notEmpty();
+      // req.checkBody("clinicLocation","Clinic Location is required").notEmpty();
+      // req.checkBody("description","Description is required").notEmpty();
+      // req.checkBody("certificate","Certificate is required").notEmpty();
+      // req.checkBody("slot","Select available session slots").notEmpty();
+
+      let errors = req.validationErrors()
+      if (errors) {
+         console.log('Error')
+         res.render('doctor/doctorRegister.ejs', {
+            errors,
+         })
+      } else {
+         const doctor = new Doctor({
+            username: req.body.uname,
+            usernameToken: crypto.randomBytes(64).toString('hex'),
+            isVerified: false,
+            first_name: req.body.fname,
+            last_name: req.body.lname,
+            phone: req.body.contact,
+            email: req.body.email,
+            specialty: req.body.speciality,
+            yearsOfExperience: req.body.exp,
+            consultationFee: req.body.fee,
+            clinicLocation: req.body.location,
+            description: req.body.desc,
+            certificate: newFileName,
+            availableAppointmentSlots: req.body.availableAppointmentSlots,
+         })
+
+         const registeredDoctor = await doctor.save()
+         console.log(registeredDoctor)
+      }
+   } catch (error) {
+      console.log(error)
+   }
+   res.redirect('/doctorRegister')
 })
 
 app.get('/patientRegister', (req, res) => {
