@@ -48,6 +48,20 @@ socket.on('update', (message) => {
    chatMessages.scrollTop = chatMessages.scrollHeight
 })
 
+socket.on('patient_can_downloadnow', (filename) => {
+   const presc_link = document.querySelector('.presc_link')
+   const no_presc_msg = document.querySelector('.no_presc_msg')
+   no_presc_msg.innerText =
+      'Prescription was uploaded. Click on below link to download it.'
+   presc_link.innerText = filename
+   presc_link.classList.remove('invisible')
+})
+
+$('.presc_link').click(function (e) {
+   e.preventDefault()
+   window.location.href = `/${e.target.innerText}`
+})
+
 // Message submit
 chatForm.addEventListener('submit', (e) => {
    e.preventDefault()
@@ -68,6 +82,26 @@ chatForm.addEventListener('submit', (e) => {
    // Clear input
    e.target.elements.msg.value = ''
    e.target.elements.msg.focus()
+})
+
+$('#chatPresc').submit(function (e) {
+   $.ajax({
+      url: `/${room}/uploadChatPrescription`,
+      type: 'POST',
+      data: new FormData(this),
+      processData: false,
+      contentType: false,
+      success: function (result) {
+         if (result.status == 'success') {
+            alert('Prescription submitted successfully!')
+            // Emit message to server
+            socket.emit('presc_uploaded', result.filename)
+         } else {
+            alert('Something went wrong! Please try again.')
+         }
+      },
+   })
+   e.preventDefault()
 })
 
 // Output rightside message to DOM

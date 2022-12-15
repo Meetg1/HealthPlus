@@ -40,10 +40,26 @@ a {
 
 /* Chat Page */
 
+.prescriptionTab {
+   background-color: #fff;
+   margin-left: 5%;
+   width: 20%;
+}
+
+.no_presc_msg {
+   font-size: 1.1rem;
+}
+
+.main-chat-container {
+   margin-top: 15vh;
+   display: flex;
+   justify-content: center;
+}
+
 .chat-container {
-   max-width: 1100px;
+   width: 60%;
+   display: inline-block;
    background: #fff;
-   margin: 30px auto;
    overflow: hidden;
 }
 
