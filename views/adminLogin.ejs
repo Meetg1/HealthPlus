@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
-    <title>Patient Registration</title>
+    <title>Login</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
@@ -34,59 +34,26 @@
     </header>
     <%- messages('messages', locals) %>
 
+
         <div class="page-wrapper bg-gra-01 p-t-180 p-b-100 font-poppins">
             <div class="wrapper wrapper--w780">
                 <div class="card card-3">
                     <div class="card-heading"></div>
                     <div class="card-body">
-                        <h2 class="register-title">Sign Up for Patients</h2>
-                        <form action="/patientRegister" method="POST">
+                        <h2 class="register-title">Admin - Login</h2>
+                        <form action="/admin_login" method="POST">
                             <div class="input-group">
-                                <input class="input--style-3" id="uname" type="email" placeholder="Email"
-                                    name="username" required="required">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-3" id="fname" type="text" placeholder="First Name"
-                                    name="fname" required="required">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-3" id="lname" type="text" placeholder="Last Name"
-                                    name="lname" required="required">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-3" id="phone" type="number" placeholder="Phone" name="phone"
+                                <input class="input--style-3" id="uname" type="text" placeholder="Email" name="username"
                                     required="required">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-3" id="gender" type="text" placeholder="Gender" name="gender"
-                                    required="required">
-                            </div>
-                            <div class="input-group">
-                                <input class="input--style-3" id="location" type="text" placeholder="Location"
-                                    name="location" required="required">
                             </div>
                             <div class="input-group">
                                 <input class="input--style-3" id="pswd" type="password" placeholder="Password"
-                                    name="pswd" required="required">
+                                    name="password" required="required">
                             </div>
-                            <div class="input-group">
-                                <input class="input--style-3" id="cpswd" type="password" placeholder="Confirm Password"
-                                    name="cpswd" required="required">
-                            </div>
-                            <div class="login-text" style="color: white;">
-                                &nbsp;<input type="checkbox" id="myCheckbox" required="required"> I agree to the <a
-                                    class="tnc" href="">Terms and
-                                    Conditions.</a>
-                                <br><br> <input type="checkbox" name="blockchain_consent"> I agree to give consent
-                                to
-                                HealthPlus
-                                to store my medical records on blockchain(Not Mandatory).
-                            </div><br>
                             <div class="p-t-10">
-                                <button class="btn btn--pill btn--green" type="submit">Register</button>
+                                <input type="submit" value="Login" class="btn btn--pill btn--green"
+                                    style="outline:none; border:none;" />
                             </div>
-                            <div class="login-text" style="color: white;margin-top: 20px">Already have an account?
-                            </div><a class="login-link" href="">&nbsp;Login here</a>
                         </form>
                     </div>
                 </div>
@@ -349,13 +316,12 @@
 
     .card-3 .card-heading {
         /* background: url(https://colorlib.com/etc/regform/colorlib-regform-3/images/bg-heading-03.jpg) top left/cover no-repeat; */
-        /* background: url("D:/Extra files/HealthPlus Frontend/doctor1.jpg") top left/cover no-repeat; */
-        background: url(https://media.istockphoto.com/id/1210582663/photo/caucasian-male-doctor-on-white-background.jpg?s=612x612&w=0&k=20&c=8Wm3dwMil6s1XWbkJ6yiWEFz0PjycjouCH6conygwUw=) top left/cover no-repeat;
+        background: url(https://media.istockphoto.com/id/172724087/photo/stethoscope.jpg?s=612x612&w=0&k=20&c=xVc-a6diRC-j_pu9qXEKXngPVpOuJDDhcPBrsUB64TQ=) top left/cover no-repeat;
         display: table-cell;
         width: 50%;
-        background-position: 35% 50%;
+        background-position: 40% 50%;
         /* background-position-x: left;
-        background-position-y: center; */
+    background-position-y: center; */
     }
 
     .card-3 .card-body {
@@ -390,14 +356,6 @@
         border: none;
         box-shadow: none;
         width: 100%;
-    }
-
-    .tnc {
-        color: white;
-    }
-
-    .tnc:hover {
-        color: rgba(255, 255, 255, 0.677);
     }
 
     ::placeholder {
@@ -442,6 +400,7 @@
         text-decoration: none;
         color: rgb(170, 137, 5);
     }
+
 
     #footer {
         color: #444444;
