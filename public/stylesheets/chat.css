@@ -41,9 +41,12 @@ a {
 /* Chat Page */
 
 .prescriptionTab {
-   background-color: #fff;
+   background-color: var(--light-color);
    margin-left: 5%;
    width: 20%;
+   border: 1px solid var(--dark-color-a);
+   border-radius: 6px;
+   padding: 5px;
 }
 
 .no_presc_msg {
@@ -52,6 +55,7 @@ a {
 
 .main-chat-container {
    margin-top: 15vh;
+   margin-bottom: 10vh;
    display: flex;
    justify-content: center;
 }
@@ -137,6 +141,37 @@ a {
 
 .chat-messages .message .meta span {
    color: #777;
+}
+
+.chat-img {
+   width: 100%;
+}
+
+.customm-file-input {
+   color: transparent;
+   width: 13%;
+}
+
+.customm-file-input::-webkit-file-upload-button {
+   visibility: hidden;
+}
+.customm-file-input::before {
+   content: 'Send A Photo';
+   display: inline-block;
+   background: var(--light-color);
+   color: var(--dark-color-a);
+   border: 2px solid #999;
+   border-radius: 3px;
+   padding: 5px 8px;
+   outline: none;
+   white-space: nowrap;
+   -webkit-user-select: none;
+   cursor: pointer;
+   font-size: 17px;
+}
+
+#msg {
+   border-radius: 6px;
 }
 
 .chat-form-container {
