@@ -175,6 +175,7 @@ function outputMyPhotoMessage(message) {
    div.appendChild(p)
    const image = document.createElement('img')
    image.src = message.text
+   image.alt = 'image'
    image.classList.add('chat-img')
    div.appendChild(image)
    document.querySelector('.chat-messages').appendChild(div)
@@ -194,6 +195,7 @@ function outputOtherPhotoMessage(message) {
    div.appendChild(p)
    const image = document.createElement('img')
    image.src = message.text
+   image.alt = 'image'
    image.classList.add('chat-img')
    div.appendChild(image)
    document.querySelector('.chat-messages').appendChild(div)
@@ -233,3 +235,25 @@ document.getElementById('leave-btn').addEventListener('click', () => {
    } else {
    }
 })
+
+$(document).on('click', '.chat-img', function (e) {
+   // Get the modal
+   var modal = document.getElementById("myModal");
+   // Get the image and insert it inside the modal - use its "alt" text as a caption
+   var img = document.querySelector(".chat-img");
+   var modalImg = document.getElementById("img01");
+   var captionText = document.getElementById("caption");
+   img.onclick = function () {
+      modal.style.display = "block";
+      modalImg.src = this.src;
+      captionText.innerHTML = this.alt;
+   }
+
+   // Get the <span> element that closes the modal
+   var span = document.getElementsByClassName("close")[0];
+
+   // When the user clicks on <span> (x), close the modal
+   span.onclick = function () {
+      modal.style.display = "none";
+   }
+});

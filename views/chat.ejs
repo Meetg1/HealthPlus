@@ -5,12 +5,25 @@
     <body>
         <%- include('partials/navbar')%>
 
+                    <!-- The Modal -->
+            <div id="myModal" class="modal">
+
+                <!-- The Close Button -->
+                <span class="close">&times;</span>
+            
+                <!-- Modal Content (The Image) -->
+                <img class="modal-content" id="img01">
+            
+                <!-- Modal Caption (Image Text) -->
+                <div id="caption"></div>
+            </div>
+
             <div class="main-chat-container">
 
                 <div class="chat-container">
                     <header class="chat-header">
                         <h1>HealthPlus</h1>
-                        <a id="leave-btn" class="btn">End Session</a>
+                        <a href="/" id="leave-btn" class="btn">End Session</a>
                     </header>
                     <main class="chat-main">
                         <div class="chat-sidebar">

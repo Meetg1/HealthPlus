@@ -76,13 +76,13 @@
 
 <section id="doctors" class="doctors">
     <div class="container">
-        <div class="section-title"><h2>Associated Doctors</h2><p>Magnam dolores commodi suscipit. Necessitatibus eius consequatur ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea. Quia fugiat sit in iste officiis commodi quidem hic quas.</p></div>
+        <div class="section-title"><h2>Associated Doctors</h2></div>
         <div class="row">
             <% for(var i=0;i<doctors.length;i++) {%>
                 <div class="col-lg-4">
                     <div class="member d-flex align-items-start">
                         <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-                        <div class="member-info"><h4><%= doctors[i].first_name %></h4> <span><%= doctors[i].speciality %></span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                        <div class="member-info"><h4><%= doctors[i].first_name %></h4> <span><%= doctors[i].specialty %></span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
                             <p style="padding-right: 15px;"><b>Years of Experience: </b><%= doctors[i].yearsOfExperience %></p>
                             <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i><%= doctors[i].consultationFee %></p>
                             <p><b>Location: </b><%= doctors[i].clinicLocation %></p>
