@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
     <title>Doctor Registration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.css">
+    <script src="https://cdn.jsdelivr.net/gh/bbbootstrap/libraries@main/choices.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
@@ -17,259 +19,311 @@
 <body>
     <%- include('../partials/navbar')%>
 
-    <!-- MultiStep Form -->
-    <div class="container-fluid" id="grad1">
-        <div class="row justify-content-center mt-0">
-            <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
-                <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
-                    <h2><strong>Doctor Registration</strong></h2>
-                    <p>Fill all form field to go to next step</p>
-                    <div class="row">
-                        <div class="col-md-12 mx-0">
-                            <form id="msform" action="/doctorRegister" method="POST" enctype="multipart/form-data">
-                                <!-- progressbar -->
-                                <ul id="progressbar">
-                                    <li class="active" id="account"><strong>Account</strong></li>
-                                    <li id="personal"><strong>Verification</strong></li>
-                                    <li id="payment"><strong>Upload</strong></li>
-                                    <li id="confirm"><strong>Slot Details</strong></li>
-                                </ul>
-                                <!-- fieldsets -->
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Account Information</h2><br>
-                                        <input class="pqr" type="text" name="uname" id="uname" placeholder="Username*" required="required"/>
-                                        <input class="pqr" type="text" name="fname" id="fname" placeholder="First Name*" required="required"/>
-                                        <input class="pqr" type="text" name="lname" id="lname" placeholder="Last Name" required="required"/>
-                                        <input class="pqr" type="text" name="contact" id="contact" placeholder="Contact No.*" required="required"/>
-                                        <input class="pqr" type="email" name="email" id="email" placeholder="Email-Id*" required="required"/>
-                                        <input class="pqr" type="password" name="pwd" id="pwd" placeholder="Password*" required="required"/>
-                                        <input class="pqr" type="password" name="cpwd" id="cpwd" placeholder="Confirm Password*" required="required"/>
-                                    </div> 
-                                    <input id="btn7" type="button" name="next" class="next action-button" value="Next Step"/>
-                                </fieldset>
-    
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Verification Details</h2><br>
-                                        <!-- <input type="text" name="fname" placeholder="First Name"/> -->
-                                        <select class="list-dt" id="speciality" name="speciality">
-                                            <option selected disabled>Speciality*</option>
-                                            <option>Anatomical Pathology</option>
-                                            <option>Anesthesiology</option>
-                                            <option>Cardiology</option>
-                                            <option>Cardiovascular/Thoracic Surgery</option>
-                                            <option>Clinical Immunology/Allergy</option>
-                                            <option>Critical Care Medicine</option>
-                                            <option>Diagnostic Radiology</option>
-                                            <option>Emergency Medicine</option>
-                                            <option>Endocrinology and Metabolism</option>
-                                            <option>Family Medicine</option>
-                                            <option>Gastroenterology</option>
-                                            <option>General Internal Medicine</option>
-                                            <option>General Surgery</option>
-                                            <option>General/Clinical Pathology</option>
-                                            <option>Geriatric Medicine</option>
-                                            <option>Hematology</option>
-                                            <option>Medical Biochemistry</option>
-                                            <option>Medical Genetics</option>
-                                            <option>Medical Microbiology and Infectious Diseases</option>
-                                            <option>Medical Oncology</option>
-                                            <option>Nephrology</option>
-                                            <option>Neurology</option>
-                                            <option>Neurosurgery</option>
-                                            <option>Nuclear Medicine</option>
-                                            <option>Obstetrics/Gynecology</option>
-                                            <option>Occupational Medicine</option>
-                                            <option>Ophthalmology</option>
-                                            <option>Orthopedic Surgery</option>
-                                            <option>Otolaryngology</option>
-                                            <option>Pediatrics</option>
-                                            <option>Physical Medicine and Rehabilitation (PM & R)</option>
-                                            <option>Plastic Surgery</option>
-                                            <option>Psychiatry</option>
-                                            <option>Public Health and Preventive Medicine (PhPm)</option>
-                                            <option>Radiation Oncology</option>
-                                            <option>Respirology</option>
-                                            <option>Rheumatology</option>
-                                            <option>Urology</option>
-                                        </select>
-                                        <input class="pqr" type="number" name="exp" placeholder="Years of Experience*" required="required"/>
-                                        <input class="pqr" type="number" name="fee" placeholder="Consultation Fee (in ₹)*" required="required"/>
-                                        <input class="pqr" type="text" name="location" placeholder="Clinic Location*" required="required"/>
-                                        <textarea class="pqr" name="desc" placeholder="Brief about yourself..*" required="required"></textarea>
-                                        <!-- <input type="text" name="phno_2" placeholder="" required="required"/> -->
-                                    </div>
-                                    <input id="btn5" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                                    <input id="btn6" type="button" name="next" class="next action-button" value="Next Step"/>
-                                </fieldset>
-    
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Upload Personal Certificates</h2><br>
-                                        Aadhar Card* &nbsp; <input id="abc" type="file" name="certificate"
-                                            placeholder="" required /><br><br><br>
-                                        PAN Card*&nbsp; <input id="abc" type="file" name="certificate"
-                                            placeholder="" required /><br><br><br>
-                                        Graduation Certificates* &nbsp; <input id="abc" type="file" multiple
-                                            name="certificate" placeholder="" required /><br><br><br>
-                                        For Digital KYC: Please upload a picture of yourself along with your Aadhar
-                                        Card beside you* &nbsp; <input id="abc" type="file" name="certificate"
-                                            placeholder="" required />
-                                    </div>
-                                    <p>NOTE: Your application will be rejected in case of submission of
-                                        improper/missing
-                                        documents.</p>
-                                    <input id="btn1" type="button" name="previous"
-                                        class="previous action-button-previous" value="Previous" />
-                                    <input id="btn2" type="button" name="make_payment" class="next action-button"
-                                        value="Confirm" />
-                                </fieldset>
-    
-                                <fieldset>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Choose Your Session Days</h2><br>
-                                            <div class="row">    
-                                                Monday &nbsp; <input type="checkbox" name="slot" style="margin-right: 40px;">
-                                                Tuesday &nbsp;<input type="checkbox" name="slot" style="margin-right: 40px;"> 
-                                                Wednesday &nbsp;<input type="checkbox" name="slot" style="margin-right: 40px;"> 
-                                                Thursday &nbsp;<input type="checkbox" name="slot" style="margin-right: 40px;">
-                                                Friday &nbsp;<input type="checkbox" name="slot" style="margin-right: 40px;">
+        <!-- MultiStep Form -->
+        <div class="container-fluid" id="grad1">
+            <div class="row justify-content-center mt-0">
+                <div class="col-11 col-sm-9 col-md-7 col-lg-6 text-center p-0 mt-3 mb-2">
+                    <div class="card px-0 pt-4 pb-0 mt-3 mb-3">
+                        <h2><strong>Doctor Registration</strong></h2>
+                        <p>Fill all form field to go to next step</p>
+                        <div class="row">
+                            <div class="col-md-12 mx-0">
+                                <form id="msform" action="/doctorRegister" method="POST" enctype="multipart/form-data">
+                                    <!-- progressbar -->
+                                    <ul id="progressbar">
+                                        <li class="active" id="account"><strong>Account</strong></li>
+                                        <li id="personal"><strong>Verification</strong></li>
+                                        <li id="payment"><strong>Upload</strong></li>
+                                        <li id="confirm"><strong>Slot Details</strong></li>
+                                    </ul>
+                                    <!-- fieldsets -->
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Account Information</h2><br>
+                                            <input class="pqr" type="text" name="uname" id="uname"
+                                                placeholder="Username*" required="required" />
+                                            <input class="pqr" type="text" name="fname" id="fname"
+                                                placeholder="First Name*" required="required" />
+                                            <input class="pqr" type="text" name="lname" id="lname"
+                                                placeholder="Last Name" required="required" />
+                                            <input class="pqr" type="text" name="contact" id="contact"
+                                                placeholder="Contact No.*" required="required" />
+                                            <input class="pqr" type="email" name="email" id="email"
+                                                placeholder="Email-Id*" required="required" />
+                                            <input class="pqr" type="password" name="pwd" id="pwd"
+                                                placeholder="Password*" onChange="onChange()" required="required"
+                                                minlength="6" />
+                                            <input class="pqr" type="password" name="cpwd" id="cpwd"
+                                                placeholder="Confirm Password*" onChange="onChange()"
+                                                required="required" />
+                                        </div>
+                                        <input id="btn7" type="button" name="next" class="next action-button"
+                                            value="Next Step" />
+                                    </fieldset>
 
-                                                <div class="col-md-6">
-                                                    <select class="list-dt" id="weekend-slot1" name="weekend-slot1" style="margin-top: 30px;">
-                                                        <option selected disabled>Choose Saturday Slot*</option>
-                                                        <option>None</option>
-                                                        <option>06:00 - 06:30</option>
-                                                        <option>06:30 - 07:00</option>
-                                                        <option>07:00 - 07:30</option>
-                                                        <option>07:30 - 08:00</option>
-                                                        <option>08:00 - 08:30</option>
-                                                        <option>08:30 - 09:00</option>
-                                                        <option>09.00 - 09:30</option>
-                                                        <option>09.30 - 10:00</option>
-                                                        <option>10:00 - 10:30</option>
-                                                        <option>10:30 - 11:00</option>
-                                                        <option>11:00 - 11:30</option>
-                                                        <option>11:30 - 12:00</option>
-                                                        <option>12:00 - 12:30</option>
-                                                        <option>12:30 - 13:00</option>
-                                                        <option>13:00 - 13:30</option>
-                                                        <option>13:30 - 14.00</option>
-                                                        <option>14:00 - 14:30</option>
-                                                        <option>14:30 - 15:00</option>
-                                                        <option>15:00 - 15:30</option>
-                                                        <option>15:30 - 16:00</option>
-                                                        <option>16:00 - 16:30</option>
-                                                        <option>16:30 - 17:00</option>
-                                                        <option>17:00 - 17:30</option>
-                                                        <option>17:30 - 18:00</option>
-                                                        <option>18:00 - 18:30</option>
-                                                        <option>18:30 - 19:00</option>
-                                                        <option>19:00 - 19.30</option>
-                                                        <option>19:30 - 20:00</option>
-                                                        <option>20:00 - 20:30</option>
-                                                        <option>20:30 - 21:00</option>
-                                                        <option>21:30 - 22:00</option>
-                                                        <option>22:00 - 22:30</option>
-                                                        <option>22:30 - 23:00</option>
-                                                        <option>23:00 - 23:30</option>
-                                                        <option>23:30 - 00:00</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <select class="list-dt" id="weekend-slot2" name="weekend-slot2" style="margin-top: 30px;">
-                                                        <option selected disabled>Choose Sunday Slot*</option>
-                                                        <option>None</option>
-                                                        <option>06:00 - 06:30</option>
-                                                        <option>06:30 - 07:00</option>
-                                                        <option>07:00 - 07:30</option>
-                                                        <option>07:30 - 08:00</option>
-                                                        <option>08:00 - 08:30</option>
-                                                        <option>08:30 - 09:00</option>
-                                                        <option>09.00 - 09:30</option>
-                                                        <option>09.30 - 10:00</option>
-                                                        <option>10:00 - 10:30</option>
-                                                        <option>10:30 - 11:00</option>
-                                                        <option>11:00 - 11:30</option>
-                                                        <option>11:30 - 12:00</option>
-                                                        <option>12:00 - 12:30</option>
-                                                        <option>12:30 - 13:00</option>
-                                                        <option>13:00 - 13:30</option>
-                                                        <option>13:30 - 14.00</option>
-                                                        <option>14:00 - 14:30</option>
-                                                        <option>14:30 - 15:00</option>
-                                                        <option>15:00 - 15:30</option>
-                                                        <option>15:30 - 16:00</option>
-                                                        <option>16:00 - 16:30</option>
-                                                        <option>16:30 - 17:00</option>
-                                                        <option>17:00 - 17:30</option>
-                                                        <option>17:30 - 18:00</option>
-                                                        <option>18:00 - 18:30</option>
-                                                        <option>18:30 - 19:00</option>
-                                                        <option>19:00 - 19.30</option>
-                                                        <option>19:30 - 20:00</option>
-                                                        <option>20:00 - 20:30</option>
-                                                        <option>20:30 - 21:00</option>
-                                                        <option>21:30 - 22:00</option>
-                                                        <option>22:00 - 22:30</option>
-                                                        <option>22:30 - 23:00</option>
-                                                        <option>23:00 - 23:30</option>
-                                                        <option>23:30 - 00:00</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                    </div>
-                                    <br>
-                                    <div class="form-card">
-                                        <h2 class="fs-title">Choose Your Session Slots</h2><br>
-                                            <div class="row">    
-                                                08:00 - 08:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                08:30 - 09:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                09.00 - 09:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                09.30 - 10:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                
-                                            
-                                                10:00 - 10:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                10:30 - 11:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                11:00 - 11:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                11:30 - 12:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
-                                            
-                                                12:00 - 12:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                12:30 - 13:00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                13:00 - 13:30 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                13:30 - 14.00 &nbsp;<input type="checkbox" name="slot" style="margin-right: 42px;">
-                                            
-                                                14:00 - 14:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                14:30 - 15:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                15:00 - 15:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                15:30 - 16:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-    
-                                                16:00 - 16:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                16:30 - 17:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                17:00 - 17:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                17:30 - 18:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-    
-                                                18:00 - 18:30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-                                                18:30 - 19:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                19:00 - 19.30 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;"> 
-                                                19.30 - 20:00 &nbsp; <input type="checkbox" name="slot" style="margin-right: 42px;">
-                                            </div>
-                                    </div>
-                                    <input id="btn3" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
-                                    <input id="btn4" type="submit" name="confirm" class="next action-button" onclick="submit" value="Confirm"/>
-                                    <!-- <input type="checkbox" name=""> -->
-                                    </div>
-                                </fieldset>
-                            </form>
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Verification Details</h2><br>
+                                            <!-- <input type="text" name="fname" placeholder="First Name"/> -->
+                                            <select class="list-dt" id="speciality" name="speciality"
+                                                required="required">
+                                                <option selected disabled>Speciality*</option>
+                                                <option>Anatomical Pathology</option>
+                                                <option>Anesthesiology</option>
+                                                <option>Cardiology</option>
+                                                <option>Cardiovascular/Thoracic Surgery</option>
+                                                <option>Clinical Immunology/Allergy</option>
+                                                <option>Critical Care Medicine</option>
+                                                <option>Diagnostic Radiology</option>
+                                                <option>Emergency Medicine</option>
+                                                <option>Endocrinology and Metabolism</option>
+                                            </select>
+                                            <input class="pqr" type="number" name="exp"
+                                                placeholder="Years of Experience*" required="required" />
+                                            <input class="pqr" type="number" name="fee"
+                                                placeholder="Consultation Fee (in ₹)*" required="required" />
+                                            <input class="pqr" type="text" name="location"
+                                                placeholder="Clinic Location*" required="required" />
+                                            <textarea class="pqr" name="desc" placeholder="Brief about yourself..*"
+                                                required="required"></textarea>
+                                            <!-- <input type="text" name="phno_2" placeholder="" required="required"/> -->
+                                        </div>
+                                        <input id="btn5" type="button" name="previous"
+                                            class="previous action-button-previous" value="Previous" />
+                                        <input id="btn6" type="button" name="next" class="next action-button"
+                                            value="Next Step" />
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Upload Personal Certificates</h2><br>
+                                            Aadhar Card* &nbsp; <input id="abc" type="file" name="aadharCard"
+                                                placeholder="" required multiple /><br><br><br>
+                                            PAN Card*&nbsp; <input id="abc" type="file" name="panCard" placeholder=""
+                                                required multiple /><br><br><br>
+                                            Graduation Marksheet* &nbsp; <input id="abc" type="file"
+                                                name="gradMarksheet" placeholder="" required multiple /><br><br><br>
+                                            For Digital KYC: Please upload a picture of yourself along with your Aadhar
+                                            Card beside you* &nbsp; <input id="abc" type="file" name="digitalKYC"
+                                                placeholder="" required />
+                                        </div>
+                                        <p>NOTE: Your application will be rejected in case of submission of
+                                            improper/missing documents.</p>
+                                        <input id="btn1" type="button" name="previous"
+                                            class="previous action-button-previous" value="Previous" />
+                                        <input id="btn2" type="button" name="next" class="next action-button"
+                                            value="Next Step" />
+                                    </fieldset>
+
+                                    <fieldset>
+                                        <div class="form-card">
+                                            <h2 class="fs-title">Choose Your Session Slots</h2>
+                                            <br>
+                                            <select name="monday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for MONDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <select name="tuesday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for TUESDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <select name="wednesday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for WEDNESDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <select name="thursday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for THURSDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <select name="friday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for FRIDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <select name="saturday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for SATURDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <select name="sunday" id="choices-multiple-remove-button"
+                                                placeholder="Select slots for SUNDAY" multiple>
+                                                <option value="1">08:00 - 08:30</option>
+                                                <option value="2">08:30 - 09:00</option>
+                                                <option value="3">09.00 - 09:30</option>
+                                                <option value="4">09.30 - 10:00</option>
+                                                <option value="5">10:00 - 10:30</option>
+                                                <option value="6">10:30 - 11:00</option>
+                                                <option value="7">11:00 - 11:30</option>
+                                                <option value="8">11:30 - 12:00</option>
+                                                <option value="9">12:00 - 12:30</option>
+                                                <option value="10">12:30 - 13:00</option>
+                                                <option value="11">13:00 - 13:30</option>
+                                                <option value="12">13:30 - 14.00</option>
+                                                <option value="13">14:00 - 14:30</option>
+                                                <option value="14">14:30 - 15:00</option>
+                                                <option value="15">15:00 - 15:30</option>
+                                                <option value="16">15:30 - 16:00</option>
+                                                <option value="17">16:00 - 16:30</option>
+                                                <option value="18">16:30 - 17:00</option>
+                                                <option value="19">17:00 - 17:30</option>
+                                                <option value="20">18:00 - 18:30</option>
+                                                <option value="21">18:30 - 19:00</option>
+                                                <option value="22">19:00 - 19.30</option>
+                                                <option value="23">19.30 - 20:00</option>
+                                            </select>
+                                            <br>
+                                            <input id="btn3" type="button" name="previous"
+                                                class="previous action-button-previous" value="Previous" />
+                                            <input id="btn4" type="submit" name="confirm" class="next action-button"
+                                                onclick="submit" value="Confirm" />
+                                            <!-- <input type="checkbox" name=""> -->
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <%- include('../partials/footer')%>
+        <%- include('../partials/footer')%>
 
 </body>
 
@@ -277,205 +331,243 @@
 
 
 <style>
-    *, ::after, ::before {
+    *,
+    ::after,
+    ::before {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
     }
-body {
-    font-family: "Open Sans", sans-serif;
-    color: #444444;
-    text-align: var(--bs-body-text-align);
-    background-color: var(--bs-body-bg);
-}
-#header {
-    background: #fff;
-    transition: all 0.5s;
-    z-index: 997;
-    padding: 15px 0;
-    box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
-}
-.fixed-top {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-}
-.mr-auto {
-    margin-right: auto!important;
-}
-.align-items-center {
-    align-items: center!important;
-}
-.d-flex {
-    display: flex!important;
-}
-@media (min-width: 992px){
-.container, .container-lg, .container-md, .container-sm {
-    max-width: 960px;
-}}
-#header .logo {
-    font-size: 30px;
-    margin: 0;
-    padding: 0;
-    line-height: 1;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    font-family: "Poppins", sans-serif;
-    text-decoration: none;
-}
-#header .logo a {
-    color: #2c4964;
-    text-decoration: none;
-}
-a {
-    color: #1977cc;
-    text-decoration: none;
-}
-.navbar {
-    padding: 0;
-}
-@media (min-width: 992px){
-.order-lg-0 {
-    order: 0!important;
-}}
-.navbar ul {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    list-style: none;
-    /* align-items: center; */
-}
-.navbar>ul>li {
-    position: relative;
-    white-space: nowrap;
-    padding: 8px 0 8px 20px;
-}
-.navbar a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 19px;
-    /* color: #2c4964; */
-    white-space: nowrap;
-    transition: 0.3s;
-    border-bottom: 2px solid #fff;
-    padding: 5px 2px;
-}
-.navbar .active, .navbar .active:focus, .navbar li:hover>a {
-    color: #1977cc;
-    border-color: #1977cc;
-}
-.navbar li {
-    position: relative;
-}
-.navbar a, .navbar a:focus {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    color: #2c4964;
-    white-space: nowrap;
-    transition: 0.3s;
-    border-bottom: 2px solid #fff;
-    padding: 5px 2px;
-}
-.mobile-nav-toggle {
-    color: #2c4964;
-    font-size: 28px;
-    cursor: pointer;
-    display: none;
-    line-height: 0;
-    transition: 0.5s;
-}
-.appointment-btn {
-    margin-left: 25px;
-    background: #1977cc;
-    color: #fff;
-    border-radius: 50px;
-    padding: 8px 25px;
-    white-space: nowrap;
-    transition: 0.3s;
-    font-size: 14px;
-    display: inline-block;
-}
-.appointment-btn:hover{
-    background: #055296;
-}
-a {
-    text-decoration: none;
-}
+
+    body {
+        font-family: "Open Sans", sans-serif;
+        color: #444444;
+        text-align: var(--bs-body-text-align);
+        background-color: var(--bs-body-bg);
+    }
+
+    #header {
+        background: #fff;
+        transition: all 0.5s;
+        z-index: 997;
+        padding: 15px 0;
+        box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
+    }
+
+    .fixed-top {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 1030;
+    }
+
+    .mr-auto {
+        margin-right: auto !important;
+    }
+
+    .align-items-center {
+        align-items: center !important;
+    }
+
+    .d-flex {
+        display: flex !important;
+    }
+
+    @media (min-width: 992px) {
+
+        .container,
+        .container-lg,
+        .container-md,
+        .container-sm {
+            max-width: 960px;
+        }
+    }
+
+    #header .logo {
+        font-size: 30px;
+        margin: 0;
+        padding: 0;
+        line-height: 1;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        font-family: "Poppins", sans-serif;
+        text-decoration: none;
+    }
+
+    #header .logo a {
+        color: #2c4964;
+        text-decoration: none;
+    }
+
+    a {
+        color: #1977cc;
+        text-decoration: none;
+    }
+
+    .navbar {
+        padding: 0;
+    }
+
+    @media (min-width: 992px) {
+        .order-lg-0 {
+            order: 0 !important;
+        }
+    }
+
+    .navbar ul {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        list-style: none;
+        /* align-items: center; */
+    }
+
+    .navbar>ul>li {
+        position: relative;
+        white-space: nowrap;
+        padding: 8px 0 8px 20px;
+    }
+
+    .navbar a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 19px;
+        /* color: #2c4964; */
+        white-space: nowrap;
+        transition: 0.3s;
+        border-bottom: 2px solid #fff;
+        padding: 5px 2px;
+    }
+
+    .navbar .active,
+    .navbar .active:focus,
+    .navbar li:hover>a {
+        color: #1977cc;
+        border-color: #1977cc;
+    }
+
+    .navbar li {
+        position: relative;
+    }
+
+    .navbar a,
+    .navbar a:focus {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 14px;
+        color: #2c4964;
+        white-space: nowrap;
+        transition: 0.3s;
+        border-bottom: 2px solid #fff;
+        padding: 5px 2px;
+    }
+
+    .mobile-nav-toggle {
+        color: #2c4964;
+        font-size: 28px;
+        cursor: pointer;
+        display: none;
+        line-height: 0;
+        transition: 0.5s;
+    }
+
+    .appointment-btn {
+        margin-left: 25px;
+        background: #1977cc;
+        color: #fff;
+        border-radius: 50px;
+        padding: 8px 25px;
+        white-space: nowrap;
+        transition: 0.3s;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    .appointment-btn:hover {
+        background: #055296;
+    }
+
+    a {
+        text-decoration: none;
+    }
 
 
-#grad1{
-    margin-top: 60px;
-}
-/*Background color*/
-#grad1 {
-    background: linear-gradient(to top,#f5f5ef 0%,#93a7f1 100%);
-    /* background-color: : #9C27B0; */
-    /* background-image: linear-gradient(120deg, #FF4081, #81D4FA); */
-}
+    #grad1 {
+        margin-top: 60px;
+    }
 
-/*form styles*/
-#msform {
-    text-align: center;
-    position: relative;
-    margin-top: 20px;
-}
+    /*Background color*/
+    #grad1 {
+        background: linear-gradient(to top, #f5f5ef 0%, #93a7f1 100%);
+        /* background-color: : #9C27B0; */
+        /* background-image: linear-gradient(120deg, #FF4081, #81D4FA); */
+    }
 
-#msform fieldset .form-card {
-    background: white;
-    border: 0 none;
-    border-radius: 0px;
-    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-    padding: 20px 40px 30px 40px;
-    box-sizing: border-box;
-    width: 94%;
-    margin: 0 3% 20px 3%;
+    /*form styles*/
+    #msform {
+        text-align: center;
+        position: relative;
+        margin-top: 20px;
+    }
 
-    /*stacking fieldsets above each other*/
-    position: relative;
-}
+    #msform fieldset .form-card {
+        background: white;
+        border: 0 none;
+        border-radius: 0px;
+        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+        padding: 20px 40px 30px 40px;
+        box-sizing: border-box;
+        width: 94%;
+        margin: 0 3% 20px 3%;
 
-#msform fieldset {
-    background: white;
-    border: 0 none;
-    border-radius: 0.5rem;
-    box-sizing: border-box;
-    width: 100%;
-    margin: 0;
-    padding-bottom: 20px;
+        /*stacking fieldsets above each other*/
+        position: relative;
+    }
 
-    /*stacking fieldsets above each other*/
-    position: relative;
-}
+    #msform fieldset {
+        background: white;
+        border: 0 none;
+        border-radius: 0.5rem;
+        box-sizing: border-box;
+        width: 100%;
+        margin: 0;
+        padding-bottom: 20px;
 
-/*Hide all except first fieldset*/
-#msform fieldset:not(:first-of-type) {
-    display: none;
-}
+        /*stacking fieldsets above each other*/
+        position: relative;
+    }
 
-#msform fieldset .form-card {
-    text-align: left;
-    color: #9E9E9E;
-}
-.row {
-    --bs-gutter-x: 1.5rem;
-    --bs-gutter-y: 0;
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: calc(-1 * var(--bs-gutter-y));
-    margin-right: calc(-.5 * var(--bs-gutter-x));
-    margin-left: calc(-.5 * var(--bs-gutter-x));
-}
-@media (min-width: 992px){
-.col-lg-4 {
-    flex: 0 0 auto;
-    width: 33.333333%;
-}}
-/* #msform input, #msform textarea {
+    /*Hide all except first fieldset*/
+    #msform fieldset:not(:first-of-type) {
+        display: none;
+    }
+
+    #msform fieldset .form-card {
+        text-align: left;
+        color: #9E9E9E;
+    }
+
+    .row {
+        --bs-gutter-x: 1.5rem;
+        --bs-gutter-y: 0;
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: calc(-1 * var(--bs-gutter-y));
+        margin-right: calc(-.5 * var(--bs-gutter-x));
+        margin-left: calc(-.5 * var(--bs-gutter-x));
+    }
+
+    @media (min-width: 992px) {
+        .col-lg-4 {
+            flex: 0 0 auto;
+            width: 33.333333%;
+        }
+    }
+
+    /* #msform input, #msform textarea {
     padding: 0px 8px 4px 8px;
     border: none;
     border-bottom: 1px solid #ccc;
@@ -489,220 +581,231 @@ a {
     font-size: 16px;
     letter-spacing: 1px;
 } */
-.pqr{
-    padding: 0px 8px 4px 8px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    border-radius: 0px;
-    margin-bottom: 25px;
-    margin-top: 2px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: "Raleway", sans-serif;
-    color: #2C3E50;
-    font-size: 16px;
-    letter-spacing: 1px; 
-}
-#btn1, #btn2, #btn3, #btn4, #btn5, #btn6, #btn7{
-    padding: 0px 8px 4px 8px;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    border-radius: 0px;
-    margin-bottom: 25px;
-    margin-top: 2px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: "Raleway", sans-serif;
-    color: #2C3E50;
-    font-size: 16px;
-    letter-spacing: 1px;
-}
+    .pqr {
+        padding: 0px 8px 4px 8px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0px;
+        margin-bottom: 25px;
+        margin-top: 2px;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: "Raleway", sans-serif;
+        color: #2C3E50;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
 
-#msform input:focus, #msform textarea:focus {
-    -moz-box-shadow: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-    border: none;
-    font-weight: bold;
-    border-bottom: 2px solid skyblue;
-    outline-width: 0;
-}
+    #btn1,
+    #btn2,
+    #btn3,
+    #btn4,
+    #btn5,
+    #btn6,
+    #btn7 {
+        padding: 0px 8px 4px 8px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        border-radius: 0px;
+        margin-bottom: 25px;
+        margin-top: 2px;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: "Raleway", sans-serif;
+        color: #2C3E50;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
 
-/*Blue Buttons*/
-#msform .action-button {
-    width: 100px;
-    background: rgb(85, 173, 208);
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px;
-}
+    #msform input:focus,
+    #msform textarea:focus {
+        -moz-box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+        box-shadow: none !important;
+        border: none;
+        font-weight: bold;
+        border-bottom: 2px solid skyblue;
+        outline-width: 0;
+    }
 
-#msform .action-button:hover, #msform .action-button:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px rgb(85, 173, 208);
-}
+    /*Blue Buttons*/
+    #msform .action-button {
+        width: 100px;
+        background: rgb(85, 173, 208);
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 0px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px;
+    }
 
-/*Previous Buttons*/
-#msform .action-button-previous {
-    width: 100px;
-    background: #616161;
-    font-weight: bold;
-    color: white;
-    border: 0 none;
-    border-radius: 0px;
-    cursor: pointer;
-    padding: 10px 5px;
-    margin: 10px 5px;
-}
+    #msform .action-button:hover,
+    #msform .action-button:focus {
+        box-shadow: 0 0 0 2px white, 0 0 0 3px rgb(85, 173, 208);
+    }
 
-#msform .action-button-previous:hover, #msform .action-button-previous:focus {
-    box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
-}
+    /*Previous Buttons*/
+    #msform .action-button-previous {
+        width: 100px;
+        background: #616161;
+        font-weight: bold;
+        color: white;
+        border: 0 none;
+        border-radius: 0px;
+        cursor: pointer;
+        padding: 10px 5px;
+        margin: 10px 5px;
+    }
 
-/*Dropdown List Exp Date*/
-select.list-dt {
-    border: none;
-    outline: 0;
-    border-bottom: 1px solid #ccc;
-    padding: 2px 5px 3px 5px;
-    /* margin: 2px; */
-    margin-bottom: 25px;
-    width: 100%;
-    margin-top: 2px;
-    width: 100%;
-    box-sizing: border-box;
-    font-family: "Raleway", sans-serif;
-    color: #2C3E50;
-    font-size: 16px;
-    letter-spacing: 1px;
-}
+    #msform .action-button-previous:hover,
+    #msform .action-button-previous:focus {
+        box-shadow: 0 0 0 2px white, 0 0 0 3px #616161;
+    }
 
-select.list-dt:focus {
-    border-bottom: 2px solid skyblue;
-}
+    /*Dropdown List Exp Date*/
+    select.list-dt {
+        border: none;
+        outline: 0;
+        border-bottom: 1px solid #ccc;
+        padding: 2px 5px 3px 5px;
+        /* margin: 2px; */
+        margin-bottom: 25px;
+        width: 100%;
+        margin-top: 2px;
+        width: 100%;
+        box-sizing: border-box;
+        font-family: "Raleway", sans-serif;
+        color: #2C3E50;
+        font-size: 16px;
+        letter-spacing: 1px;
+    }
 
-/*The background card*/
-.card {
-    z-index: 0;
-    border: none;
-    border-radius: 0.5rem;
-    position: relative;
-}
+    select.list-dt:focus {
+        border-bottom: 2px solid skyblue;
+    }
 
-/*FieldSet headings*/
-.fs-title {
-    font-size: 25px;
-    color: #2C3E50;
-    margin-bottom: 10px;
-    font-weight: bold;
-    text-align: left;
-}
+    /*The background card*/
+    .card {
+        z-index: 0;
+        border: none;
+        border-radius: 0.5rem;
+        position: relative;
+    }
 
-/*progressbar*/
-#progressbar {
-    margin-bottom: 30px;
-    overflow: hidden;
-    color: lightgrey;
-}
+    /*FieldSet headings*/
+    .fs-title {
+        font-size: 25px;
+        color: #2C3E50;
+        margin-bottom: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
 
-#progressbar .active {
-    color: #000000;
-}
+    /*progressbar*/
+    #progressbar {
+        margin-bottom: 30px;
+        overflow: hidden;
+        color: lightgrey;
+    }
 
-#progressbar li {
-    list-style-type: none;
-    font-size: 12px;
-    width: 25%;
-    float: left;
-    position: relative;
-}
+    #progressbar .active {
+        color: #000000;
+    }
 
-/*Icons in the ProgressBar*/
-#progressbar #account:before {
-    /* font-family: FontAwesome; */
-    content: "1";
-}
+    #progressbar li {
+        list-style-type: none;
+        font-size: 12px;
+        width: 25%;
+        float: left;
+        position: relative;
+    }
 
-#progressbar #personal:before {
-    /* font-family: FontAwesome; */
-    content: "2";
-}
+    /*Icons in the ProgressBar*/
+    #progressbar #account:before {
+        /* font-family: FontAwesome; */
+        content: "1";
+    }
 
-#progressbar #payment:before {
-    /* font-family: FontAwesome; */
-    content: "3";
-}
+    #progressbar #personal:before {
+        /* font-family: FontAwesome; */
+        content: "2";
+    }
 
-#progressbar #confirm:before {
-    /* font-family: FontAwesome; */
-    content: "4";
-}
+    #progressbar #payment:before {
+        /* font-family: FontAwesome; */
+        content: "3";
+    }
 
-/*ProgressBar before any progress*/
-#progressbar li:before {
-    width: 50px;
-    height: 50px;
-    line-height: 45px;
-    display: block;
-    font-size: 18px;
-    color: #ffffff;
-    background: lightgray;
-    border-radius: 50%;
-    margin: 0 auto 10px auto;
-    padding: 2px;
-}
+    #progressbar #confirm:before {
+        /* font-family: FontAwesome; */
+        content: "4";
+    }
 
-/*ProgressBar connectors*/
-#progressbar li:after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background: lightgray;
-    position: absolute;
-    left: 0;
-    top: 25px;
-    z-index: -1;
-}
+    /*ProgressBar before any progress*/
+    #progressbar li:before {
+        width: 50px;
+        height: 50px;
+        line-height: 45px;
+        display: block;
+        font-size: 18px;
+        color: #ffffff;
+        background: lightgray;
+        border-radius: 50%;
+        margin: 0 auto 10px auto;
+        padding: 2px;
+    }
 
-/*Color number of the step and the connector before it*/
-#progressbar li.active:before, #progressbar li.active:after {
-    background: rgb(28, 123, 160);
-}
+    /*ProgressBar connectors*/
+    #progressbar li:after {
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: lightgray;
+        position: absolute;
+        left: 0;
+        top: 25px;
+        z-index: -1;
+    }
 
-/*Imaged Radio Buttons*/
-.radio-group {
-    position: relative;
-    margin-bottom: 25px;
-}
+    /*Color number of the step and the connector before it*/
+    #progressbar li.active:before,
+    #progressbar li.active:after {
+        background: rgb(28, 123, 160);
+    }
 
-.radio {
-    display:inline-block;
-    width: 204;
-    height: 104;
-    border-radius: 0;
-    background: lightblue;
-    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    cursor:pointer;
-    margin: 8px 2px; 
-}
+    /*Imaged Radio Buttons*/
+    .radio-group {
+        position: relative;
+        margin-bottom: 25px;
+    }
 
-.radio:hover {
-    box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
-}
+    .radio {
+        display: inline-block;
+        width: 204;
+        height: 104;
+        border-radius: 0;
+        background: lightblue;
+        box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+        cursor: pointer;
+        margin: 8px 2px;
+    }
 
-.radio.selected {
-    box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
-}
+    .radio:hover {
+        box-shadow: 2px 2px 2px 2px rgba(0, 0, 0, 0.3);
+    }
 
-/*Fit image in bootstrap div*/
-.fit-image{
-    width: 100%;
-    object-fit: cover;
-}
+    .radio.selected {
+        box-shadow: 1px 1px 2px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    /*Fit image in bootstrap div*/
+    .fit-image {
+        width: 100%;
+        object-fit: cover;
+    }
 
     #footer {
         color: #444444;
@@ -876,6 +979,15 @@ select.list-dt:focus {
 </style>
 
 <script>
+    function onChange() {
+        const password = document.querySelector('input[name=pwd]');
+        const confirm = document.querySelector('input[name=cpwd]');
+        if (confirm.value === password.value) {
+            confirm.setCustomValidity('');
+        } else {
+            confirm.setCustomValidity('Passwords do not match');
+        }
+    }
     $(document).ready(function () {
 
         var current_fs, next_fs, previous_fs; //fieldsets
@@ -905,6 +1017,7 @@ select.list-dt:focus {
                 },
                 duration: 600
             });
+
         });
 
         $(".previous").click(function () {
@@ -941,10 +1054,11 @@ select.list-dt:focus {
 
         $("#msform").submit(function () {
             var action = $(this).attr("action");
+            var formData = new FormData(this);
             $.ajax({
                 url: "/doctorRegister",
                 type: "POST",
-                data: $("#msform").serialize(),
+                data: formData,
                 success: function () {
                     window.location.replace(action);
                 },
@@ -952,5 +1066,16 @@ select.list-dt:focus {
             return false;
         });
 
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        var multipleCancelButton = new Choices('#choices-multiple-remove-button', {
+            removeItemButton: true,
+            maxItemCount: 22,
+            searchResultLimit: 22,
+            renderChoiceLimit: 22
+        });
     });
 </script>
