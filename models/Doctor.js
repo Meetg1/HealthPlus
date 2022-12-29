@@ -33,7 +33,22 @@ const DoctorSchema = new mongoose.Schema({
    },
    gender: String,
    clinicLocation: String,
-   certificate: String,
+   aadharCard: {
+      type: String,
+      required: true,
+   },
+   panCard: {
+      type: String,
+      required: true,
+   },
+   gradMarksheet: {
+      type: String,
+      required: true,
+   },
+   digitalKYC: {
+      type: String,
+      required: true,
+   },
    description: {
       type: String,
       required: true,
