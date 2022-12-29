@@ -1,41 +1,43 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
+const passportLocalMongoose = require('passport-local-mongoose')
 
-const PatientSchema = new mongoose.Schema ({
-    isAdmin: {
-        type: Boolean,
-        default: false,
-    },
-    username: {
-        type: String,
-        required: true,
-    },
-    first_name: {
-        type: String,
-        required: true,
-    },
-    last_name: {
-        type: String,
-        required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    phone: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    gender: String,
-    scheduledAppointments: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Appointment"
-    }],
-    location: String,
-    usernameToken: String,
-
+const PatientSchema = new mongoose.Schema({
+   //    isAdmin: {
+   //       type: Boolean,
+   //       default: false,
+   //    },
+   first_name: {
+      type: String,
+      required: true,
+   },
+   last_name: {
+      type: String,
+      required: true,
+   },
+   phone: {
+      type: String,
+      required: true,
+      unique: true,
+   },
+   gender: String,
+   scheduledAppointments: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: 'Appointment',
+      },
+   ],
+   location: String,
+   isVerified: {
+      type: Boolean,
+      default: false,
+   },
+   blockchainConsent: {
+      type: Boolean,
+      default: false,
+   },
+   usernameToken: String,
 })
 
+PatientSchema.plugin(passportLocalMongoose)
 
-module.exports = mongoose.model("Patient", PatientSchema)
+module.exports = mongoose.model('Patient', PatientSchema)

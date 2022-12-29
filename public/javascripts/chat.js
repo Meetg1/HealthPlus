@@ -40,12 +40,40 @@ socket.on('othermessage', (message) => {
    chatMessages.scrollTop = chatMessages.scrollHeight
 })
 
+socket.on('otherPhotoMessage', (message) => {
+   outputOtherPhotoMessage(message)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
+})
+
+socket.on('myPhotoMessage', (message) => {
+   outputMyPhotoMessage(message)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
+})
+
 socket.on('update', (message) => {
    // console.log(message)
    outputUpdateMessage(message)
 
    // Scroll down
    chatMessages.scrollTop = chatMessages.scrollHeight
+})
+
+socket.on('patient_can_downloadnow', (filename) => {
+   const presc_link = document.querySelector('.presc_link')
+   const no_presc_msg = document.querySelector('.no_presc_msg')
+   no_presc_msg.innerText =
+      'Prescription was uploaded. Click on below link to download it.'
+   presc_link.innerText = filename
+   presc_link.classList.remove('invisible')
+})
+
+$('.presc_link').click(function (e) {
+   e.preventDefault()
+   window.location.href = `/${e.target.innerText}`
 })
 
 // Message submit
@@ -70,6 +98,32 @@ chatForm.addEventListener('submit', (e) => {
    e.target.elements.msg.focus()
 })
 
+$('#chatPresc').submit(function (e) {
+   $.ajax({
+      url: `/${room}/uploadChatPrescription`,
+      type: 'POST',
+      data: new FormData(this),
+      processData: false,
+      contentType: false,
+      success: function (result) {
+         if (result.status == 'success') {
+            alert('Prescription submitted successfully!')
+            // Emit message to server
+            socket.emit('presc_uploaded', result.filename)
+         } else {
+            alert('Something went wrong! Please try again.')
+         }
+      },
+   })
+   e.preventDefault()
+})
+
+function sendPhoto(files) {
+   socket.emit('sendPhoto', files[0], (status) => {
+      // console.log(status)
+   })
+}
+
 // Output rightside message to DOM
 function outputMyMessage(message) {
    const div = document.createElement('div')
@@ -85,6 +139,9 @@ function outputMyMessage(message) {
    para.innerText = message.text
    div.appendChild(para)
    document.querySelector('.chat-messages').appendChild(div)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
 }
 
 // Output leftside message to DOM
@@ -102,6 +159,47 @@ function outputOtherMessage(message) {
    para.innerText = message.text
    div.appendChild(para)
    document.querySelector('.chat-messages').appendChild(div)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
+}
+
+function outputMyPhotoMessage(message) {
+   const div = document.createElement('div')
+   div.classList.add('message')
+   div.classList.add('mymessage')
+   const p = document.createElement('p')
+   p.classList.add('meta')
+   p.innerText = message.username
+   p.innerHTML += `  <span>${message.time}</span>`
+   div.appendChild(p)
+   const image = document.createElement('img')
+   image.src = message.text
+   image.classList.add('chat-img')
+   div.appendChild(image)
+   document.querySelector('.chat-messages').appendChild(div)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
+}
+
+function outputOtherPhotoMessage(message) {
+   const div = document.createElement('div')
+   div.classList.add('message')
+   div.classList.add('othermessage')
+   const p = document.createElement('p')
+   p.classList.add('meta')
+   p.innerText = message.username
+   p.innerHTML += `  <span>${message.time}</span>`
+   div.appendChild(p)
+   const image = document.createElement('img')
+   image.src = message.text
+   image.classList.add('chat-img')
+   div.appendChild(image)
+   document.querySelector('.chat-messages').appendChild(div)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
 }
 
 // Output update to DOM
@@ -112,6 +210,9 @@ function outputUpdateMessage(message) {
    div.classList.add('mb-2')
    div.innerText = message
    document.querySelector('.chat-messages').appendChild(div)
+
+   // Scroll down
+   chatMessages.scrollTop = chatMessages.scrollHeight
 }
 
 // Add users to DOM

@@ -7,7 +7,9 @@ const mongoose = require('mongoose')
 const Admin = require('./models/Admin')
 const Patient = require('./models/Patient')
 const Doctor = require('./models/Doctor')
-const bodyParser = require("body-parser")
+const multer = require('multer')
+const { v1: uuidv1 } = require('uuid')
+const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const crypto = require("crypto")
 const multer = require("multer")
@@ -46,7 +48,7 @@ const connectDB = async () => {
    }
 }
 // CONNECT DATABASE
-connectDB();
+connectDB()
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -73,6 +75,19 @@ app.use(
    })
 );
 
+// SET STORAGE
+var storage = multer.diskStorage({
+   destination: function (req, chat_prescription, cb) {
+      cb(null, path.join(__dirname, 'public/images/prescriptions'))
+   },
+   filename: function (req, chat_prescription, cb) {
+      console.log('chat_prescription')
+      console.log(chat_prescription)
+      cb(null, uuidv1() + path.extname(chat_prescription.originalname))
+   },
+})
+
+var upload = multer({ storage: storage })
 
 // Express Validator Middleware
 app.use(expressValidator({
@@ -147,6 +162,13 @@ io.on('connection', (socket) => {
       socket
          .to(user.room)
          .emit('othermessage', formatMessage(user.username, msg))
+   })
+
+   // Listen for blahblah
+   socket.on('presc_uploaded', (filename) => {
+      const user = users[socket.id]
+
+      socket.to(user.room).emit('patient_can_downloadnow', filename)
    })
 
    // Runs when client disconnects
@@ -342,7 +364,7 @@ app.post('/doctorRegister', upload.fields(
       console.log(error);
    }
    res.redirect('/doctorRegister')
-});
+})
 
 app.get('/patientRegister', (req, res) => {
    res.render('patient/patientRegister.ejs')
@@ -352,19 +374,63 @@ app.get('/login', (req, res) => {
    res.render('login.ejs')
 })
 
-app.get('/chat_appointment/:appointmentid&:username', async (req, res) => {
-   const appointmentid = req.params.appointmentid
-   const username = req.params.username
+app.get(
+   '/chat_appointment/:appointmentid&:username&:usertype',
+   async (req, res) => {
+      const appointmentid = req.params.appointmentid
+      const username = req.params.username
+      const usertype = req.params.usertype
 
-   // if (!mongoose.isValidObjectId(appointmentid))
-   //    return res.send('No Appointment found')
-   // const foundAppointment = await Appointment.findById(appointmentid)
+      // if (!mongoose.isValidObjectId(appointmentid))
+      //    return res.send('No Appointment found')
+      // const foundAppointment = await Appointment.findById(appointmentid)
 
-   // if (!foundAppointment) {
-   //    return res.send('No Appointment found')
-   // }
+      // if (!foundAppointment) {
+      //    return res.send('No Appointment found')
+      // }
 
-   res.render('chat.ejs', { username: username, room: appointmentid })
+      res.render('chat.ejs', {
+         username: username,
+         room: appointmentid,
+         usertype: usertype,
+      })
+   },
+)
+
+app.post(
+   '/:appointmentid/uploadChatPrescription',
+   upload.single('chat_prescription'),
+   (req, res) => {
+      try {
+         // const appointment = await Appointment.findById(req.params.appointmentid)
+         // console.log(req.file)
+         const file = req.file
+         // if (!file) {
+         //    req.flash('danger', 'Please select a file first.')
+         //    return res.redirect('back')
+         // }
+         console.log('req.file')
+         console.log(req.file)
+         // appointment.prescription = req.file.filename
+         // appointment.save()
+
+         res.send({ status: 'success', filename: req.file.filename })
+         // req.flash('success', 'Profile picture is updated')
+         // return res.redirect('/users/' + user._id)
+      } catch (error) {
+         console.log(error)
+      }
+   },
+)
+
+app.get('/:filename', (req, res) => {
+   // console.log('hello')
+   // console.log(
+   //    'F:/HealthPlus/public/images/prescriptions/' + req.params.filename,
+   // )
+   res.download(
+      __dirname + '/public/images/prescriptions/' + req.params.filename,
+   )
 })
 
 app.get('/contact', (req, res) => {

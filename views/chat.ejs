@@ -5,25 +5,45 @@
     <body>
         <%- include('partials/navbar')%>
 
-            <div class="chat-container" style="margin-top:15vh;">
-                <header class="chat-header">
-                    <h1>HealthPlus</h1>
-                    <a id="leave-btn" class="btn">End Session</a>
-                </header>
-                <main class="chat-main">
-                    <div class="chat-sidebar">
-                        <h3><i class="fas fa-users"></i> Users</h3>
-                        <ul id="users"></ul>
-                    </div>
-                    <div class="chat-messages">
+            <div class="main-chat-container">
 
+                <div class="chat-container">
+                    <header class="chat-header">
+                        <h1>HealthPlus</h1>
+                        <a id="leave-btn" class="btn">End Session</a>
+                    </header>
+                    <main class="chat-main">
+                        <div class="chat-sidebar">
+                            <h3><i class="fas fa-users"></i> Members</h3>
+                            <ul id="users"></ul>
+                        </div>
+                        <div class="chat-messages">
+
+                        </div>
+                    </main>
+                    <div class="chat-form-container">
+                        <form id="chat-form">
+                            <input type="file" onchange="sendPhoto(this.files)" class="customm-file-input" />
+                            <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
+                            <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+                        </form>
                     </div>
-                </main>
-                <div class="chat-form-container">
-                    <form id="chat-form">
-                        <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
-                        <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
-                    </form>
+                </div>
+
+                <div class="prescriptionTab prescriptionTabDoctor">
+                    <h2 class="text-center">Prescription</h2>
+                    <% if (usertype=='doctor' ) { %>
+                        <form action="#" enctype="multipart/form-data" method="POST" style="display: grid;"
+                            id="chatPresc">
+                            <input type="file" name="chat_prescription" id="pres" required>
+                            <input type="submit" value="Upload Prescription" />
+                        </form>
+                        <% }else{ %>
+                            <div class="patient_pres_div">
+                                <p class="no_presc_msg">No prescription has been uploaded yet.</p> <br>
+                                <a href="" class="presc_link invisible"></a>
+                            </div>
+                            <% } %>
                 </div>
             </div>
 
