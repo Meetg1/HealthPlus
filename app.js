@@ -15,9 +15,13 @@ const session = require('express-session')
 const { v1: uuidv1 } = require('uuid')
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
-const crypto = require('crypto')
+const crypto = require("crypto")
+const multer = require("multer")
+const session = require('express-session')
+const methodOverride = require('method-override');
+// const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
 const axios = require('axios')
-
 const http = require('http')
 const server = http.createServer(app)
 const socketio = require('socket.io')
@@ -40,23 +44,24 @@ app.engine('ejs', ejsMate)
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public'))) //for serving static files
-// app.use(
-//    express.urlencoded({
-//       extended: true,
-//    }),
-// ) //for parsing form data
-// app.use(methodOverride('_method'))
+app.use(
+   express.urlencoded({
+      extended: true,
+   }),
+) //for parsing form data
+app.use(methodOverride('_method'))
+// app.use(flash())
 
-// const JWT_SECRET = process.env.JWT_SECRET
+// app.use(cookieParser('HealthplusSecure'));
 app.use(
    session({
-      secret: 'secret',
+      secret: 'HealthplusSecretSession',
       resave: true,
       saveUninitialized: true,
-   }),
-)
+   })
+);
 
-// SET STORAGE FOR chat prescriptions
+// SET STORAGE
 var storage = multer.diskStorage({
    destination: function (req, chat_prescription, cb) {
       cb(null, path.join(__dirname, 'public/images/prescriptions'))
@@ -104,24 +109,45 @@ app.use(async function (req, res, next) {
 })
 
 // Express Validator Middleware
-app.use(
-   expressValidator({
-      errorFormatter: function (param, msg, value) {
-         var namespace = param.split('.'),
-            root = namespace.shift(),
-            formParam = root
+app.use(expressValidator({
+   customValidators: {
+      isFile: function (value, filename) {
 
-         while (namespace.length) {
-            formParam += '[' + namespace.shift() + ']'
+         var extension = (path.extname(filename)).toLowerCase();
+         switch (extension) {
+            case '.pdf':
+               return '.pdf';
+            case '.doc':
+               return '.doc';
+            case '.docx':
+               return '.docx';
+            case '.jpg':
+               return '.jpg';
+            case '.jpeg':
+               return '.jpeg';
+            case '.png':
+               return '.png';
+            default:
+               return false;
          }
-         return {
-            param: formParam,
-            msg: msg,
-            value: value,
-         }
-      },
-   }),
-)
+      }
+   },
+   errorFormatter: function (param, msg, value) {
+      var namespace = param.split("."),
+         root = namespace.shift(),
+         formParam = root;
+
+      while (namespace.length) {
+         formParam += "[" + namespace.shift() + "]";
+      }
+      return {
+         param: formParam,
+         msg: msg,
+         value: value
+      };
+   }
+}));
+
 
 const isVerified = async function (req, res, next) {
    try {
@@ -248,6 +274,102 @@ io.on('connection', (socket) => {
 })
 // ================================================================================
 
+
+const storage = multer.diskStorage({
+   destination: (req, file, cb) => {
+      if (file.fieldname === "aadharCard") {
+         cb(null, path.join(__dirname, "public/doctorCertificates/aadharCard"));
+      }
+      else if (file.fieldname === "panCard") {
+         cb(null, path.join(__dirname, "public/doctorCertificates/panCard"));
+      }
+      else if (file.fieldname === "gradMarksheet") {
+         cb(null, path.join(__dirname, "public/doctorCertificates/gradMarksheet"));
+      }
+      else if (file.fieldname === "digitalKYC") {
+         cb(null, path.join(__dirname, "public/doctorCertificates/digitalKYC"));
+      }
+   },
+   filename: (req, file, cb) => {
+      if (file.fieldname === "aadharCard") {
+         cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
+      }
+      else if (file.fieldname === "panCard") {
+         cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
+      }
+      else if (file.fieldname === "gradMarksheet") {
+         cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
+      }
+      else if (file.fieldname === "digitalKYC") {
+         cb(null, file.fieldname + Date.now() + path.extname(file.originalname));
+      }
+   }
+});
+
+const upload = multer({
+   storage: storage,
+   limits: {
+      fileSize: 1024 * 1024 * 10
+   },
+   fileFilter: (req, file, cb) => {
+      checkFileType(file, cb);
+   }
+});
+
+
+function checkFileType(file, cb) {
+   if (file.fieldname === "aadharCard" || file.fieldname === "panCard" || file.fieldname === "gradMarksheet" || file.fieldname === "digitalKYC") {
+      if (
+         file.mimetype === 'application/pdf' ||
+         file.mimetype === 'application/msword' ||
+         file.mimetype === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' ||
+         file.mimetype === 'image/png' ||
+         file.mimetype === 'image/jpg' ||
+         file.mimetype === 'image/jpeg'
+      ) { // check file type to be pdf, doc, docx, png, jpg, jpeg
+         cb(null, true);
+      } else {
+         cb(null, false); // else fails
+      }
+   }
+}
+
+
+var validator = function (req, res, next) {
+   req.checkBody("uname", "Username is required").notEmpty().withMessage('Username field is required');
+   req.checkBody("fname", "First name is required").notEmpty();
+   req.checkBody("lname", "Last name is required").notEmpty();
+   req.checkBody("contact", "Enter a valid Contact No.").isMobilePhone('en-IN');
+   req.checkBody("email", "Enter a valid Email-id").isEmail();
+   req.checkBody("pwd", "Password must be of minimum 6 characters").isLength({ min: 6 })
+   req.checkBody("cpwd", "Passwords do not match").equals(req.body.pwd);
+   req.checkBody("speciality", "Select a specialty").notEmpty();
+   req.checkBody("exp", "Years of Experience is required").notEmpty();
+   req.checkBody("fee", "Consultation Fee is required").notEmpty();
+   req.checkBody("location", "Clinic Location is required").notEmpty();
+   req.checkBody("desc", "Description is required").notEmpty();
+
+   aadhar_Card = typeof req.files['aadharCard'] !== "undefined" ? req.files['aadharCard'][0].filename : '';
+   req.checkBody("aadharCard", "Aadhar Card is required").isFile(aadhar_Card);
+
+   pan_Card = typeof req.files['panCard'] !== "undefined" ? req.files['panCard'][0].filename : '';
+   req.checkBody("panCard", "PAN Card is required").isFile(pan_Card);
+
+   grad_Marksheet = typeof req.files['gradMarksheet'] !== "undefined" ? req.files['gradMarksheet'][0].filename : '';
+   req.checkBody("gradMarksheet", "Graduation Marksheet is required").isFile(grad_Marksheet);
+
+   digital_KYC = typeof req.files['digitalKYC'] !== "undefined" ? req.files['digitalKYC'][0].filename : '';
+   req.checkBody("digitalKYC", "Digital KYC is required").isFile(digital_KYC);
+
+   req.asyncValidationErrors().then(function () {
+      next();
+   }).catch(function (errors) {
+      console.log(errors)
+      res.status(500).redirect('back');
+   });
+
+}
+
 // ==================ROUTES=======================
 app.get('/', (req, res) => {
    res.render('home.ejs')
@@ -265,125 +387,69 @@ app.get('/doctorRegister', (req, res) => {
    res.render('doctor/doctorRegister.ejs')
 })
 
-app.get('/admin/doctorVerification', (req, res) => {
-   res.render('doctor/doctor_verification.ejs')
-})
+// app.get('/admin/doctorVerification', (req, res) => {
+//    res.render('doctor/doctor_verification.ejs')
+// })
 
-const dbSlots = []
-async function fetchAppointmentSlots() {
-   for (let i = 0; i < 23; i++) {
-      let slot = await AppointmentSlot.findOne({ slotId: i + 1 })
-      dbSlots.push(slot)
-   }
-}
-fetchAppointmentSlots()
-
-app.post('/doctorRegister', async (req, res) => {
-   try {
-      // console.log('req.files')
-      // console.log(req.files)
-      // console.log(req.body)
-
-      // let uploadFile
-      // let uploadPath
-      // let newFileName
-
-      // if (!req.files || Object.keys(req.files).length === 0) {
-      //    console.log('No Files were uploaded.')
-      // } else {
-      //    uploadFile = req.files.certificate
-      //    newFileName = Date.now() + uploadFile.name
-
-      //    uploadPath =
-      //       require('path').resolve('./') +
-      //       '/public/doctorCertificates/' +
-      //       newFileName
-
-      //    uploadFile.mv(uploadPath, function (err) {
-      //       if (err) return res.status(500).send(err)
-      //    })
-      // }
-
-      // req.checkBody("username","Username is required").notEmpty();
-      // req.checkBody("first_name","First name is required").notEmpty();
-      // req.checkBody("last_name","Last name is required").notEmpty();
-      // req.checkBody("phone","Enter a valid Contact No.").isMobilePhone('en-IN');
-      // req.checkBody("email","Enter a valid Email-id").isEmail();
-      // req.checkBody("password","Password must be of minimum 6 characters").isLength({ min:6 })
-      // req.checkBody("cpassword","Passwords do not match").equals(req.body.password);
-      // req.checkBody("specialty","Select a specialty").notEmpty();
-      // req.checkBody("yearsOfExperience","Years of Experience is required").notEmpty();
-      // req.checkBody("consultationFee","Consultation Fee is required").notEmpty();
-      // req.checkBody("clinicLocation","Clinic Location is required").notEmpty();
-      // req.checkBody("description","Description is required").notEmpty();
-      // req.checkBody("certificate","Certificate is required").notEmpty();
-      // req.checkBody("slot","Select available session slots").notEmpty();
-
-      // let errors = req.validationErrors()
-      // if (errors) {
-      //    console.log('Error')
-      //    res.render('doctor/doctorRegister.ejs', {
-      //       errors,
-      //    })
-      // } else {
-
-      const monday = req.body.monday
-      const tuesday = req.body.tuesday
-      const wednesday = req.body.wednesday
-      const thursday = req.body.thursday
-      const friday = req.body.friday
-      const saturday = req.body.saturday
-      const sunday = req.body.sunday
-
-      const mondayAvailableAppointmentSlots = []
-      const tuesdayAvailableAppointmentSlots = []
-      const wednesdayAvailableAppointmentSlots = []
-      const thursdayAvailableAppointmentSlots = []
-      const fridayAvailableAppointmentSlots = []
-      const saturdayAvailableAppointmentSlots = []
-      const sundayAvailableAppointmentSlots = []
-
-      if (monday) {
-         monday.forEach((slot) => {
-            index = parseInt(slot) - 1
-            mondayAvailableAppointmentSlots.push(dbSlots[index]._id)
-         })
+app.post('/doctorRegister', upload.fields(
+   [
+      {
+         name: 'aadharCard', maxCount: 1
+      },
+      {
+         name: 'panCard', maxCount: 1
+      },
+      {
+         name: 'gradMarksheet', maxCount: 1
+      },
+      {
+         name: 'digitalKYC', maxCount: 1
       }
-      // if (tuesday) {
-      // }
-      // if (wednesday) {
-      // }
-      // if (thursday) {
-      // }
-      // if (friday) {
-      // }
-      // if (saturday) {
-      // }
-      // if (sunday) {
-      // }
+   ]
+), validator, async (req, res, next) => {
 
-      const doctor = new Doctor({
-         username: req.body.uname,
-         usernameToken: crypto.randomBytes(64).toString('hex'),
-         isVerified: false,
-         first_name: req.body.fname,
-         last_name: req.body.lname,
-         phone: req.body.contact,
-         email: req.body.email,
-         specialty: req.body.speciality,
-         yearsOfExperience: req.body.exp,
-         consultationFee: req.body.fee,
-         clinicLocation: req.body.location,
-         description: req.body.desc,
-         // certificate: newFileName,
-         // availableAppointmentSlots: req.body.availableAppointmentSlots,
-      })
+   try {
 
-      const registeredDoctor = await doctor.save()
-      console.log(registeredDoctor)
-      // }
+      let errors = req.validationErrors();
+      if (req.file == "undefined" || errors) {
+         console.log('No file selected');
+         res.render('doctor/doctorRegister.ejs', {
+            errors
+         });
+      } else {
+         // console.log(req.files);
+         const aadharCard = req.files.aadharCard[0].filename;
+         const panCard = req.files.panCard[0].filename;
+         const gradMarksheet = req.files.gradMarksheet[0].filename;
+         const digitalKYC = req.files.digitalKYC[0].filename;
+
+         const doctor = new Doctor({
+            username: req.body.uname,
+            usernameToken: crypto.randomBytes(64).toString("hex"),
+            isVerified: false,
+            first_name: req.body.fname,
+            last_name: req.body.lname,
+            phone: req.body.contact,
+            email: req.body.email,
+            specialty: req.body.speciality,
+            yearsOfExperience: req.body.exp,
+            consultationFee: req.body.fee,
+            clinicLocation: req.body.location,
+            description: req.body.desc,
+            aadharCard: aadharCard,
+            panCard: panCard,
+            gradMarksheet: gradMarksheet,
+            digitalKYC: digitalKYC,
+            //availableAppointmentSlots: req.body.availableAppointmentSlots
+         });
+
+         const registeredDoctor = await doctor.save();
+         console.log(registeredDoctor);
+
+      }
+
    } catch (error) {
-      console.log(error)
+      console.log(error);
    }
    res.redirect('/doctorRegister')
 })
@@ -459,8 +525,48 @@ app.get('/appointment', (req, res) => {
    res.render('appointment.ejs')
 })
 
-app.get('/admin/doctors', (req, res) => {
-   res.render('doctors.ejs')
+app.get('/admin/doctors', async (req, res) => {
+   try {
+      const limitNumber = 20;
+      const doctors = await Doctor.find({}).limit(limitNumber);
+      res.render('doctors.ejs', { doctors })
+   } catch (error) {
+      res.status(500).send({ message: error.message || "Error Occured" });
+   }
+
+})
+
+app.get('/admin/doctors/:id', async (req, res) => {
+   try {
+      let doctorId = req.params.id;
+      const doctor = await Doctor.findById(doctorId);
+      res.render('doctor/doctor_verification.ejs', { doctor })
+   } catch (error) {
+      res.status(500).send({ message: error.message || "Error Occured" });
+   }
+})
+
+app.get('/admin/verifydoctor/:id', async (req, res) => {
+   try {
+      let doctorId = req.params.id;
+      const doctor = await Doctor.findById(doctorId);
+      doctor.isVerified = true;
+      await doctor.save();
+      res.render('doctor/doctor_verification.ejs', { doctor })
+   } catch (error) {
+      res.status(500).send({ message: error.message || "Error Occured" });
+   }
+})
+
+app.get('/admin/deletedoctor/:id', async (req, res) => {
+   Doctor.findByIdAndDelete(req.params.id, (err, doc) => {
+      if (!err) {
+         res.redirect('/admin/doctors');
+      }
+      else {
+         console.log(err);
+      }
+   })
 })
 
 app.get('/search', (req, res) => {

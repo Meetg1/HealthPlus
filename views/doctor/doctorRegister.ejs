@@ -43,8 +43,8 @@
                                         <input class="pqr" type="text" name="lname" id="lname" placeholder="Last Name" required="required"/>
                                         <input class="pqr" type="text" name="contact" id="contact" placeholder="Contact No.*" required="required"/>
                                         <input class="pqr" type="email" name="email" id="email" placeholder="Email-Id*" required="required"/>
-                                        <input class="pqr" type="password" name="pwd" id="pwd" placeholder="Password*" required="required"/>
-                                        <input class="pqr" type="password" name="cpwd" id="cpwd" placeholder="Confirm Password*" required="required"/>
+                                        <input class="pqr" type="password" name="pwd" id="pwd" placeholder="Password*" onChange="onChange()" required="required" minlength="6"/>
+                                        <input class="pqr" type="password" name="cpwd" id="cpwd" placeholder="Confirm Password*" onChange="onChange()" required="required"/>
                                     </div> 
                                     <input id="btn7" type="button" name="next" class="next action-button" value="Next Step"/>
                                 </fieldset>
@@ -53,7 +53,7 @@
                                     <div class="form-card">
                                         <h2 class="fs-title">Verification Details</h2><br>
                                         <!-- <input type="text" name="fname" placeholder="First Name"/> -->
-                                        <select class="list-dt" id="speciality" name="speciality">
+                                        <select class="list-dt" id="speciality" name="speciality" required="required">
                                             <option selected disabled>Speciality*</option>
                                             <option>Anatomical Pathology</option>
                                             <option>Anesthesiology</option>
@@ -78,23 +78,14 @@
                                 <fieldset>
                                     <div class="form-card">
                                         <h2 class="fs-title">Upload Personal Certificates</h2><br>
-                                        Aadhar Card* &nbsp; <input id="abc" type="file" name="certificate"
-                                            placeholder="" required /><br><br><br>
-                                        PAN Card*&nbsp; <input id="abc" type="file" name="certificate"
-                                            placeholder="" required /><br><br><br>
-                                        Graduation Certificates* &nbsp; <input id="abc" type="file" multiple
-                                            name="certificate" placeholder="" required /><br><br><br>
-                                        For Digital KYC: Please upload a picture of yourself along with your Aadhar
-                                        Card beside you* &nbsp; <input id="abc" type="file" name="certificate"
-                                            placeholder="" required />
+                                        Aadhar Card* &nbsp; <input id="abc" type="file" name="aadharCard" placeholder="" required multiple/><br><br><br>
+                                        PAN Card*&nbsp;  <input id="abc" type="file" name="panCard" placeholder="" required multiple/><br><br><br>
+                                        Graduation Marksheet* &nbsp; <input id="abc" type="file" name="gradMarksheet" placeholder="" required multiple/><br><br><br>
+                                        For Digital KYC: Please upload a picture of yourself along with your Aadhar Card beside you* &nbsp; <input id="abc" type="file" name="digitalKYC" placeholder="" required/>
                                     </div>
-                                    <p>NOTE: Your application will be rejected in case of submission of
-                                        improper/missing
-                                        documents.</p>
-                                    <input id="btn1" type="button" name="previous"
-                                        class="previous action-button-previous" value="Previous" />
-                                    <input id="btn2" type="button" name="make_payment" class="next action-button"
-                                        value="Confirm" />
+                                    <p>NOTE: Your application will be rejected in case of submission of improper/missing documents.</p>
+                                    <input id="btn1" type="button" name="previous" class="previous action-button-previous" value="Previous"/>
+                                    <input id="btn2" type="button" name="next" class="next action-button" value="Next Step"/>
                                 </fieldset>
     
                                 <fieldset>
@@ -847,6 +838,15 @@ select.list-dt:focus {
 </style>
 
 <script>
+    function onChange() {
+        const password = document.querySelector('input[name=pwd]');
+        const confirm = document.querySelector('input[name=cpwd]');
+        if (confirm.value === password.value) {
+            confirm.setCustomValidity('');
+        } else {
+            confirm.setCustomValidity('Passwords do not match');
+        }
+    }
     $(document).ready(function () {
 
         var current_fs, next_fs, previous_fs; //fieldsets
@@ -854,28 +854,29 @@ select.list-dt:focus {
 
         $(".next").click(function () {
 
-            current_fs = $(this).parent();
-            next_fs = $(this).parent().next();
+                current_fs = $(this).parent();
+                next_fs = $(this).parent().next();
 
-            //Add Class Active
-            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+                //Add Class Active
+                $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
 
-            //show the next fieldset
-            next_fs.show();
-            //hide the current fieldset with style
-            current_fs.animate({ opacity: 0 }, {
-                step: function (now) {
-                    // for making fielset appear animation
-                    opacity = 1 - now;
+                //show the next fieldset
+                next_fs.show();
+                //hide the current fieldset with style
+                current_fs.animate({ opacity: 0 }, {
+                    step: function (now) {
+                        // for making fielset appear animation
+                        opacity = 1 - now;
 
-                    current_fs.css({
-                        'display': 'none',
-                        'position': 'relative'
-                    });
-                    next_fs.css({ 'opacity': opacity });
-                },
-                duration: 600
-            });
+                        current_fs.css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        next_fs.css({ 'opacity': opacity });
+                    },
+                    duration: 600
+                });
+
         });
 
         $(".previous").click(function () {
@@ -912,10 +913,11 @@ select.list-dt:focus {
 
         $("#msform").submit(function () {
             var action = $(this).attr("action");
+            var formData = new FormData(this);
             $.ajax({
                 url: "/doctorRegister",
                 type: "POST",
-                data: $("#msform").serialize(),
+                data: formData,
                 success: function () {
                     window.location.replace(action);
                 },
