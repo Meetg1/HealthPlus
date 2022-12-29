@@ -16,7 +16,9 @@ const { v1: uuidv1 } = require('uuid')
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
 const crypto = require("crypto")
-const multer = require("multer")
+const passport = require('passport')
+const LocalStrategy = require('passport-local')
+// const multer = require("multer")
 const session = require('express-session')
 const methodOverride = require('method-override');
 // const cookieParser = require('cookie-parser')
@@ -148,6 +150,50 @@ app.use(expressValidator({
    }
 }));
 
+const isVerified = async function (req, res, next) {
+   try {
+      const user = await Patient.findOne({ username: req.body.username })
+      console.log('user')
+      console.log(user)
+      if (!user) {
+         req.flash('danger', 'No account with that email exists.')
+         return res.redirect('back')
+      }
+      if (user.isVerified) {
+         return next()
+      }
+      req.flash(
+         'danger',
+         'Your account has not been verified! Please check your email to verify your account.',
+      )
+      return res.redirect('back')
+   } catch (error) {
+      console.log(error)
+      req.flash(
+         'danger',
+         'Something went wrong! Please contact us for assistance',
+      )
+      res.redirect('back')
+   }
+}
+
+const isAdmin = async function (req, res, next) {
+   try {
+      const foundAdmin = await Admin.findOne({ username: req.body.username })
+      if (!foundAdmin) {
+         req.flash('danger', 'You are not an admin.')
+         return res.redirect('back')
+      }
+      if (foundAdmin.password != req.body.password) {
+         req.flash('danger', 'wrong password')
+         return res.redirect('back')
+      }
+      next()
+   } catch (error) {
+      console.log(error)
+      res.redirect('back')
+   }
+}
 
 const isVerified = async function (req, res, next) {
    try {
@@ -275,7 +321,7 @@ io.on('connection', (socket) => {
 // ================================================================================
 
 
-const storage = multer.diskStorage({
+const storage2 = multer.diskStorage({
    destination: (req, file, cb) => {
       if (file.fieldname === "aadharCard") {
          cb(null, path.join(__dirname, "public/doctorCertificates/aadharCard"));
@@ -306,8 +352,8 @@ const storage = multer.diskStorage({
    }
 });
 
-const upload = multer({
-   storage: storage,
+const upload2 = multer({
+   storage: storage2,
    limits: {
       fileSize: 1024 * 1024 * 10
    },
@@ -391,7 +437,7 @@ app.get('/doctorRegister', (req, res) => {
 //    res.render('doctor/doctor_verification.ejs')
 // })
 
-app.post('/doctorRegister', upload.fields(
+app.post('/doctorRegister', upload2.fields(
    [
       {
          name: 'aadharCard', maxCount: 1
