@@ -40,19 +40,17 @@
                                     <fieldset>
                                         <div class="form-card">
                                             <h2 class="fs-title">Account Information</h2><br>
-                                            <input class="pqr" type="text" name="uname" id="uname"
-                                                placeholder="Username*" required="required" />
                                             <input class="pqr" type="text" name="fname" id="fname"
                                                 placeholder="First Name*" required="required" />
                                             <input class="pqr" type="text" name="lname" id="lname"
                                                 placeholder="Last Name" required="required" />
                                             <input class="pqr" type="text" name="contact" id="contact"
                                                 placeholder="Contact No.*" required="required" />
-                                            <input class="pqr" type="email" name="email" id="email"
+                                            <input class="pqr" type="email" name="username" id="email"
                                                 placeholder="Email-Id*" required="required" />
                                             <input class="pqr" type="password" name="pwd" id="pwd"
-                                                placeholder="Password*" onChange="onChange()" required="required"
-                                                minlength="6" />
+                                                placeholder="Password*" onChange="onChange()" minlength="6"
+                                                required="required" />
                                             <input class="pqr" type="password" name="cpwd" id="cpwd"
                                                 placeholder="Confirm Password*" onChange="onChange()"
                                                 required="required" />
@@ -79,14 +77,14 @@
                                                 <option>Endocrinology and Metabolism</option>
                                             </select>
                                             <input class="pqr" type="number" name="exp"
-                                                placeholder="Years of Experience*" required="required" />
+                                                placeholder="Years of Experience*" />
                                             <input class="pqr" type="number" name="fee"
-                                                placeholder="Consultation Fee (in ₹)*" required="required" />
+                                                placeholder="Consultation Fee (in ₹)*" />
                                             <input class="pqr" type="text" name="location"
-                                                placeholder="Clinic Location*" required="required" />
-                                            <textarea class="pqr" name="desc" placeholder="Brief about yourself..*"
-                                                required="required"></textarea>
-                                            <!-- <input type="text" name="phno_2" placeholder="" required="required"/> -->
+                                                placeholder="Clinic Location*" />
+                                            <textarea class="pqr" name="desc"
+                                                placeholder="Brief about yourself..*"></textarea>
+                                            <!-- <input type="text" name="phno_2" placeholder="" /> -->
                                         </div>
                                         <input id="btn5" type="button" name="previous"
                                             class="previous action-button-previous" value="Previous" />
@@ -97,15 +95,15 @@
                                     <fieldset>
                                         <div class="form-card">
                                             <h2 class="fs-title">Upload Personal Certificates</h2><br>
-                                            Aadhar Card* &nbsp; <input id="abc" type="file" name="aadharCard"
-                                                placeholder="" required multiple /><br><br><br>
-                                            PAN Card*&nbsp; <input id="abc" type="file" name="panCard" placeholder=""
+                                            Aadhar Card* &nbsp; <input type="file" name="aadharCard" placeholder=""
                                                 required multiple /><br><br><br>
-                                            Graduation Marksheet* &nbsp; <input id="abc" type="file"
-                                                name="gradMarksheet" placeholder="" required multiple /><br><br><br>
+                                            PAN Card*&nbsp; <input type="file" name="panCard" placeholder="" required
+                                                multiple /><br><br><br>
+                                            Degree Certificates* &nbsp; <input type="file" name="degreeCertificates"
+                                                placeholder="" required multiple /><br><br><br>
                                             For Digital KYC: Please upload a picture of yourself along with your Aadhar
-                                            Card beside you* &nbsp; <input id="abc" type="file" name="digitalKYC"
-                                                placeholder="" required />
+                                            Card beside you* &nbsp; <input type="file" name="digitalKYC" placeholder=""
+                                                required />
                                         </div>
                                         <p>NOTE: Your application will be rejected in case of submission of
                                             improper/missing documents.</p>

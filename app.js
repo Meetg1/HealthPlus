@@ -8,9 +8,11 @@ const Admin = require('./models/Admin')
 const Patient = require('./models/Patient')
 const Doctor = require('./models/Doctor')
 const AppointmentSlot = require('./models/AppointmentSlot')
+const Appointment = require('./models/Appointment')
 const multer = require('multer')
 const { v1: uuidv1 } = require('uuid')
 const bodyParser = require('body-parser')
+const moment = require("moment");
 const expressValidator = require('express-validator')
 const crypto = require('crypto')
 const passport = require('passport')
@@ -91,7 +93,8 @@ var upload = multer({ storage: storage1 })
 app.use(passport.initialize())
 app.use(passport.session())
 // To Use Normal Login System
-passport.use(new LocalStrategy(Patient.authenticate()))
+passport.use('local.patient', new LocalStrategy(Patient.authenticate()))
+passport.use('local.doctor', new LocalStrategy(Doctor.authenticate()))
 
 passport.serializeUser(Patient.serializeUser())
 passport.deserializeUser(Patient.deserializeUser())
@@ -149,8 +152,8 @@ app.use(expressValidator({
 const isPatientVerified = async function (req, res, next) {
    try {
       const user = await Patient.findOne({ username: req.body.username })
-      console.log('user')
-      console.log(user)
+      // console.log('user')
+      // console.log(user)
       if (!user) {
          req.flash('danger', 'No account with that email exists.')
          return res.redirect('back')
@@ -161,6 +164,33 @@ const isPatientVerified = async function (req, res, next) {
       req.flash(
          'danger',
          'Your account has not been verified! Please check your email to verify your account.',
+      )
+      return res.redirect('back')
+   } catch (error) {
+      console.log(error)
+      req.flash(
+         'danger',
+         'Something went wrong! Please contact us for assistance',
+      )
+      res.redirect('back')
+   }
+}
+
+const isDoctorVerified = async function (req, res, next) {
+   try {
+      const user = await Doctor.findOne({ username: req.body.username })
+      // console.log('user')
+      // console.log(user)
+      if (!user) {
+         req.flash('danger', 'No account with that email exists.')
+         return res.redirect('back')
+      }
+      if (user.isVerified) {
+         return next()
+      }
+      req.flash(
+         'danger',
+         'Your account is still under verification! ',
       )
       return res.redirect('back')
    } catch (error) {
@@ -284,10 +314,10 @@ const storage2 = multer.diskStorage({
          cb(null, path.join(__dirname, 'public/doctorCertificates/aadharCard'))
       } else if (file.fieldname === 'panCard') {
          cb(null, path.join(__dirname, 'public/doctorCertificates/panCard'))
-      } else if (file.fieldname === 'gradMarksheet') {
+      } else if (file.fieldname === 'degreeCertificates') {
          cb(
             null,
-            path.join(__dirname, 'public/doctorCertificates/gradMarksheet'),
+            path.join(__dirname, 'public/doctorCertificates/degreeCertificates'),
          )
       } else if (file.fieldname === 'digitalKYC') {
          cb(null, path.join(__dirname, 'public/doctorCertificates/digitalKYC'))
@@ -298,7 +328,7 @@ const storage2 = multer.diskStorage({
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
       } else if (file.fieldname === 'panCard') {
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
-      } else if (file.fieldname === 'gradMarksheet') {
+      } else if (file.fieldname === 'degreeCertificates') {
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
       } else if (file.fieldname === 'digitalKYC') {
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
@@ -320,7 +350,7 @@ function checkFileType(file, cb) {
    if (
       file.fieldname === 'aadharCard' ||
       file.fieldname === 'panCard' ||
-      file.fieldname === 'gradMarksheet' ||
+      file.fieldname === 'degreeCertificates' ||
       file.fieldname === 'digitalKYC'
    ) {
       if (
@@ -341,15 +371,12 @@ function checkFileType(file, cb) {
 }
 
 var validator = function (req, res, next) {
-   req.checkBody('uname', 'Username is required')
-      .notEmpty()
-      .withMessage('Username field is required')
    req.checkBody('fname', 'First name is required').notEmpty()
    req.checkBody('lname', 'Last name is required').notEmpty()
    req.checkBody('contact', 'Enter a valid Contact No.').isMobilePhone('en-IN')
-   req.checkBody('email', 'Enter a valid Email-id').isEmail()
+   req.checkBody('username', 'Enter a valid Email-id').isEmail()
    req.checkBody('pwd', 'Password must be of minimum 6 characters').isLength({
-      min: 6,
+      min: 2,
    })
    req.checkBody('cpwd', 'Passwords do not match').equals(req.body.pwd)
    req.checkBody('speciality', 'Select a specialty').notEmpty()
@@ -371,10 +398,10 @@ var validator = function (req, res, next) {
    req.checkBody('panCard', 'PAN Card is required').isFile(pan_Card)
 
    grad_Marksheet =
-      typeof req.files['gradMarksheet'] !== 'undefined'
-         ? req.files['gradMarksheet'][0].filename
+      typeof req.files['degreeCertificates'] !== 'undefined'
+         ? req.files['degreeCertificates'][0].filename
          : ''
-   req.checkBody('gradMarksheet', 'Graduation Marksheet is required').isFile(
+   req.checkBody('degreeCertificates', 'Graduation Marksheet is required').isFile(
       grad_Marksheet,
    )
 
@@ -411,14 +438,14 @@ app.get('/doctorRegister', (req, res) => {
    res.render('doctor/doctorRegister.ejs')
 })
 
-// const dbSlots = []
-// async function fetchAppointmentSlots() {
-//    for (let i = 0; i < 23; i++) {
-//       let slot = await AppointmentSlot.findOne({ slotId: i + 1 })
-//       dbSlots.push(slot)
-//    }
-// }
-// fetchAppointmentSlots()
+const dbSlots = []
+async function fetchAppointmentSlots() {
+   for (let i = 0; i < 23; i++) {
+      let slot = await AppointmentSlot.findOne({ slotId: i + 1 })
+      dbSlots.push(slot)
+   }
+}
+fetchAppointmentSlots()
 
 app.post(
    '/doctorRegister',
@@ -432,7 +459,7 @@ app.post(
          maxCount: 1,
       },
       {
-         name: 'gradMarksheet',
+         name: 'degreeCertificates',
          maxCount: 1,
       },
       {
@@ -443,6 +470,7 @@ app.post(
    validator,
    async (req, res, next) => {
       try {
+         // console.log('doctor register post')
          let errors = req.validationErrors()
          if (req.file == 'undefined' || errors) {
             console.log('No file selected')
@@ -453,17 +481,78 @@ app.post(
             // console.log(req.files);
             const aadharCard = req.files.aadharCard[0].filename
             const panCard = req.files.panCard[0].filename
-            const gradMarksheet = req.files.gradMarksheet[0].filename
+            const degreeCertificates = req.files.degreeCertificates[0].filename
             const digitalKYC = req.files.digitalKYC[0].filename
 
+            // console.log('availableAppointmentSlots')
+            const monday = req.body.monday
+            const tuesday = req.body.tuesday
+            const wednesday = req.body.wednesday
+            const thursday = req.body.thursday
+            const friday = req.body.friday
+            const saturday = req.body.saturday
+            const sunday = req.body.sunday
+
+            // console.log(monday)
+
+            const mondayAvailableAppointmentSlots = []
+            const tuesdayAvailableAppointmentSlots = []
+            const wednesdayAvailableAppointmentSlots = []
+            const thursdayAvailableAppointmentSlots = []
+            const fridayAvailableAppointmentSlots = []
+            const saturdayAvailableAppointmentSlots = []
+            const sundayAvailableAppointmentSlots = []
+
+            if (monday) {
+               monday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  mondayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+            if (tuesday) {
+               tuesday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  tuesdayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+            if (wednesday) {
+               wednesday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  wednesdayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+            if (thursday) {
+               thursday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  thursdayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+            if (friday) {
+               friday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  fridayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+            if (saturday) {
+               saturday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  saturdayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+            if (sunday) {
+               sunday.forEach((slot) => {
+                  index = parseInt(slot) - 1
+                  sundayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               })
+            }
+
             const doctor = new Doctor({
-               username: req.body.uname,
+               username: req.body.username,
                usernameToken: crypto.randomBytes(64).toString('hex'),
                isVerified: false,
                first_name: req.body.fname,
                last_name: req.body.lname,
                phone: req.body.contact,
-               email: req.body.email,
                specialty: req.body.speciality,
                yearsOfExperience: req.body.exp,
                consultationFee: req.body.fee,
@@ -471,13 +560,18 @@ app.post(
                description: req.body.desc,
                aadharCard: aadharCard,
                panCard: panCard,
-               gradMarksheet: gradMarksheet,
+               degreeCertificates: degreeCertificates,
                digitalKYC: digitalKYC,
-               //availableAppointmentSlots: req.body.availableAppointmentSlots
+               mondayAvailableAppointmentSlots,
+               tuesdayAvailableAppointmentSlots,
+               wednesdayAvailableAppointmentSlots,
+               thursdayAvailableAppointmentSlots,
+               fridayAvailableAppointmentSlots,
+               saturdayAvailableAppointmentSlots,
+               sundayAvailableAppointmentSlots
             })
-
-            const registeredDoctor = await doctor.save()
-            console.log(registeredDoctor)
+            const registeredDoctor = await Doctor.register(doctor, req.body.pwd)
+            // console.log(registeredDoctor)
             req.flash('success', 'Details received successfully! Your verification process has been started.')
             res.redirect('/doctorRegister')
          }
@@ -495,8 +589,12 @@ app.get('/patientRegister', (req, res) => {
    res.render('patient/patientRegister.ejs')
 })
 
-app.get('/login', (req, res) => {
-   res.render('login.ejs')
+app.get('/patientlogin', (req, res) => {
+   res.render('patientlogin.ejs')
+})
+
+app.get('/doctorlogin', (req, res) => {
+   res.render('doctorlogin.ejs')
 })
 
 app.get('/admin_login', (req, res) => {
@@ -556,9 +654,6 @@ app.get('/contact', (req, res) => {
    res.render('contact.ejs')
 })
 
-app.get('/appointment', (req, res) => {
-   res.render('appointment.ejs')
-})
 
 app.get('/admin/doctors', async (req, res) => {
    try {
@@ -705,23 +800,32 @@ app.get('/verify-email/:token', async (req, res, next) => {
             'danger',
             'Token is invalid! Please contact us for assistance.',
          )
-         return res.redirect('/login')
+         return res.redirect('/patientlogin')
       }
       patient.usernameToken = null
       patient.isVerified = true
       await patient.save()
       req.flash('success', 'Email verified successfully!')
-      res.redirect('/login')
+      res.redirect('/patientlogin')
    } catch (error) {
       console.log(error)
       req.flash('danger', 'Token is invalid! Please contact us for assistance.')
-      res.redirect('/login')
+      res.redirect('/patientlogin')
    }
 })
 
-app.post('/login', isPatientVerified, (req, res, next) => {
-   passport.authenticate('local', {
-      failureRedirect: '/login',
+app.post('/patientlogin', isPatientVerified, (req, res, next) => {
+   passport.authenticate('local.patient', {
+      failureRedirect: '/patientlogin',
+      successRedirect: '/',
+      failureFlash: true,
+      successFlash: 'Welcome to HealthPlus ' + req.body.username + '!',
+   })(req, res, next)
+})
+
+app.post('/doctorlogin', isDoctorVerified, (req, res, next) => {
+   passport.authenticate('local.doctor', {
+      failureRedirect: '/doctorlogin',
       successRedirect: '/',
       failureFlash: true,
       successFlash: 'Welcome to HealthPlus ' + req.body.username + '!',
@@ -743,8 +847,148 @@ app.post('/admin_login', isAdmin, (req, res, next) => {
 app.get('/logout', (req, res) => {
    req.logout()
    req.flash('success', 'Logged Out Successfully.')
-   res.redirect('/login')
+   res.redirect('/')
 })
+
+app.get('/appointment/:doctorid', (req, res) => {
+   const doctorid = req.params.doctorid
+   res.render('patient/appointmentBooking1.ejs', { doctorid })
+})
+
+app.get('/:doctorid&:pickedDate', async (req, res) => {
+
+   try {
+
+      const doctor = await Doctor.findById(req.params.doctorid).populate(['mondayAvailableAppointmentSlots',
+         'tuesdayAvailableAppointmentSlots',
+         'wednesdayAvailableAppointmentSlots',
+         'thursdayAvailableAppointmentSlots',
+         'fridayAvailableAppointmentSlots',
+         'saturdayAvailableAppointmentSlots',
+         'sundayAvailableAppointmentSlots',
+         'scheduledAppointments'])
+      // console.log('doctor')
+      // console.log(doctor)
+      if (!doctor) {
+         req.flash('danger', 'Error.')
+         return res.redirect('back')
+      }
+
+      const pickedDate = req.params.pickedDate
+      // console.log(pickedDate)
+
+      const myDate = moment(pickedDate, 'DD-MM-YYYY').toDate();
+
+      const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+      const d = new Date(myDate);
+      let day = weekday[d.getDay()];
+      // console.log('day')
+      // console.log(day)
+
+      let slots = []
+      if (day == 'Monday') {
+         slots = [...doctor.mondayAvailableAppointmentSlots]
+      } else if (day == 'Tuesday') {
+         slots = [...doctor.tuesdayAvailableAppointmentSlots]
+      } else if (day == 'Wednesday') {
+         slots = [...doctor.wednesdayAvailableAppointmentSlots]
+      } else if (day == 'Thursday') {
+         slots = [...doctor.thursdayAvailableAppointmentSlots]
+      } else if (day == 'Friday') {
+         slots = [...doctor.fridayAvailableAppointmentSlots]
+      } else if (day == 'Saturday') {
+         slots = [...doctor.saturdayAvailableAppointmentSlots]
+      } else if (day == 'Sunday') {
+         slots = [...doctor.sundayAvailableAppointmentSlots]
+      }
+
+
+
+      slots.sort(function (a, b) { return a.slotId - b.slotId });
+
+      // console.log(myDate)
+
+      // console.log(slots)
+      bookedCounter = 0
+      doctor.scheduledAppointments.forEach(appointment => {
+         // console.log('appointment', appointment)
+         // console.log('pickedDate', pickedDate)
+         if (appointment.dateOfAppointment == pickedDate) {
+            slots.forEach(slot => {
+               // console.log('slot', slot)
+               if (slot.slotId == appointment.slotId) {
+
+                  slot['booked'] = true
+                  bookedCounter += 1
+                  return
+               }
+            })
+         }
+      })
+
+      slotCount = slots.length - bookedCounter
+
+      // console.log('slots')
+      // console.log(slots)
+
+
+      res.render('patient/appointmentBooking2.ejs', { slots, doctorid: req.params.doctorid, pickedDate: req.params.pickedDate, slotCount })
+
+
+
+   } catch (error) {
+      console.log(error)
+      req.flash(
+         'danger',
+         'Something went wrong! Please contact us for assistance',
+      )
+      res.redirect('back')
+   }
+
+
+})
+
+
+app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
+
+   try {
+
+      const { patientName, email, phoneno, mode, message, selectedSlot } = req.body
+      // const patientid = req.user._id
+      const patientid = '63adfbd04d8f181c14d229b4'
+      const doctorid = req.params.doctorid
+
+      // const slot = await AppointmentSlot.findOne({ slotId: req.body.selectedSlot })
+      // const dateOfAppointment = moment(req.params.pickedDate, 'DD-MM-YYYY').toDate();
+
+      const appointment = new Appointment({
+         patientid, doctorid, patientName, email, phoneno, mode, message, slotId: parseInt(selectedSlot), dateOfAppointment: req.params.pickedDate
+      })
+
+
+      const ap = await appointment.save()
+
+      const doctor = await Doctor.findById(doctorid)
+      doctor.scheduledAppointments.push(ap)
+      await doctor.save()
+
+      // console.log(ap)
+
+      // res.redirect(/slotBookingSucesss)
+      res.redirect('back')
+
+
+   } catch (error) {
+      console.log(error)
+      req.flash('danger', 'Something went wrong')
+      res.redirect('back')
+   }
+
+
+})
+
+
 
 app.get('/:filename', (req, res) => {
    res.download(

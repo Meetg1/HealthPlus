@@ -16,21 +16,28 @@ const AppointmentSchema = new mongoose.Schema({
    }, //(chat or video)
    prescription: {
       type: String,
-      required: true,
    },
    isOver: {
       type: Boolean,
       default: false,
    }, // boolean
    dateOfAppointment: {
-      type: Date,
+      type: String,
       required: true,
    },
-   AppointmentSlot: {
+   slotId: {
       //gives the time of appointment
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Doctor',
+      type: Number,
+      // type: mongoose.Schema.Types.ObjectId,
+      // ref: 'Doctor',
    },
+   patientName: {
+      type: String,
+      required: true,
+   },
+   email: String,
+   phoneno: String,
+   message: String
 })
 
 module.exports = mongoose.model('Appointment', AppointmentSchema)
