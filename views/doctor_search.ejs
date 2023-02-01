@@ -82,7 +82,7 @@
                 <div class="col-lg-4">
                     <div class="member d-flex align-items-start">
                         <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-                        <div class="member-info"><h4><%= doctors[i].first_name %></h4> <span><%= doctors[i].specialty %></span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                        <div class="member-info"><h4><%= doctors[i].first_name %></h4> <span><%= doctors[i].speciality %></span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
                             <p style="padding-right: 15px;"><b>Years of Experience: </b><%= doctors[i].yearsOfExperience %></p>
                             <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i><%= doctors[i].consultationFee %></p>
                             <p><b>Location: </b><%= doctors[i].clinicLocation %></p>
@@ -136,7 +136,7 @@
     $lt: upperBound2
     };
     const json = {
-        specialty : selectedOption,
+        speciality : selectedOption,
         consultationFee : obj,
         yearsOfExperience : obj2
     };

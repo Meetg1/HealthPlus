@@ -96,13 +96,28 @@ app.use(passport.session())
 passport.use('local.patient', new LocalStrategy(Patient.authenticate()))
 passport.use('local.doctor', new LocalStrategy(Doctor.authenticate()))
 
-passport.serializeUser(Patient.serializeUser())
-passport.deserializeUser(Patient.deserializeUser())
+passport.serializeUser((obj, done) => {
+   if (obj instanceof Patient) {
+      done(null, { id: obj.id, type: 'Patient' });
+   } else {
+      done(null, { id: obj.id, type: 'Doctor' });
+   }
+});
+
+passport.deserializeUser((obj, done) => {
+   if (obj.type === 'Patient') {
+      console.log('bye')
+      Patient.findById(obj.id).then((patient) => done(null, patient));
+   } else {
+      console.log('hi')
+      Doctor.findById(obj.id).then((doctor) => done(null, doctor));
+   }
+});
 //===================================================================
 
 //Express Messages Middle ware
 app.use(require('connect-flash')())
-app.use(async function (req, res, next) {
+app.use(function (req, res, next) {
    //giving access of loggedIn user to every templates(in views dir)
    res.locals.currentUser = req.user
    res.locals.messages = require('express-messages')(req, res)
@@ -379,7 +394,7 @@ var validator = function (req, res, next) {
       min: 2,
    })
    req.checkBody('cpwd', 'Passwords do not match').equals(req.body.pwd)
-   req.checkBody('speciality', 'Select a specialty').notEmpty()
+   req.checkBody('speciality', 'Select a speciality').notEmpty()
    req.checkBody('exp', 'Years of Experience is required').notEmpty()
    req.checkBody('fee', 'Consultation Fee is required').notEmpty()
    req.checkBody('location', 'Clinic Location is required').notEmpty()
@@ -553,7 +568,7 @@ app.post(
                first_name: req.body.fname,
                last_name: req.body.lname,
                phone: req.body.contact,
-               specialty: req.body.speciality,
+               speciality: req.body.speciality,
                yearsOfExperience: req.body.exp,
                consultationFee: req.body.fee,
                clinicLocation: req.body.location,
@@ -600,55 +615,6 @@ app.get('/doctorlogin', (req, res) => {
 app.get('/admin_login', (req, res) => {
    res.render('adminLogin.ejs')
 })
-
-app.get(
-   '/chat_appointment/:appointmentid&:username&:usertype',
-   async (req, res) => {
-      const appointmentid = req.params.appointmentid
-      const username = req.params.username
-      const usertype = req.params.usertype
-
-      // if (!mongoose.isValidObjectId(appointmentid))
-      //    return res.send('No Appointment found')
-      // const foundAppointment = await Appointment.findById(appointmentid)
-
-      // if (!foundAppointment) {
-      //    return res.send('No Appointment found')
-      // }
-
-      res.render('chat.ejs', {
-         username: username,
-         room: appointmentid,
-         usertype: usertype,
-      })
-   },
-)
-
-app.post(
-   '/:appointmentid/uploadChatPrescription',
-   upload.single('chat_prescription'),
-   (req, res) => {
-      try {
-         // const appointment = await Appointment.findById(req.params.appointmentid)
-         // console.log(req.file)
-         const file = req.file
-         // if (!file) {
-         //    req.flash('danger', 'Please select a file first.')
-         //    return res.redirect('back')
-         // }
-         console.log('req.file')
-         console.log(req.file)
-         // appointment.prescription = req.file.filename
-         // appointment.save()
-
-         res.send({ status: 'success', filename: req.file.filename })
-         // req.flash('success', 'Profile picture is updated')
-         // return res.redirect('/users/' + user._id)
-      } catch (error) {
-         console.log(error)
-      }
-   },
-)
 
 app.get('/contact', (req, res) => {
    res.render('contact.ejs')
@@ -989,6 +955,74 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
 })
 
 
+app.get(
+   '/chat_appointment/:appointmentid&:username&:usertype',
+   async (req, res) => {
+
+      try {
+
+         const appointmentid = req.params.appointmentid
+
+         if (!mongoose.isValidObjectId(appointmentid))
+            return res.send('No Appointment found')
+
+         const foundAppointment = await Appointment.findById(appointmentid)
+         if (!foundAppointment) {
+            req.flash('danger', 'No appointment found!')
+            return res.redirect('back')
+         }
+
+         var usertype
+         if (req.user instanceof Doctor) {  // if specilaity field exists,user is a doctor else a patient
+            usertype = 'doctor'
+         }
+         else {
+            usertype = 'patient'
+         }
+
+         const fullname = `${req.user.first_name} ${req.user.last_name}`
+
+         res.render('chat.ejs', {
+            username: fullname,
+            room: appointmentid,
+            usertype: usertype,
+         })
+
+
+      } catch (error) {
+         console.log(error)
+         req.flash('danger', 'Something went wrong')
+         res.redirect('back')
+      }
+
+   }
+)
+
+app.post(
+   '/:appointmentid/uploadChatPrescription',
+   upload.single('chat_prescription'),
+   (req, res) => {
+      try {
+         // const appointment = await Appointment.findById(req.params.appointmentid)
+         // console.log(req.file)
+         const file = req.file
+         // if (!file) {
+         //    req.flash('danger', 'Please select a file first.')
+         //    return res.redirect('back')
+         // }
+         console.log('req.file')
+         console.log(req.file)
+         // appointment.prescription = req.file.filename
+         // appointment.save()
+
+         res.send({ status: 'success', filename: req.file.filename })
+         // req.flash('success', 'Profile picture is updated')
+         // return res.redirect('/users/' + user._id)
+      } catch (error) {
+         console.log(error)
+      }
+   },
+)
 
 app.get('/:filename', (req, res) => {
    res.download(
