@@ -723,6 +723,26 @@ app.get('/searchdoc', (req, res) => {
    // res.render('doctor_search.ejs', { doctor: 'New Doctor' })
 })
 
+app.get('/doctor/profile', (req, res) => {
+   res.render('doctor/doctor_profile.ejs')
+})
+
+app.get('/doctor/profile/edit', (req, res) => {
+   res.render('doctor/edit_doctor.ejs')
+})
+
+app.get('/patient/profile', (req, res) => {
+   res.render('patient/patient_profile.ejs')
+})
+
+app.get('/patient/profile/edit', (req, res) => {
+   res.render('patient/edit_patient.ejs')
+})
+
+app.get('/feedback', (req, res) => {
+   res.render('session_over.ejs')
+})
+
 app.get('/register/success', (req, res) => {
    res.render('register_success.ejs')
 })
