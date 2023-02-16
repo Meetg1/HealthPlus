@@ -24,6 +24,7 @@ const flash = require('connect-flash')
 const axios = require('axios')
 const http = require('http')
 const server = http.createServer(app)
+const nodemailer = require('nodemailer');
 const socketio = require('socket.io')
 const io = socketio(server, {
    cors: {
@@ -860,7 +861,29 @@ app.post('/patientRegister', async (req, res) => {
             'success',
             'You are now registered! Please verify your account through mail.',
          )
-         console.log(link)
+         // console.log(link)
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: username,
+            subject: 'Verify your email address',
+            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
          // sendverifyMail(username, link).then((result) =>
          //    console.log('Email sent....', result),
          // )
