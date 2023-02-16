@@ -696,12 +696,74 @@ app.get('/admin/deletedoctor/:id', async (req, res) => {
       }
    })
 })
+app.post('/searchbar', (req, res) => {
+   const searchbar = req.body.searchbar;
+   // console.log(searchbar);
+   Doctor.find({
+      $or: [
+         { first_name: { $regex: new RegExp(searchbar, "i") } },
+         { last_name: { $regex: new RegExp(searchbar, "i") } },
+         { specialty: { $regex: new RegExp(searchbar, "i") } },
+         // ... add more properties to search as needed
+      ]
+   }, (err, response) => {
+      if (err) {
+         console.log(err);
+         res.send(err);
+      } else {
+         res.render('doctor_search.ejs', { doctors: response });
+      }
+   });
+})
+let filter = {};
+app.post('/search', (req, res) => {
+   const speciality = req.body.speciality;
+   const fee = req.body.fee;
+   const experience = req.body.experience;
+   // console.log(speciality);
+   // console.log(fee);
+   // console.log(experience);
+   // const dropdown = document.getElementById("speciality");
+   // const selectedOption = dropdown.options[dropdown.selectedIndex].value;
 
+   // const dropdown1 = document.getElementById("fee");
+   // const selectedOption1 = dropdown1.options[dropdown1.selectedIndex].value;
+   // const string = selectedOption1;
+   const range = fee.split("-");
+
+   const lowerBound = Number(range[0]);
+   const upperBound = Number(range[1]);
+
+   const feeobj = {
+      $gt: lowerBound,
+      $lt: upperBound
+   };
+
+   // const dropdown2 = document.getElementById("exp");
+   // const selectedOption2 = dropdown2.options[dropdown2.selectedIndex].value;
+   // const string2 = selectedOption2;
+   const range2 = experience.split("-");
+
+   const lowerBound2 = Number(range2[0]);
+   const upperBound2 = Number(range2[1]);
+
+   const expobj = {
+      $gt: lowerBound2,
+      $lt: upperBound2
+   };
+   filter = {
+      specialty: speciality,
+      consultationFee: feeobj,
+      yearsOfExperience: expobj
+   };
+   // console.log(filter);
+   res.redirect('/search');
+})
 app.get('/search', (req, res) => {
    axios
       .get('http://localhost:3000/searchdoc')
       .then(function (response) {
-         console.log(response.data)
+         // console.log(response.data)
          res.render('doctor_search.ejs', { doctors: response.data })
       })
       .catch((err) => {
@@ -709,7 +771,7 @@ app.get('/search', (req, res) => {
       })
 })
 app.get('/searchdoc', (req, res) => {
-   Doctor.find()
+   Doctor.find(filter)
       .then((doctor) => {
          res.send(doctor)
       })
