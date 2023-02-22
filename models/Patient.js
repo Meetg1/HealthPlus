@@ -20,6 +20,7 @@ const PatientSchema = new mongoose.Schema({
       unique: true,
    },
    gender: String,
+   age: String,
    scheduledAppointments: [
       {
          type: mongoose.Schema.Types.ObjectId,

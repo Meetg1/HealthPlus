@@ -29,7 +29,7 @@ a {
    text-decoration: none;
 }
 
-.btn {
+.btn1 {
    cursor: pointer;
    padding: 5px 15px;
    background: var(--light-color);
@@ -43,7 +43,7 @@ a {
 .prescriptionTab {
    background-color: var(--light-color);
    margin-left: 5%;
-   width: 20%;
+   width: 30%;
    border: 1px solid var(--dark-color-a);
    border-radius: 6px;
    padding: 5px;

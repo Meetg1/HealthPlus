@@ -112,17 +112,17 @@ slots.forEach((slot) => {
    })
 })
 
-const admin = {
-   username: 'meet',
-   password: '11',
-}
+// const admin = {
+//    username: 'meet',
+//    password: '11',
+// }
 
-Admin.create(admin, function (err, newlyCreated) {
-   if (err) {
-      console.log(err)
-   } else {
-      console.log(newlyCreated)
-      //redirect back to items page
-      // res.redirect("/items");
-   }
-})
+// Admin.create(admin, function (err, newlyCreated) {
+//    if (err) {
+//       console.log(err)
+//    } else {
+//       console.log(newlyCreated)
+//       //redirect back to items page
+//       // res.redirect("/items");
+//    }
+// })

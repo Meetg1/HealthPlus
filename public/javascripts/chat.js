@@ -98,13 +98,37 @@ chatForm.addEventListener('submit', (e) => {
    e.target.elements.msg.focus()
 })
 
+$("#rowAdder1").click(function () {
+   newRowAdd =
+      '<div class="form-row">' +
+      '<div class="form-group col-md-6">' +
+      '<label for="diag">Diagnosis</label>' +
+      '<input type="text" class="form-control" id="diag" placeholder="Diabetes" name="diagnosis[]" required> </div>' +
+      '<div class="form-group col-md-6"> <label for="dosage">Comment</label> <input type="text" class="form-control" id="dosage" placeholder="initial stage, severe..." name="diagnosis_comment[]" required> </div>' +
+      '</div>';
+
+   $('#diagnosis').append(newRowAdd);
+});
+
+$("#rowAdder2").click(function () {
+   newRowAdd =
+      '<div class="form-row">' +
+      '<div class="form-group col-md-6">' +
+      '<label for="medicineName">Medicine Name</label>' +
+      '<input type="text" class="form-control" id="medicineName" name="medicineName[]" placeholder="Crocin 500mg" required> </div>' +
+      '<div class="form-group col-md-6">  <label for="dosage">Dosage</label> <input type="text" class="form-control" id="dosage" name="dosage[]" placeholder="0-1-0, 1-1-1, 2-1-2" required> </div>' +
+      '</div>';
+
+   $('#meds').append(newRowAdd);
+});
+
 $('#chatPresc').submit(function (e) {
+   e.preventDefault()
    $.ajax({
       url: `/${room}/uploadChatPrescription`,
       type: 'POST',
-      data: new FormData(this),
-      processData: false,
-      contentType: false,
+      data: $(this).serialize(),
+
       success: function (result) {
          if (result.status == 'success') {
             alert('Prescription submitted successfully!')
@@ -115,7 +139,7 @@ $('#chatPresc').submit(function (e) {
          }
       },
    })
-   e.preventDefault()
+
 })
 
 function sendPhoto(files) {
@@ -257,3 +281,4 @@ $(document).on('click', '.chat-img', function (e) {
       modal.style.display = "none";
    }
 });
+

@@ -5,15 +5,15 @@
     <body>
         <%- include('partials/navbar')%>
 
-                    <!-- The Modal -->
+            <!-- The Modal -->
             <div id="myModal" class="modal">
 
                 <!-- The Close Button -->
                 <span class="close">&times;</span>
-            
+
                 <!-- Modal Content (The Image) -->
                 <img class="modal-content" id="img01">
-            
+
                 <!-- Modal Caption (Image Text) -->
                 <div id="caption"></div>
             </div>
@@ -23,7 +23,7 @@
                 <div class="chat-container">
                     <header class="chat-header">
                         <h1>HealthPlus</h1>
-                        <a href="/" id="leave-btn" class="btn">End Session</a>
+                        <a href="/" id="leave-btn" class="btn btn1">End Session</a>
                     </header>
                     <main class="chat-main">
                         <div class="chat-sidebar">
@@ -31,14 +31,36 @@
                             <ul id="users"></ul>
                         </div>
                         <div class="chat-messages">
-
+                            <% for( let i=0; i < chatMessages.length; i++ ) { %>
+                                <% if (chatMessages[i].username== `${currentUser.first_name} ${currentUser.last_name}`) { %>
+                                    <div class="message mymessage">
+                                        <p class="meta">You <span>
+                                                <%=chatMessages[i].time%>
+                                            </span></p>
+                                        <p class="text">
+                                            <%=chatMessages[i].text%>
+                                        </p>
+                                    </div>
+                                    <% }else{ %>
+                                        <div class="message othermessage">
+                                            <p class="meta">
+                                                <%=chatMessages[i].username%> <span>
+                                                        <%=chatMessages[i].time%>
+                                                    </span>
+                                            </p>
+                                            <p class="text">
+                                                <%=chatMessages[i].text%>
+                                            </p>
+                                        </div>
+                                        <%}%>
+                                            <% } %>
                         </div>
                     </main>
                     <div class="chat-form-container">
                         <form id="chat-form">
                             <input type="file" onchange="sendPhoto(this.files)" class="customm-file-input" />
                             <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
-                            <button class="btn"><i class="fas fa-paper-plane"></i> Send</button>
+                            <button class="btn btn1"><i class="fas fa-paper-plane"></i> Send</button>
                         </form>
                     </div>
                 </div>
@@ -48,8 +70,50 @@
                     <% if (usertype=='doctor' ) { %>
                         <form action="#" enctype="multipart/form-data" method="POST" style="display: grid;"
                             id="chatPresc">
-                            <input type="file" name="chat_prescription" id="pres" required>
-                            <input type="submit" value="Upload Prescription" />
+                            <input type="hidden" name="patientid" value="<%=patientid%>">
+                            <hr>
+                            <div class="mt-2" id="diagnosis">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="diag">Diagnosis</label>
+                                        <input type="text" class="form-control" id="diag" placeholder="Diabetes"
+                                            name="diagnosis[]" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="dosage">Comment</label>
+                                        <input type="text" class="form-control" id="dosage"
+                                            placeholder="initial stage, severe..." name="diagnosis_comment[]" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="rowAdder1" type="button" class="btn btn1 btn-dark">
+                                <span class="bi bi-plus-square-dotted">
+                                </span> ADD more diagnosis
+                            </button>
+                            <hr>
+                            <div id="meds">
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="medicineName">Medicine Name</label>
+                                        <input type="text" class="form-control" id="medicineName" name="medicineName[]"
+                                            placeholder="Crocin 500mg" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="dosage">Dosage</label>
+                                        <input type="text" class="form-control" id="dosage" name="dosage[]"
+                                            placeholder="0-1-0 / 1-1-1 / 2-1-2 for 12 days..." required>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="rowAdder2" type="button" class="btn btn1 btn-dark">
+                                <span class="bi bi-plus-square-dotted">
+                                </span> ADD more medicines
+                            </button>
+                            <label for="info">Any other comments</label>
+                            <textarea class="form-control" id="info" rows="3" name="info" required></textarea>
+                            <br>
+                            <input type="submit" class="btn btn-primary" value="Generate Prescription" />
+
                         </form>
                         <% }else{ %>
                             <div class="patient_pres_div">

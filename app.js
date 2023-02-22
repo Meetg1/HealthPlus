@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+const fs = require('fs')
 require('dotenv').config()
 const ejsMate = require('ejs-mate')
 const mongoose = require('mongoose')
@@ -9,6 +10,7 @@ const Patient = require('./models/Patient')
 const Doctor = require('./models/Doctor')
 const AppointmentSlot = require('./models/AppointmentSlot')
 const Appointment = require('./models/Appointment')
+const Chat = require('./models/Chat')
 const multer = require('multer')
 const { v1: uuidv1 } = require('uuid')
 const bodyParser = require('body-parser')
@@ -23,6 +25,8 @@ const methodOverride = require('method-override')
 const flash = require('connect-flash')
 const axios = require('axios')
 const http = require('http')
+const PizZip = require("pizzip");
+const Docxtemplater = require("docxtemplater");
 const server = http.createServer(app)
 const socketio = require('socket.io')
 const io = socketio(server, {
@@ -67,8 +71,8 @@ var storage = multer.diskStorage({
       cb(null, path.join(__dirname, 'public/images/prescriptions'))
    },
    filename: function (req, chat_prescription, cb) {
-      console.log('chat_prescription')
-      console.log(chat_prescription)
+      // console.log('chat_prescription')
+      // console.log(req.chat_prescription)
       cb(null, uuidv1() + path.extname(chat_prescription.originalname))
    },
 })
@@ -106,14 +110,12 @@ passport.serializeUser((obj, done) => {
 
 passport.deserializeUser((obj, done) => {
    if (obj.type === 'Patient') {
-      console.log('bye')
       Patient.findById(obj.id).then((patient) => done(null, patient));
    } else {
-      console.log('hi')
       Doctor.findById(obj.id).then((doctor) => done(null, doctor));
    }
 });
-//===================================================================
+// ====================================================================================
 
 //Express Messages Middle ware
 app.use(require('connect-flash')())
@@ -236,16 +238,22 @@ const isAdmin = async function (req, res, next) {
    }
 }
 
-const fs = require('fs')
+
 // ==========================SOCKET.IO====================================
 const { formatMessage, getRoomUsers } = require('./utils/messages')
 
 const users = {}
+const chats = {}
 
 io.on('connection', (socket) => {
    socket.on('joinRoom', ({ username, room }) => {
       users[socket.id] = { username: username, room: room }
-
+      Chat.findOne({ appointmentId: room }, (err, foundChat) => {
+         if (err) console.error(error)
+         else {
+            chats[room] = foundChat
+         }
+      })
       socket.join(room)
 
       // Welcome current user
@@ -264,11 +272,17 @@ io.on('connection', (socket) => {
 
    // Listen for chatMessage
    socket.on('chatMessage', (msg) => {
-      const user = users[socket.id]
 
+      const user = users[socket.id]
+      // console.log(user.room)
       socket
          .to(user.room)
          .emit('othermessage', formatMessage(user.username, msg))
+
+      // update chat document in DB
+      const chat = chats[user.room]
+      chat.messages.push(formatMessage(user.username, msg))
+      chat.save()
    })
 
    socket.on('sendPhoto', (file, callback) => {
@@ -442,7 +456,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/demo', (req, res) => {
-   res.render('demo.ejs')
+   res.render('translateTest.ejs')
 })
 
 app.get('/registerChoice', (req, res) => {
@@ -519,46 +533,64 @@ app.post(
             const sundayAvailableAppointmentSlots = []
 
             if (monday) {
-               monday.forEach((slot) => {
+               for (let index = 0; index < monday.length; index++) {
+                  slot = monday[index]
                   index = parseInt(slot) - 1
                   mondayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
+               // monday.forEach((slot) => {
+               //    index = parseInt(slot) - 1
+               //    mondayAvailableAppointmentSlots.push(dbSlots[index]._id)
+               // })
             }
             if (tuesday) {
-               tuesday.forEach((slot) => {
+               for (let index = 0; index < tuesday.length; index++) {
+                  slot = tuesday[index]
                   index = parseInt(slot) - 1
                   tuesdayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
             }
             if (wednesday) {
-               wednesday.forEach((slot) => {
+               for (let index = 0; index < wednesday.length; index++) {
+                  slot = wednesday[index]
                   index = parseInt(slot) - 1
                   wednesdayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
             }
             if (thursday) {
-               thursday.forEach((slot) => {
+               for (let index = 0; index < thursday.length; index++) {
+                  slot = thursday[index]
                   index = parseInt(slot) - 1
                   thursdayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
             }
             if (friday) {
-               friday.forEach((slot) => {
+               for (let index = 0; index < friday.length; index++) {
+                  slot = friday[index]
                   index = parseInt(slot) - 1
                   fridayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
             }
             if (saturday) {
-               saturday.forEach((slot) => {
+               for (let index = 0; index < saturday.length; index++) {
+                  slot = saturday[index]
                   index = parseInt(slot) - 1
                   saturdayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
             }
             if (sunday) {
-               sunday.forEach((slot) => {
+               for (let index = 0; index < sunday.length; index++) {
+                  slot = sunday[index]
                   index = parseInt(slot) - 1
                   sundayAvailableAppointmentSlots.push(dbSlots[index]._id)
-               })
+
+               }
             }
 
             const doctor = new Doctor({
@@ -605,11 +637,11 @@ app.get('/patientRegister', (req, res) => {
 })
 
 app.get('/patientlogin', (req, res) => {
-   res.render('patientlogin.ejs')
+   res.render('patient/patientlogin.ejs')
 })
 
 app.get('/doctorlogin', (req, res) => {
-   res.render('doctorlogin.ejs')
+   res.render('doctor/doctorlogin.ejs')
 })
 
 app.get('/admin_login', (req, res) => {
@@ -699,7 +731,7 @@ app.get('/register/pending', (req, res) => {
 
 app.post('/patientRegister', async (req, res) => {
    try {
-      const { username, fname, lname, phone, gender, location, pswd } = req.body
+      const { username, fname, lname, phone, gender, age, location, pswd } = req.body
 
       req.checkBody('fname', 'Name is required').notEmpty()
       req.checkBody('lname', 'Name is required').notEmpty()
@@ -729,6 +761,7 @@ app.post('/patientRegister', async (req, res) => {
             last_name: lname,
             phone: phone,
             gender: gender,
+            age: age,
             location: location,
          })
          const registedUser = await Patient.register(patient, pswd)
@@ -981,13 +1014,25 @@ app.get(
          }
 
          const fullname = `${req.user.first_name} ${req.user.last_name}`
+         const patientid = foundAppointment.patientid
+
+         let chatMessages = []
+
+         // create Chat object in DB if opening chat for first time
+         let foundChat = await Chat.findOne({ appointmentId: appointmentid })
+         if (!foundChat) {
+            await Chat.create({ appointmentId: appointmentid })
+         } else {
+            chatMessages = foundChat.messages
+         }
 
          res.render('chat.ejs', {
             username: fullname,
             room: appointmentid,
             usertype: usertype,
+            patientid: patientid,
+            chatMessages: chatMessages
          })
-
 
       } catch (error) {
          console.log(error)
@@ -998,26 +1043,90 @@ app.get(
    }
 )
 
+const generatePrescriptionTemplate = async (req, res, next) => {
+
+   // Load the docx file as binary content
+   const content = fs.readFileSync(
+      path.resolve(__dirname, "prescription_template.docx"),
+      "binary"
+   );
+
+   const zip = new PizZip(content);
+
+   const doc = new Docxtemplater(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+   });
+
+   // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+   // console.log('req.body')
+   // console.log(req.body)
+   const patient = await Patient.findById(req.body.patientid)
+   // console.log(patient)
+
+   const doctor = req.user
+   const diag = []
+   const meds = []
+
+   for (let index = 0; index < req.body.diagnosis.length; index++) {
+      diag.push({ "name": req.body.diagnosis[index], "comment": req.body.diagnosis_comment[index] })
+   }
+
+   for (let index = 0; index < req.body.medicineName.length; index++) {
+      meds.push({ "name": req.body.medicineName[index], "dosage": req.body.dosage[index] })
+   }
+
+   prescriptionJSON = {
+      "date": moment().format("DD/MM/YYYY"),
+      "dr_fname": doctor.first_name,
+      "dr_lname": doctor.last_name,
+      "dr_speciality": doctor.specialty,
+      "dr_clinic_location": doctor.clinicLocation,
+      "patient_name": patient.first_name + ' ' + patient.last_name,
+      "patient_age": patient.age,
+      "patient_gender": patient.gender,
+      "diag": diag,
+      "meds": meds,
+      "info": req.body.info
+   }
+
+   doc.render(prescriptionJSON);
+
+   const buf = doc.getZip().generate({
+      type: "nodebuffer",
+      // compression: DEFLATE adds a compression step.
+      // For a 50MB output document, expect 500ms additional CPU time
+      compression: "DEFLATE",
+   });
+
+   // buf is a nodejs Buffer, you can either write it to a
+   // file or res.send it with express for example.
+   let filename = patient.first_name + '_' + patient.last_name + '_prescription.docx'
+   fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
+   req.chat_prescription = filename
+   next()
+}
+
 app.post(
    '/:appointmentid/uploadChatPrescription',
-   upload.single('chat_prescription'),
-   (req, res) => {
+   generatePrescriptionTemplate,
+   // upload.single('chat_prescription'),
+   async (req, res) => {
       try {
-         // const appointment = await Appointment.findById(req.params.appointmentid)
+         const appointment = await Appointment.findById(req.params.appointmentid)
          // console.log(req.file)
-         const file = req.file
+         // const file = req.file
          // if (!file) {
          //    req.flash('danger', 'Please select a file first.')
          //    return res.redirect('back')
          // }
-         console.log('req.file')
-         console.log(req.file)
-         // appointment.prescription = req.file.filename
-         // appointment.save()
 
-         res.send({ status: 'success', filename: req.file.filename })
-         // req.flash('success', 'Profile picture is updated')
-         // return res.redirect('/users/' + user._id)
+         appointment.prescription = req.chat_prescription
+         appointment.save()
+
+         // console.log(req)
+         res.send({ status: 'success', filename: req.chat_prescription })
+
       } catch (error) {
          console.log(error)
       }

@@ -17,6 +17,8 @@
       "connect-flash": "^0.1.1",
       "cookie-parser": "^1.4.6",
       "cookie-session": "^1.4.0",
+      "docx-pdf": "^0.0.1",
+      "docxtemplater": "^3.34.0",
       "dotenv": "^8.6.0",
       "ejs": "^3.1.6",
       "ejs-mate": "^3.0.0",
@@ -33,6 +35,7 @@
       "passport": "^0.4.1",
       "passport-local": "^1.0.0",
       "passport-local-mongoose": "^6.1.0",
+      "pizzip": "^3.1.4",
       "socket.io": "^4.5.3",
       "socket.io-client": "^4.5.3"
    }

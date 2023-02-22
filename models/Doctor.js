@@ -62,49 +62,49 @@ const DoctorSchema = new mongoose.Schema({
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    tuesdayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    wednesdayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    thursdayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    fridayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    saturdayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    sundayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
          type: mongoose.Schema.Types.ObjectId,
-         ref: 'AppointmentSlots',
+         ref: 'AppointmentSlot',
       },
    ],
    scheduledAppointments: [
