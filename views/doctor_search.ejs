@@ -1,146 +1,169 @@
 <% layout('layouts/boilerplate') %>
-<body>
-    <link rel="stylesheet" href="../stylesheets/doctor_search.css" />
 
-    <%- include('./partials/navbar')%>
+    <body>
+        <link rel="stylesheet" href="../stylesheets/doctor_search.css" />
 
-    <br><br><br><br>
-<div class="d-flex justify-content-center h-100">
-    <div class="searchbar">
-      <input class="search_input" type="text" name="" placeholder="Search for Doctors...">
-      <a href="#" class="search_icon"><i class="fas fa-search"></i></a>  
-    </div>
-</div>
+        <%- include('./partials/navbar')%>
 
-<section class="search-sec">
-    <div class="container">
-        <form action="#" method="post" novalidate="novalidate">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                            <!-- <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> -->
-                            <select id="speciality" class="form-control search-slt">
-                                <option selected disabled>Select Speciality</option>
-                                <option value="Anatomical Pathology">Anatomical Pathology</option>
-                                <option value="Anesthesiology">Anesthesiology</option>
-                                <option value="Cardiology">Cardiology</option>
-                                <option value="Cardiovascular/Thoracic Surgery">Cardiovascular/Thoracic Surgery</option>
-                                <option value="Clinical Immunology/Allergy">Clinical Immunology/Allergy</option>
-                                <option value="Critical Care Medicine">Critical Care Medicine</option>
-                                <option value="Diagnostic Radiology">Diagnostic Radiology</option>
-                                <option value="Emergency Medicine">Emergency Medicine</option>
-                                <option value="Endocrinology and Metabolism">Endocrinology and Metabolism</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                            <!-- <input type="text" class="form-control search-slt" placeholder="Enter Drop City"> -->
-                            <select class="form-control search-slt" id="fee">
-                                <option selected disabled>Select Consultation Fee</option>
-                                <option value="0-100">Upto ₹100</option>
-                                <option value="100-200" >₹100 - ₹200</option>
-                                <option value="200-300">₹200 - ₹300</option>
-                                <option value="300-500">₹300 - ₹500</option>
-                                <option value="500-100000">More than ₹500 </option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                            <select class="form-control search-slt" id="exp">
-                                <option selected disabled>Select Experience</option>
-                                <option value="0-1">Less than an year</option>
-                                <option value="1-3">1 - 3 years</option>
-                                <option value="3-5">3 - 5 years</option>
-                                <option value="5-10">5 - 10 years</option>
-                                <option value="10-80">More than 10 years</option>
-                            </select>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                            <select class="form-control search-slt" id="location">
-                                <option selected disabled>Select Location</option>
-                                <option>In Mumbai</option>
-                                <option>Outside Mumbai but within Maharashtra</option>
-                                <option>Outside Maharashtra</option>
-                            </select>
-                        </div>
-                    </div>
+            <br><br><br><br>
+            <div class="d-flex justify-content-center h-100">
+                <div class="searchbar">
+                    <form method="POST" action="/searchbar">
+                        <input type="text" name="searchbar" placeholder="Search for Doctors...">
+                        <button type="submit">Search</button>
+                    </form>
+                    <!-- <input class="search_input" type="text" name="" placeholder="Search for Doctors...">
+                        <a href="#" class="search_icon"><i class="fas fa-search"></i></a> -->
                 </div>
             </div>
-            <br>
-            <div class="text-center">
-                <button type="button" class="btn wrn-btn" onclick="search()">Search</button>
-            </div>
-        </form>
-    </div>
-</section>
+
+            <section class="search-sec">
+                <div class="container">
+                    <form action="/search" method="post" novalidate="novalidate">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="row">
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <!-- <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> -->
+                                        <select id="speciality" class="form-control search-slt" name="speciality">
+                                            <option selected disabled>Select Speciality</option>
+                                            <option value="Anatomical Pathology">Anatomical Pathology</option>
+                                            <option value="Anesthesiology">Anesthesiology</option>
+                                            <option value="Cardiology">Cardiology</option>
+                                            <option value="Cardiovascular/Thoracic Surgery">Cardiovascular/Thoracic
+                                                Surgery</option>
+                                            <option value="Clinical Immunology/Allergy">Clinical Immunology/Allergy
+                                            </option>
+                                            <option value="Critical Care Medicine">Critical Care Medicine</option>
+                                            <option value="Diagnostic Radiology">Diagnostic Radiology</option>
+                                            <option value="Emergency Medicine">Emergency Medicine</option>
+                                            <option value="Endocrinology and Metabolism">Endocrinology and Metabolism
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <!-- <input type="text" class="form-control search-slt" placeholder="Enter Drop City"> -->
+                                        <select class="form-control search-slt" id="fee" name="fee">
+                                            <option selected disabled>Select Consultation Fee</option>
+                                            <option value="0-100">Upto ₹100</option>
+                                            <option value="100-200">₹100 - ₹200</option>
+                                            <option value="200-300">₹200 - ₹300</option>
+                                            <option value="300-500">₹300 - ₹500</option>
+                                            <option value="500-100000">More than ₹500 </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <select class="form-control search-slt" id="exp" name="experience">
+                                            <option selected disabled>Select Experience</option>
+                                            <option value="0-1">Less than an year</option>
+                                            <option value="1-3">1 - 3 years</option>
+                                            <option value="3-5">3 - 5 years</option>
+                                            <option value="5-10">5 - 10 years</option>
+                                            <option value="10-80">More than 10 years</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <select class="form-control search-slt" id="location">
+                                            <option selected disabled>Select Location</option>
+                                            <option>In Mumbai</option>
+                                            <option>Outside Mumbai but within Maharashtra</option>
+                                            <option>Outside Maharashtra</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="text-center">
+                            <button type="submit" class="btn wrn-btn" onclick="search()">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
 
 
-<section id="doctors" class="doctors">
-    <div class="container">
-        <div class="section-title"><h2>Associated Doctors</h2></div>
-        <div class="row">
-            <% for(var i=0;i<doctors.length;i++) {%>
-                <div class="col-lg-4">
-                    <div class="member d-flex align-items-start">
-                        <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-                        <div class="member-info"><h4><%= doctors[i].first_name %></h4> <span><%= doctors[i].speciality %></span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
-                            <p style="padding-right: 15px;"><b>Years of Experience: </b><%= doctors[i].yearsOfExperience %></p>
-                            <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i><%= doctors[i].consultationFee %></p>
-                            <p><b>Location: </b><%= doctors[i].clinicLocation %></p>
-                            <!-- <div class="social"> 
+            <section id="doctors" class="doctors">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Associated Doctors</h2>
+                    </div>
+                    <div class="row">
+                        <% for(var i=0;i<doctors.length;i++) {%>
+                            <div class="col-lg-4">
+                                <div class="member d-flex align-items-start">
+                                    <div class="pic"><img
+                                            src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg"
+                                            class="img-fluid" alt=""></div>
+                                    <div class="member-info">
+                                        <h4>
+                                            <%= doctors[i].first_name %>
+                                        </h4> <span>
+                                            <%= doctors[i].specialty %>
+                                        </span>
+                                        <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                                        <p style="padding-right: 15px;"><b>Years of Experience: </b>
+                                            <%= doctors[i].yearsOfExperience %>
+                                        </p>
+                                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>
+                                            <%= doctors[i].consultationFee %>
+                                        </p>
+                                        <p><b>Location: </b>
+                                            <%= doctors[i].clinicLocation %>
+                                        </p>
+                                        <!-- <div class="social"> 
                                 <a href=""><i class="fa-brands fa-twitter"></i></a> 
                                 <a href=""><i class="fa-brands fa-facebook"></i></a> 
                                 <a href=""><i class="fa-brands fa-instagram"></i></a> 
                                 <a href=""> <i class="fa-brands fa-linkedin"></i> </a>
                             </div> -->
-                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } %>
                     </div>
                 </div>
-                <% } %>
-        </div>
-    </div>
-</section>
-<br><br>
-<div id="json">
-</div>
-    <%- include('./partials/footer')%>
-</body>
-<script>
-    function createJSON() {
-    // Get the selected option from the dropdown
-    const dropdown = document.getElementById("speciality");
-    const selectedOption = dropdown.options[dropdown.selectedIndex].value;
+            </section>
+            <br><br>
+            <div id="json">
+            </div>
+            <%- include('./partials/footer')%>
+    </body>
+    <script>
+        function createJSON() {
+            // Get the selected option from the dropdown
+            const dropdown = document.getElementById("speciality");
+            const selectedOption = dropdown.options[dropdown.selectedIndex].value;
 
-    const dropdown1 = document.getElementById("fee");
-    const selectedOption1 = dropdown1.options[dropdown1.selectedIndex].value;
-    const string = selectedOption1;
-    const range = string.split("-");
+            const dropdown1 = document.getElementById("fee");
+            const selectedOption1 = dropdown1.options[dropdown1.selectedIndex].value;
+            const string = selectedOption1;
+            const range = string.split("-");
 
-    const lowerBound = Number(range[0]);
-    const upperBound = Number(range[1]);
+            const lowerBound = Number(range[0]);
+            const upperBound = Number(range[1]);
 
-    const obj = {
-    $gt: lowerBound,
-    $lt: upperBound
-    };
+            const obj = {
+                $gt: lowerBound,
+                $lt: upperBound
+            };
 
-    const dropdown2 = document.getElementById("exp");
-    const selectedOption2 = dropdown2.options[dropdown2.selectedIndex].value;
-    const string2 = selectedOption2;
-    const range2 = string2.split("-");
+            const dropdown2 = document.getElementById("exp");
+            const selectedOption2 = dropdown2.options[dropdown2.selectedIndex].value;
+            const string2 = selectedOption2;
+            const range2 = string2.split("-");
 
-    const lowerBound2 = Number(range2[0]);
-    const upperBound2 = Number(range2[1]);
+            const lowerBound2 = Number(range2[0]);
+            const upperBound2 = Number(range2[1]);
 
-    const obj2 = {
-    $gt: lowerBound2,
-    $lt: upperBound2
-    };
-    const json = {
-        speciality : selectedOption,
-        consultationFee : obj,
-        yearsOfExperience : obj2
-    };
-  }
-  
-</script>
+            const obj2 = {
+                $gt: lowerBound2,
+                $lt: upperBound2
+            };
+            const json = {
+                specialty: selectedOption,
+                consultationFee: obj,
+                yearsOfExperience: obj2
+            };
+        }
 
+    </script>

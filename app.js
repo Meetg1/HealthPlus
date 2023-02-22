@@ -28,6 +28,7 @@ const http = require('http')
 const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 const server = http.createServer(app)
+const nodemailer = require('nodemailer');
 const socketio = require('socket.io')
 const io = socketio(server, {
    cors: {
@@ -694,12 +695,74 @@ app.get('/admin/deletedoctor/:id', async (req, res) => {
       }
    })
 })
+app.post('/searchbar', (req, res) => {
+   const searchbar = req.body.searchbar;
+   // console.log(searchbar);
+   Doctor.find({
+      $or: [
+         { first_name: { $regex: new RegExp(searchbar, "i") } },
+         { last_name: { $regex: new RegExp(searchbar, "i") } },
+         { specialty: { $regex: new RegExp(searchbar, "i") } },
+         // ... add more properties to search as needed
+      ]
+   }, (err, response) => {
+      if (err) {
+         console.log(err);
+         res.send(err);
+      } else {
+         res.render('doctor_search.ejs', { doctors: response });
+      }
+   });
+})
+let filter = {};
+app.post('/search', (req, res) => {
+   const speciality = req.body.speciality;
+   const fee = req.body.fee;
+   const experience = req.body.experience;
+   // console.log(speciality);
+   // console.log(fee);
+   // console.log(experience);
+   // const dropdown = document.getElementById("speciality");
+   // const selectedOption = dropdown.options[dropdown.selectedIndex].value;
 
+   // const dropdown1 = document.getElementById("fee");
+   // const selectedOption1 = dropdown1.options[dropdown1.selectedIndex].value;
+   // const string = selectedOption1;
+   const range = fee.split("-");
+
+   const lowerBound = Number(range[0]);
+   const upperBound = Number(range[1]);
+
+   const feeobj = {
+      $gt: lowerBound,
+      $lt: upperBound
+   };
+
+   // const dropdown2 = document.getElementById("exp");
+   // const selectedOption2 = dropdown2.options[dropdown2.selectedIndex].value;
+   // const string2 = selectedOption2;
+   const range2 = experience.split("-");
+
+   const lowerBound2 = Number(range2[0]);
+   const upperBound2 = Number(range2[1]);
+
+   const expobj = {
+      $gt: lowerBound2,
+      $lt: upperBound2
+   };
+   filter = {
+      specialty: speciality,
+      consultationFee: feeobj,
+      yearsOfExperience: expobj
+   };
+   // console.log(filter);
+   res.redirect('/search');
+})
 app.get('/search', (req, res) => {
    axios
       .get('http://localhost:3000/searchdoc')
       .then(function (response) {
-         console.log(response.data)
+         // console.log(response.data)
          res.render('doctor_search.ejs', { doctors: response.data })
       })
       .catch((err) => {
@@ -707,7 +770,7 @@ app.get('/search', (req, res) => {
       })
 })
 app.get('/searchdoc', (req, res) => {
-   Doctor.find()
+   Doctor.find(filter)
       .then((doctor) => {
          res.send(doctor)
       })
@@ -719,6 +782,26 @@ app.get('/searchdoc', (req, res) => {
          })
       })
    // res.render('doctor_search.ejs', { doctor: 'New Doctor' })
+})
+
+app.get('/doctor/profile', (req, res) => {
+   res.render('doctor/doctor_profile.ejs')
+})
+
+app.get('/doctor/profile/edit', (req, res) => {
+   res.render('doctor/edit_doctor.ejs')
+})
+
+app.get('/patient/profile', (req, res) => {
+   res.render('patient/patient_profile.ejs')
+})
+
+app.get('/patient/profile/edit', (req, res) => {
+   res.render('patient/edit_patient.ejs')
+})
+
+app.get('/feedback', (req, res) => {
+   res.render('session_over.ejs')
 })
 
 app.get('/register/success', (req, res) => {
@@ -777,7 +860,29 @@ app.post('/patientRegister', async (req, res) => {
             'success',
             'You are now registered! Please verify your account through mail.',
          )
-         console.log(link)
+         // console.log(link)
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: username,
+            subject: 'Verify your email address',
+            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
          // sendverifyMail(username, link).then((result) =>
          //    console.log('Email sent....', result),
          // )
