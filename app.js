@@ -122,7 +122,13 @@ passport.deserializeUser((obj, done) => {
 app.use(require('connect-flash')())
 app.use(function (req, res, next) {
    //giving access of loggedIn user to every templates(in views dir)
-   res.locals.currentUser = req.user
+   if (req.user) {
+      res.locals.currentUser = req.user
+   } else {
+      res.locals.currentUser = undefined
+   }
+
+   // res.locals.currentUserPrefLang = req.user.preferredLanguage
    res.locals.messages = require('express-messages')(req, res)
    next()
 })
@@ -455,6 +461,26 @@ var validator = function (req, res, next) {
 app.get('/', (req, res) => {
    res.render('home.ejs')
 })
+
+app.post('/setPrefLang', async (req, res) => {
+   const lang = parseInt(req.body.language)
+   try {
+      if (req.user instanceof Doctor) {
+         let foundUser = await Doctor.findById(req.user._id)
+         foundUser.preferredLanguage = lang
+         await foundUser.save()
+      } else {
+         let foundUser = await Patient.findById(req.user._id)
+         foundUser.preferredLanguage = lang
+         await foundUser.save()
+      }
+
+      res.redirect('back')
+   } catch (error) {
+      console.log(error)
+   }
+})
+
 
 app.get('/demo', (req, res) => {
    res.render('translateTest.ejs')
@@ -860,29 +886,29 @@ app.post('/patientRegister', async (req, res) => {
             'success',
             'You are now registered! Please verify your account through mail.',
          )
-         // console.log(link)
-         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true, // use SSL
-            auth: {
-               user: 'healthplus182@gmail.com', // your email address
-               pass: 'aiwqesgsnywrsrcu' // your email password
-            }
-         });
-         const mailOptions = {
-            from: 'healthplus182@gmail.com',
-            to: username,
-            subject: 'Verify your email address',
-            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
-         };
-         transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-               console.log(error);
-            } else {
-               console.log('Email sent: ' + info.response);
-            }
-         });
+         console.log(link)
+         // const transporter = nodemailer.createTransport({
+         //    host: 'smtp.gmail.com',
+         //    port: 465,
+         //    secure: true, // use SSL
+         //    auth: {
+         //       user: 'healthplus182@gmail.com', // your email address
+         //       pass: 'aiwqesgsnywrsrcu' // your email password
+         //    }
+         // });
+         // const mailOptions = {
+         //    from: 'healthplus182@gmail.com',
+         //    to: username,
+         //    subject: 'Verify your email address',
+         //    html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         // };
+         // transporter.sendMail(mailOptions, (error, info) => {
+         //    if (error) {
+         //       console.log(error);
+         //    } else {
+         //       console.log('Email sent: ' + info.response);
+         //    }
+         // });
          // sendverifyMail(username, link).then((result) =>
          //    console.log('Email sent....', result),
          // )

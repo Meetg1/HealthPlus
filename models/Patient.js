@@ -21,6 +21,11 @@ const PatientSchema = new mongoose.Schema({
    },
    gender: String,
    age: String,
+   preferredLanguage: {
+      type: Number,
+      required: true,
+      default: -1
+   },
    scheduledAppointments: [
       {
          type: mongoose.Schema.Types.ObjectId,

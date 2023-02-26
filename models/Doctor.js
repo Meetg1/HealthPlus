@@ -22,6 +22,11 @@ const DoctorSchema = new mongoose.Schema({
    },
    gender: String,
    clinicLocation: String,
+   preferredLanguage: {
+      type: Number,
+      required: true,
+      default: -1
+   },
    aadharCard: {
       type: String,
       // required: true,
