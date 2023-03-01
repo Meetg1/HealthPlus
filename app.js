@@ -810,19 +810,40 @@ app.get('/searchdoc', (req, res) => {
    // res.render('doctor_search.ejs', { doctor: 'New Doctor' })
 })
 
-app.get('/doctor/profile', (req, res) => {
+function loggedInDoctor(req, res, next) {
+   if (req.user instanceof Doctor) {
+      next();
+   }
+   // else if (req.user instanceof Patient) {
+   //    next()
+   // }
+   else {
+      res.redirect('/doctorlogin');
+   }
+}
+
+function loggedInPatient(req, res, next) {
+   if (req.user instanceof Patient) {
+      next();
+   }
+   else {
+      res.redirect('/patientlogin');
+   }
+}
+
+app.get('/doctor/profile', loggedInDoctor, function (req, res, next) {
    res.render('doctor/doctor_profile.ejs')
 })
 
-app.get('/doctor/profile/edit', (req, res) => {
+app.get('/doctor/profile/edit', loggedInDoctor, function (req, res, next) {
    res.render('doctor/edit_doctor.ejs')
 })
 
-app.get('/patient/profile', (req, res) => {
+app.get('/patient/profile', loggedInPatient, function (req, res, next) {
    res.render('patient/patient_profile.ejs')
 })
 
-app.get('/patient/profile/edit', (req, res) => {
+app.get('/patient/profile/edit', loggedInPatient, function (req, res, next) {
    res.render('patient/edit_patient.ejs')
 })
 
@@ -876,42 +897,42 @@ app.post('/patientRegister', async (req, res) => {
          const registedUser = await Patient.register(patient, pswd)
          console.log(registedUser)
 
-         // const secret = JWT_SECRET
-         // const payload = {
-         //    username: patient.username,
-         // }
-         // const token = jwt.sign(payload, secret, { expiresIn: '15m' })
+         const secret = JWT_SECRET
+         const payload = {
+            username: patient.username,
+         }
+         const token = jwt.sign(payload, secret, { expiresIn: '15m' })
          const link = `http://localhost:3000/verify-email/${patient.usernameToken}`
          req.flash(
             'success',
             'You are now registered! Please verify your account through mail.',
          )
          console.log(link)
-         // const transporter = nodemailer.createTransport({
-         //    host: 'smtp.gmail.com',
-         //    port: 465,
-         //    secure: true, // use SSL
-         //    auth: {
-         //       user: 'healthplus182@gmail.com', // your email address
-         //       pass: 'aiwqesgsnywrsrcu' // your email password
-         //    }
-         // });
-         // const mailOptions = {
-         //    from: 'healthplus182@gmail.com',
-         //    to: username,
-         //    subject: 'Verify your email address',
-         //    html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
-         // };
-         // transporter.sendMail(mailOptions, (error, info) => {
-         //    if (error) {
-         //       console.log(error);
-         //    } else {
-         //       console.log('Email sent: ' + info.response);
-         //    }
-         // });
-         // sendverifyMail(username, link).then((result) =>
-         //    console.log('Email sent....', result),
-         // )
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: username,
+            subject: 'Verify your email address',
+            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
+         sendverifyMail(username, link).then((result) =>
+            console.log('Email sent....', result),
+         )
          res.redirect('back')
       }
    } catch (error) {
