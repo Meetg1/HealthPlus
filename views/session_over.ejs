@@ -19,14 +19,15 @@
                             <!-- <span class="intro-1">This is fake Data</span> -->
                             <div class="mt-2"> <span class="intro-2" style="font: bolder;">Thankyou for consultation
                                     with HealthPlus.</span> </div>
-                            <div class="intro-3">Please give us your valuable review. </div>
-                            <div class="rating">
-                                <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
-                                <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
-                                <input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
-                                <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
-                                <input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
-                            </div>
+                            <form method="POST" action="/feedback/<%= appointmentid%>">
+                                <div class="intro-3">Please give us your valuable review. </div>
+                                <div class="rating">
+                                    <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
+                                    <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
+                                    <input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
+                                    <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
+                                    <input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -35,8 +36,8 @@
 
             <div class="text-center">
                 <div class="wrapper">
-                    <input type="radio" name="select" id="option-1">
-                    <input type="radio" name="select" id="option-2">
+                    <input type="radio" name="select" id="option-1" value="true">
+                    <input type="radio" name="select" id="option-2" value="false">
                     <label for="option-1" class="option option-1">
                         <!-- <div class="tick"></div> -->
                         <span>I Recommend Doctor</span>
@@ -53,14 +54,18 @@
             <div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="react-tabs-75459"
                 aria-labelledby="react-tabs-75458">
                 <div class="c-profile--sections">
-                    <div>
-                        <div class="d-flex flex-row add-comment-section mt-4 mb-4">
-                            <!-- <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"> -->
-                            <input type="text" class="form-control mr-3" placeholder="Reason to Consult.."><br>
-                            <input type="text" class="form-control mr-3" placeholder="Your Feedback"><button
-                                class="comment" type="button">Comment</button>
-                        </div>
-                        <div class="feedback--list-container">
+                    <div class="d-flex flex-row add-comment-section mt-4 mb-4">
+                        <!-- <img class="img-fluid img-responsive rounded-circle mr-2" src="https://i.imgur.com/qdiP4DB.jpg" width="38"> -->
+                        <input type="text" class="form-control mr-3" placeholder="Reason to Consult.."
+                            name="ConsultReason"><br>
+                        <input type="text" class="form-control mr-3" placeholder="Your Feedback" name="Feedback">
+                        <!-- <button
+                            class="comment" type="button">Comment</button> -->
+                        <button type="submit">Submit</button>
+                    </div>
+                    </form>
+                    <div class="feedback--list-container">
+                        <% for (var i=0; i < review.length; i++) { %>
                             <div>
                                 <div class="pure-g feedback--item u-cushion--medium-vertical"
                                     data-qa-id="feedback_item">
@@ -73,8 +78,9 @@
                                             class="u-d-flex flex-wrap flex-jc-space-between u-gap-12 u-cushion--small-top u-cushion--bottom">
                                             <div class="u-d-flex flex-wrap u-gap-12">
                                                 <div class="u-color--grey3"><span class="u-bold"
-                                                        data-qa-id="reviewer-name">Abhyuday
-                                                        Sharma</span>&nbsp;<span class="u-bold"></span></div>
+                                                        data-qa-id="reviewer-name">
+                                                        <%= review[i].patientname %>
+                                                    </span>&nbsp;<span class="u-bold"></span></div>
                                                 <div><span
                                                         class="u-blue-2-background u-smallest-font u-color--white u-round-corner--12 u-cushion--right-less u-cushion--small-left u-cushion--small-top u-cushion--small-bottom"></span>
                                                 </div>
@@ -86,112 +92,40 @@
                                         <div class="feedback__body">
                                             <p class="feedback__content u-cushion--bottom u-title-font u-bold"
                                                 data-qa-id="visited-for"><span><span>Visited
-                                                        For</span>&nbsp;</span><span class="procedure">Laser Gum
-                                                    Surgery</span></p>
-                                            <div class="u-cushion--small-bottom u-large-font"><span><img
-                                                        src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
-                                                        width="17px" height="17px"></span><span
-                                                    style="font-weight: 500;margin-left: 6px;">Doctor
-                                                    Recommended</span></div>
-                                            <!-- <p class="feedback__content u-cushion--small-bottom u-large-font" data-qa-id="happy-with"><span><span>Happy with:</span>&nbsp;</span><span class="feedback__context">Doctor friendliness</span><span class="feedback__context">Explanation of the health issue</span><span class="feedback__context">Treatment satisfaction</span></p> -->
-                                            <div>
-                                                <p class="feedback__content u-large-font " data-qa-id="review-text">Had
-                                                    a quick
-                                                    consultation and good detailed feedback on the gum and teeth health.
-                                                    Wild
-                                                    strongly recommend</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pure-g feedback--item u-cushion--medium-vertical"
-                                    data-qa-id="feedback_item">
-                                    <div class="pure-u-2-24">
-                                        <div class="feedback__icon" data-qa-id="reviewer-image"
-                                            style="background-color: rgb(232, 252, 166);">V</div>
-                                    </div>
-                                    <div class="pure-u-22-24 u-lheight-default">
-                                        <div
-                                            class="u-d-flex flex-wrap flex-jc-space-between u-gap-12 u-cushion--small-top u-cushion--bottom">
-                                            <div class="u-d-flex flex-wrap u-gap-12">
-                                                <div class="u-color--grey3"><span class="u-bold"
-                                                        data-qa-id="reviewer-name">Venkat</span>&nbsp;<span
-                                                        class="u-bold"></span>
-                                                </div>
-                                                <div><span
-                                                        class="u-blue-2-background u-smallest-font u-color--white u-round-corner--12 u-cushion--right-less u-cushion--small-left u-cushion--small-top u-cushion--small-bottom"></span>
-                                                </div>
-                                            </div><span data-qa-id="web-review-time"
-                                                class="u-spacer--left-thin u-f-right u-color--grey3">3&nbsp;<span>years
-                                                    ago</span>&nbsp;</span>
-                                        </div>
-                                        <div class="feedback__body">
-                                            <div class="u-cushion--small-bottom u-large-font"><span><img
-                                                        src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
-                                                        width="17px" height="17px"></span><span
-                                                    style="font-weight: 500;margin-left: 6px;">Doctor
-                                                    Recommended</span><i class="fa fa-shield-check"></i></div>
-                                            <div>
-                                                <p class="feedback__content u-large-font " data-qa-id="review-text">I
-                                                    had a very
-                                                    great experience in chisel dental as I was very happy with Dr
-                                                    sumanth detail
-                                                    exploitation he is very good.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="pure-g feedback--item u-cushion--medium-vertical"
-                                    data-qa-id="feedback_item">
-                                    <div class="pure-u-2-24">
-                                        <div class="feedback__icon" data-qa-id="reviewer-image"
-                                            style="background-color: rgb(200, 250, 200);">S</div>
-                                    </div>
-                                    <div class="pure-u-22-24 u-lheight-default">
-                                        <div
-                                            class="u-d-flex flex-wrap flex-jc-space-between u-gap-12 u-cushion--small-top u-cushion--bottom">
-                                            <div class="u-d-flex flex-wrap u-gap-12">
-                                                <div class="u-color--grey3"><span class="u-bold"
-                                                        data-qa-id="reviewer-name">Suja</span>&nbsp;<span
-                                                        class="u-bold"></span>
-                                                </div>
-                                                <div><span
-                                                        class="u-blue-2-background u-smallest-font u-color--white u-round-corner--12 u-cushion--right-less u-cushion--small-left u-cushion--small-top u-cushion--small-bottom"></span>
-                                                </div>
-                                            </div><span data-qa-id="web-review-time"
-                                                class="u-spacer--left-thin u-f-right u-color--grey3">10&nbsp;<span>days
-                                                    ago</span>&nbsp;</span>
-                                        </div>
-                                        <div class="feedback__body">
-                                            <p class="feedback__content u-cushion--bottom u-title-font u-bold"
-                                                data-qa-id="visited-for"><span><span style="font: bold">Visited
-                                                        For</span>&nbsp;</span><span class="procedure"
-                                                    style="font: bold">Zirconia Crowns</span></p>
-                                            <div class="u-cushion--small-bottom u-large-font"><span><img
-                                                        src="https://cdn-icons-png.flaticon.com/128/2569/2569174.png"
-                                                        width="17px" height="17px"></span><span
-                                                    style="font-weight: 500;margin-left: 6px;">Doctor
-                                                    Not Recommended </span></div>
-                                            <!-- <p class="feedback__content u-cushion--small-bottom u-large-font" data-qa-id="happy-with"><span><span>Happy with:</span>&nbsp;</span><span class="feedback__context">Doctor friendliness</span><span class="feedback__context">Explanation of the health issue</span><span class="feedback__context">Treatment satisfaction</span><span class="feedback__context">Value for money</span></p> -->
-                                            <div>
-                                                <p class="feedback__content u-large-font " data-qa-id="review-text">I
-                                                    had very
-                                                    severe tooth ache one of my friend referred me about Chisel, had
-                                                    been to chisel
-                                                    had very good experience and had very painless dental treatment .i
-                                                    would like to
-                                                    refer this place to all my friends and family.... </p>
-                                            </div>
+                                                        For</span>&nbsp;</span><span class="procedure">
+                                                    <%= review[i].consult %>
+                                                </span></p>
+                                            <% if(review[i].recommend==true) { %>
+                                                <div class="u-cushion--small-bottom u-large-font"><span><img
+                                                            src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+                                                            width="17px" height="17px"></span><span
+                                                        style="font-weight: 500;margin-left: 6px;">Doctor
+                                                        Recommended</span></div>
+                                                <% } else { %>
+                                                    <div class="u-cushion--small-bottom u-large-font"><span><img
+                                                                src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+                                                                width="17px" height="17px"></span><span
+                                                            style="font-weight: 500;margin-left: 6px;">Doctor
+                                                            Not Recommended</span></div>
+                                                    <% } %>
+                                                        <!-- <p class="feedback__content u-cushion--small-bottom u-large-font" data-qa-id="happy-with"><span><span>Happy with:</span>&nbsp;</span><span class="feedback__context">Doctor friendliness</span><span class="feedback__context">Explanation of the health issue</span><span class="feedback__context">Treatment satisfaction</span></p> -->
+                                                        <div>
+                                                            <p class="feedback__content u-large-font "
+                                                                data-qa-id="review-text">
+                                                                <%= review[i].feedback %>
+                                                            </p>
+                                                        </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button data-qa-id="view-more-feedback"
-                                class="c-btn--dark feedback__pagination-btn"><span>Read
-                                    More</span></button>
-                        </div>
+                            <% } %>
+                                <button data-qa-id="view-more-feedback"
+                                    class="c-btn--dark feedback__pagination-btn"><span>Read
+                                        More</span></button>
                     </div>
                 </div>
+            </div>
             </div>
 
 

@@ -11,6 +11,7 @@ const Doctor = require('./models/Doctor')
 const AppointmentSlot = require('./models/AppointmentSlot')
 const Appointment = require('./models/Appointment')
 const Chat = require('./models/Chat')
+const Review = require('./models/Review');
 const multer = require('multer')
 const { v1: uuidv1 } = require('uuid')
 const bodyParser = require('body-parser')
@@ -826,8 +827,48 @@ app.get('/patient/profile/edit', (req, res) => {
    res.render('patient/edit_patient.ejs')
 })
 
-app.get('/feedback', (req, res) => {
-   res.render('session_over.ejs')
+app.get('/feedback/:appointmentid', async (req, res) => {
+   const appointmentid = req.params.appointmentid;
+   console.log(appointmentid);
+   const document = await Appointment.findOne({ _id: appointmentid });
+   const doctorid = document.doctorid;
+   console.log(doctorid);
+   const review = await Review.find({ doctorid: doctorid });
+   console.log(review);
+   res.render('session_over.ejs', { appointmentid: appointmentid, review: review });
+})
+app.post('/feedback/:appointmentid', async (req, res) => {
+   const rating = req.body.rating;
+   const consult = req.body.ConsultReason;
+   const feedback = req.body.Feedback;
+   const appointmentid = req.params.appointmentid;
+   const document = await Appointment.findOne({ _id: appointmentid });
+   const doctorid = document.doctorid;
+   const patient_name = document.patientName;
+   // const patient_document = await Patient.findOne({ _id: patientid });
+   // const patient_name = patient_document.first_name;
+   const temp = req.body.select;
+   const recommend = JSON.parse(temp);
+   // console.log(rating);
+   // console.log(consult);
+   // console.log(feedback);
+   // console.log(doctorid);
+   // console.log(recommend);
+   // console.log(patient_name);
+   try {
+      const newDocument = await Review.create({
+         rating: rating,
+         consult: consult,
+         feedback: feedback,
+         doctorid: doctorid,
+         recommend: recommend,
+         patientname: patient_name,
+      });
+      res.status(200).render('home.ejs');
+   } catch (err) {
+      res.status(500).send(err.message);
+   }
+   // res.send("Submitted");
 })
 
 app.get('/register/success', (req, res) => {
@@ -887,31 +928,31 @@ app.post('/patientRegister', async (req, res) => {
             'You are now registered! Please verify your account through mail.',
          )
          console.log(link)
-         // const transporter = nodemailer.createTransport({
-         //    host: 'smtp.gmail.com',
-         //    port: 465,
-         //    secure: true, // use SSL
-         //    auth: {
-         //       user: 'healthplus182@gmail.com', // your email address
-         //       pass: 'aiwqesgsnywrsrcu' // your email password
-         //    }
-         // });
-         // const mailOptions = {
-         //    from: 'healthplus182@gmail.com',
-         //    to: username,
-         //    subject: 'Verify your email address',
-         //    html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
-         // };
-         // transporter.sendMail(mailOptions, (error, info) => {
-         //    if (error) {
-         //       console.log(error);
-         //    } else {
-         //       console.log('Email sent: ' + info.response);
-         //    }
-         // });
-         // sendverifyMail(username, link).then((result) =>
-         //    console.log('Email sent....', result),
-         // )
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: username,
+            subject: 'Verify your email address',
+            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
+         sendverifyMail(username, link).then((result) =>
+            console.log('Email sent....', result),
+         )
          res.redirect('back')
       }
    } catch (error) {
@@ -1162,7 +1203,8 @@ app.get(
             room: appointmentid,
             usertype: usertype,
             patientid: patientid,
-            chatMessages: chatMessages
+            chatMessages: chatMessages,
+            appointmentid: appointmentid
          })
 
       } catch (error) {
