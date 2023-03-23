@@ -729,7 +729,7 @@ app.post('/searchbar', (req, res) => {
       $or: [
          { first_name: { $regex: new RegExp(searchbar, "i") } },
          { last_name: { $regex: new RegExp(searchbar, "i") } },
-         { specialty: { $regex: new RegExp(searchbar, "i") } },
+         { speciality: { $regex: new RegExp(searchbar, "i") } },
          // ... add more properties to search as needed
       ]
    }, (err, response) => {
@@ -810,86 +810,144 @@ app.get('/searchdoc', (req, res) => {
       })
    // res.render('doctor_search.ejs', { doctor: 'New Doctor' })
 })
+let curr_docid = "";
+app.post('/doctor_specific/:doctorid', (req, res, next) => {
+   curr_docid = req.params.doctorid;
+   res.redirect('/doctor_specific/profile');
+})
 
-app.get('/doctor/profile', async (req, res) => {
-   if (req.user instanceof Doctor) {
-      const doctorId = req.user._id
-      const doctor = await Doctor.findById(doctorId)
-      res.render('doctor/doctor_profile.ejs', { doctor })
-      //    catch (error) {
-      //    res.status(500).send({ message: error.message || 'Error Occured' })
-      // }
-   }
-   else {
-      res.redirect('/doctorlogin');
+app.get('/doctor_specific/profile', async function (req, res, next) {
+   try {
+      const Id = curr_docid;
+      const doc = await Doctor.findOne({ _id: Id });
+      const doctorId = doc._id;
+      const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
+      console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
+      const review = await Review.find({ doctorid: doctorId });
+
+      // Cancel Appointment
+      // let patientid = curr_docid;
+      // const patient = await Doctor.findById(patientid);
+      // console.log(patient.scheduledAppointments);
+      // const appointment = await Appointment.find({ doctorid: patientid })
+      // let arr = [];
+      // appointment.forEach(async function (item) {
+      //    console.log(item._id);
+      //    const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+      //    arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+      // });
+      // const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+      // console.log(appointment._id);
+      const tempdoctor = await Doctor.find(doctorId);
+      const oldrating = tempdoctor[0].ratings;
+      res.render('doctor/doctor_specific.ejs', { doctor: doctor, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, rating: oldrating })
+   } catch (error) {
+      res.status(500).send({ message: error.message || 'Error Occured' })
    }
 })
 
-app.get('/doctor/profile/edit/:doctorid', async (req, res) => {
+
+function loggedInDoctor(req, res, next) {
    if (req.user instanceof Doctor) {
-      const doctorId = req.user._id
-      const doctor = await Doctor.findById(doctorId)
-      res.render('doctor/edit_doctor.ejs', { doctor })
-      //    catch (error) {
-      //    res.status(500).send({ message: error.message || 'Error Occured' })
-      // }
+      next();
    }
+   // else if (req.user instanceof Patient) {
+   //    next()
+   // }
    else {
       res.redirect('/doctorlogin');
    }
-})
+}
 
-app.get('/patient/profile', async (req, res) => {
+function loggedInPatient(req, res, next) {
    if (req.user instanceof Patient) {
-      const patientId = req.user._id
-      const patient = await Patient.findById(patientId)
-      res.render('patient/patient_profile.ejs', { patient })
-      //    catch (error) {
-      //    res.status(500).send({ message: error.message || 'Error Occured' })
-      // }
+      next();
    }
    else {
       res.redirect('/patientlogin');
    }
+}
+// app.get('/cancel_appointment_patient', loggedInPatient, async function (req, res, next) {
+//    try {
+//       let patientid = req.user._id;
+//       const patient = await Patient.findById(patientid);
+//       console.log(patient.scheduledAppointments);
+//       const appointment = await Appointment.find({ patientid: patientid })
+//       let arr = [];
+//       appointment.forEach(async function (item) {
+//          console.log(item._id);
+//          const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+//          arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+//       });
+//       const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+//       console.log(appointment._id);
+//       res.render('patient/patient_profile.ejs', { appointment: appointment, slots: arr });
+//    } catch (error) {
+//       res.status(500).send({ message: error.message || 'Error Occured' })
+//    }
+// })
+app.post('/cancel_appointment', async function (req, res, next) {
+   const data = req.body.id;
+   console.log(data);
+   await Appointment.findByIdAndDelete(data);
+   res.render('home.ejs');
 })
 
-app.get('/patient/profile/edit', async (req, res) => {
-   if (req.user instanceof Patient) {
-      const patientId = req.user._id
-      const patient = await Patient.findById(patientId)
-      res.render('patient/edit_patient.ejs', { patient })
-      //    catch (error) {
-      //    res.status(500).send({ message: error.message || 'Error Occured' })
-      // }
-   }
-   else {
-      res.redirect('/patientlogin');
+app.get('/doctor/profile', loggedInDoctor, async function (req, res, next) {
+   try {
+      let doctorId = req.user._id;
+      const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
+      console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
+      const review = await Review.find({ doctorid: doctorId });
+
+      // Cancel Appointment
+      let patientid = req.user._id;
+      const patient = await Doctor.findById(patientid);
+      console.log(patient.scheduledAppointments);
+      const appointment = await Appointment.find({ doctorid: patientid })
+      let arr = [];
+      appointment.forEach(async function (item) {
+         console.log(item._id);
+         const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+         arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+      });
+      const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+      console.log(appointment._id);
+      const tempdoctor = await Doctor.find(doctorId);
+      const oldrating = tempdoctor[0].ratings;
+      res.render('doctor/doctor_profile.ejs', { doctor: doctor, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, appointment: appointment, slots: arr, rating: oldrating })
+   } catch (error) {
+      res.status(500).send({ message: error.message || 'Error Occured' })
    }
 })
-// function loggedInPatient(req, res, next) {
-//    if (req.user instanceof Patient) {
-//       next();
-//    }
-//    else {
-//       res.redirect('/patientlogin');
-//    }
-// }
 
-// app.get('/doctor/profile', loggedInDoctor, function (req, res, next) {
-//    res.render('doctor/doctor_profile.ejs')
-// })
+app.get('/doctor/profile/edit', loggedInDoctor, function (req, res, next) {
+   res.render('doctor/edit_doctor.ejs')
+})
 
-// app.get('/doctor/profile/edit', loggedInDoctor, function (req, res, next) {
-//    res.render('doctor/edit_doctor.ejs')
-// })
+app.get('/patient/profile', loggedInPatient, async function (req, res, next) {
+   try {
+      let patientid = req.user._id;
+      const patient = await Patient.findById(patientid);
+      console.log(patient.scheduledAppointments);
+      const appointment = await Appointment.find({ patientid: patientid })
+      let arr = [];
+      appointment.forEach(async function (item) {
+         console.log(item._id);
+         const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+         arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+      });
+      const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+      console.log(appointment._id);
+      res.render('patient/patient_profile.ejs', { patient: patient, appointment: appointment, slots: arr });
+   } catch (error) {
+      res.status(500).send({ message: error.message || 'Error Occured' })
+   }
+})
 
-// app.get('/patient/profile', loggedInPatient, function (req, res, next) {
-//    res.render('patient/patient_profile.ejs')
-// })
-
-// app.get('/patient/profile/edit', loggedInPatient, function (req, res, next) {
-//    res.render('patient/edit_patient.ejs')
-// })
+app.get('/patient/profile/edit', loggedInPatient, function (req, res, next) {
+   res.render('patient/edit_patient.ejs')
+})
 
 app.get('/feedback/:appointmentid', async (req, res) => {
    const appointmentid = req.params.appointmentid;
@@ -899,7 +957,9 @@ app.get('/feedback/:appointmentid', async (req, res) => {
    console.log(doctorid);
    const review = await Review.find({ doctorid: doctorid });
    console.log(review);
-   res.render('session_over.ejs', { appointmentid: appointmentid, review: review });
+   const tempdoctor = await Doctor.find(doctorid);
+   const oldrating = tempdoctor[0].ratings;
+   res.render('session_over.ejs', { appointmentid: appointmentid, review: review, rating: oldrating });
 })
 app.post('/feedback/:appointmentid', async (req, res) => {
    const rating = req.body.rating;
@@ -909,6 +969,22 @@ app.post('/feedback/:appointmentid', async (req, res) => {
    const document = await Appointment.findOne({ _id: appointmentid });
    const doctorid = document.doctorid;
    const patient_name = document.patientName;
+   const reviews = await Review.find({ doctorid: doctorid });
+   const no_of_review = (await reviews).length;
+   const tempdoctor = await Doctor.find(doctorid);
+   const oldrating = tempdoctor[0].ratings;
+   const id = doctorid.toString();
+   console.log(no_of_review);
+   console.log(oldrating);
+   console.log(rating);
+   const newrating = Math.round(((oldrating * no_of_review) + Number(rating)) / (no_of_review + 1));
+   console.log(newrating);
+   Doctor.updateOne({ _id: id }, { $set: { ratings: newrating } }, // update
+      { new: true }, // options
+      function (err, doc) {
+         if (err) throw err;
+         console.log(doc);
+      });
    // const patient_document = await Patient.findOne({ _id: patientid });
    // const patient_name = patient_document.first_name;
    const temp = req.body.select;
@@ -946,7 +1022,6 @@ app.get('/register/pending', (req, res) => {
 app.post('/patientRegister', async (req, res) => {
    try {
       const { username, fname, lname, phone, gender, age, location, pswd } = req.body
-
       req.checkBody('fname', 'Name is required').notEmpty()
       req.checkBody('lname', 'Name is required').notEmpty()
       req.checkBody('phone', 'Phone is required').notEmpty()
@@ -959,7 +1034,6 @@ app.post('/patientRegister', async (req, res) => {
       //   .checkBody("password", "password must be of minimum 6 characters")
       //   .isLength({ min: 6 });
       req.checkBody('cpswd', 'Passwords do not match').equals(pswd)
-
       let errors = req.validationErrors()
       if (errors) {
          req.flash('danger', errors[0].msg)
@@ -980,12 +1054,11 @@ app.post('/patientRegister', async (req, res) => {
          })
          const registedUser = await Patient.register(patient, pswd)
          console.log(registedUser)
-
-         const secret = JWT_SECRET
-         const payload = {
-            username: patient.username,
-         }
-         const token = jwt.sign(payload, secret, { expiresIn: '15m' })
+         // const secret = JWT_SECRET
+         // const payload = {
+         //    username: patient.username,
+         // }
+         // const token = jwt.sign(payload, secret, { expiresIn: '15m' })
          const link = `http://localhost:3000/verify-email/${patient.usernameToken}`
          req.flash(
             'success',
@@ -1190,8 +1263,8 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
    try {
 
       const { patientName, email, phoneno, mode, message, selectedSlot } = req.body
-      // const patientid = req.user._id
-      const patientid = '63adfbd04d8f181c14d229b4'
+      const patientid = req.user._id
+      // const patientid = '63adfbd04d8f181c14d229b4'
       const doctorid = req.params.doctorid
 
       // const slot = await AppointmentSlot.findOne({ slotId: req.body.selectedSlot })

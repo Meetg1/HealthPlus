@@ -1,0 +1,1151 @@
+<% layout('layouts/boilerplate') %>
+
+    <body>
+        <%- include('../partials/navbar')%>
+
+            <br><br>
+
+            <div class="pure-u-16-24">
+                <div class="pure-g g-card">
+                    <div class="pure-u-4-24">
+                        <img alt="Dr. Sumanth Shetty Dentist in Bangalore" data-qa-id="doctor-profile-image"
+                            class="rounded-circle"
+                            src="https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100"
+                            srcset="https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-2x 2x,https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-3x 3x,https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-4x 4x">
+                    </div>
+                    <div class="pure-u-20-24">
+                        <div class="u-d-flex flex-jc-space-between">
+                            <div>
+                                <h1 data-qa-id="doctor-name" class="c-profile__title u-bold u-d-inlineblock">
+                                    <%= doctor.first_name %>
+                                </h1>
+                                <div class="u-d-inlineblock u-spacer--left-less">
+                                    <div><span data-for="React-tooltip-claim" data-tip="React-tooltip-claim"
+                                            class="u-grey_3-text u-bold u-t-hover-underline u-c-pointer"
+                                            currentitem="false">(Profile is Verified)</span>
+                                        <div class="__react_component_tooltip place-top type-dark " data-id="tooltip">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="c-profile--qualification">
+                            <!-- <p class="c-profile__details" data-qa-id="doctor-qualifications">BDS, MDS - Paedodontics And Preventive Dentistry</p> -->
+                            <div class="c-profile__details" data-qa-id="doctor-specializations">
+                                <div class="u-d-inline-flex flex-ai-center">
+                                    <div><span>
+                                            <h2 class="u-d-inlineblock u-spacer--right-v-thin c-profile__details">
+                                                <%= doctor.speciality %>
+                                            </h2>
+                                        </span>
+                                        <!-- <span>
+                                            <h2 class="u-d-inlineblock u-spacer--right-v-thin c-profile__details">
+                                                Implantologist</h2>,
+                                        </span><span>
+                                            <h2 class="u-d-inlineblock u-spacer--right-v-thin c-profile__details">
+                                                Pediatric Dentist</h2>,
+                                        </span><span>
+                                            <h2 class="u-d-inlineblock u-spacer--right-v-thin c-profile__details">
+                                                Cosmetic/Aesthetic Dentist</h2>
+                                        </span> -->
+                                    </div>
+                                </div>
+                                <h2 style="font-size: 15px; margin-top: 4px;">
+                                    <%= doctor.yearsOfExperience %><!-- -->&nbsp;<span>
+                                            Experience
+                                            Overall
+                                        </span>
+                                </h2>
+                            </div>
+                        </div>
+                        <!-- <div class="c-profile--badge"><img class="pic" src="//www.practostatic.com/web-assets/images/ic_pcd.10b871f76c7a.png">
+                <div class="divider"></div>
+                <div class="script">Trusted Care. Lasting Smiles.</div>
+            </div> -->
+                        <div class="c-profile--verification">
+                            <p class="c-profile__details"><img
+                                    src="https://cdn-icons-png.flaticon.com/128/8901/8901320.png" width="16px"
+                                    height="16px"> <span data-qa-id="doctor-verification-label"
+                                    class="u-valign--middle"><span>Medical Registration Verified</span></span></p>
+                            <p class="c-profile__details" data-qa-id="doctor-patient-experience-score"><i
+                                    class="icon-ic_like_filled u-green-text u-bold u-jumbo-font"></i><span
+                                    class="u-green-text u-bold u-large-font">
+                                    <% for(let i=0; i < rating; i++) { %>
+                                        <i class="fa fa-star"></i>&nbsp;
+                                        <% } %>
+                                </span><span class="u-smallest-font u-grey_3-text">(<!-- -->
+                                    <%= review.length %><!-- -->
+                                        <span>votes</span>)
+                                </span></p>
+                        </div>
+                        <div data-qa-id="doctor-summary">
+                            <p class="c-profile__description">
+                                <%= doctor.description %>
+                            </p>
+                            <span data-qa-id="summary-shrink" class="u-c-pointer u-t-link"></span></p>
+                        </div>
+                        <div class="pure-g">
+                            <div class="pure-u-17-24"></div>
+                            <!-- <div class="u-t-right u-spacer--top pure-u-7-24"><a href="https://www.practo.com/bangalore/doctor/dr-sumanth-shetty-2-dentist/feedback" class="u-primary-text u-t-underline" data-qa-id="doctor-give-feedback"><span>Share your story</span></a></div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="react-tabs-3827"
+                    aria-labelledby="react-tabs-3826">
+                    <div>
+                        <div class="c-profile--sections">
+                            <div>
+                                <!-- <div>
+                        <p class="u-spacer--left-thin u-base-font"><span>1 clinic for General Consultation</span></p>
+                        <div class="pure-g u-border--bottom u-border--default">
+                            <div class="pure-u-4-5 bubbles" data-qa-id="procedure_selection">
+                                <div class="bubbles__item limited-width u-t-ellipsis active" data-qa-id="procedure_select_item" title="General Consultation">General Consultation</div>
+                                <div class="bubbles__item limited-width u-t-ellipsis " data-qa-id="procedure_select_item" title="Root Canal Treatment (RCT)">Root Canal Treatment (RCT)</div>
+                                <div class="bubbles__item limited-width u-t-ellipsis " data-qa-id="procedure_select_item" title="Braces">Braces</div>
+                            </div>
+                            <div data-qa-id="procedure_search_dropdown" class="pure-u-1-5 u-spacer--vertical-less">
+                                <div class="Select common--select u-no-outline Select--single is-searchable">
+                                    <div class="Select-control"><span class="Select-multi-value-wrapper" id="react-select-6--value">
+                                        <div class="Select-placeholder">Search procedure</div>
+                                        <div class="Select-input" style="display: inline-block;"><style>input#undefined::-ms-clear {display: none;}</style><input role="combobox" aria-expanded="false" aria-owns="" aria-haspopup="false" aria-activedescendant="react-select-6--value" value="" style="width: 5px; box-sizing: content-box;">
+                                            <div style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: 13px; font-family: Lato; font-weight: 400; font-style: normal; letter-spacing: normal; text-transform: none;"></div>
+                                        </div></span><span class="Select-arrow-zone"><span class="Select-arrow"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                                <div class="u-spacer--top">
+                                    <div class="c-profile--clinic--item">
+                                        <div class="c-profile--clinic--item"><span></span>
+                                            <div class="pure-g c-profile--clinic--details">
+                                                <div class="pure-u-1-3 u-cushion--right">
+                                                    <p class="c-profile--clinic__address" data-qa-id="clinic-address">
+                                                        <%= doctor.clinicLocation %>
+                                                    </p>
+                                                    <p class="c-profile--clinic__address" data-qa-id="clinic-address">
+                                                    </p>
+                                                    <p class="u-spacer--bottom-less u-spacer--small-top"></p>
+                                                    <!-- <div>
+                                            <div>
+                                                <div class="LazyLoad is-visible c-carousel__lazy" style="height: 36px; width: 36px;"><img class="c-carousel__item" alt="Entrance at Chisel Dental Koramangala Bangalore" data-qa-id="doctor-clinics-photo" src="https://images1-fabric.practo.com/chisel-dental-bangalore-1440229136-55d82710ed17b.jpg/36x36"></div>
+                                                <div class="LazyLoad is-visible c-carousel__lazy" style="height: 36px; width: 36px;"><img class="c-carousel__item" alt="Waiting Area at Chisel Dental Koramangala Bangalore" data-qa-id="doctor-clinics-photo" src="https://images1-fabric.practo.com/chisel-dental-bangalore-1456392384-56cec8c05ffbd.jpg/36x36"></div>
+                                                <div class="LazyLoad is-visible c-carousel__lazy" style="height: 36px; width: 36px;"><img class="c-carousel__item" alt="Waiting Area at Chisel Dental Koramangala Bangalore" data-qa-id="doctor-clinics-photo" src="https://images1-fabric.practo.com/chisel-dental-bangalore-1456392440-56cec8f8b7bc8.jpg/36x36"></div>
+                                                <div class="LazyLoad is-visible c-carousel__lazy" style="height: 36px; width: 36px;"><img class="c-carousel__item" alt="Services at Chisel Dental Koramangala Bangalore" data-qa-id="doctor-clinics-photo" src="https://images1-fabric.practo.com/chisel-dental-bangalore-1456392454-56cec906a10e6.jpg/36x36"></div><span class="c-carousel__more" data-qa-id="doctor-clinics-photo-more">+ 2</span>
+                                            </div>
+                                        </div> -->
+                                                    <!-- <div class="c-pcd-interest"><span> If you are a doctor and interested to know more about Practo Dental Clinics.</span><span>&nbsp;</span><a href="https://blog.practo.com/practo-in-partnership-with-existing-clinics-introduces-a-one-stop-solution-for-the-best-dental-care" class="link">Click Here</a></div> -->
+                                                </div>
+                                                <div class="pure-u-1-3 u-cushion--left">
+                                                    <div>
+                                                        <div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Mon</span>
+                                                                </p>
+                                                                <% monday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Tue</span>
+                                                                </p>
+                                                                <% tuesday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Wed</span>
+                                                                </p>
+                                                                <% wednesday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Thurs</span>
+                                                                </p>
+                                                                <% thursday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Fri</span>
+                                                                </p>
+                                                                <% friday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Sat</span>
+                                                                </p>
+                                                                <% saturday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Sun</span>
+                                                                </p>
+                                                                <% sunday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-1-3">
+                                                    <div class="u-no-margin--top"><span data-qa-id="consultation_fee"
+                                                            class="" style="font-weight: 700;">Consultation Fee :
+                                                            ₹<%= doctor.consultationFee %></span> <span><i
+                                                                class="icon-ic_info u-large-font  u-hide"
+                                                                data-for="React-tooltip-free" data-tip="React-tooltip"
+                                                                currentitem="false"></i>
+                                                            <div class="__react_component_tooltip place-top type-dark "
+                                                                data-id="tooltip"></div>
+                                                        </span>
+                                                    </div>
+                                                    <div class="u-spacer--top">
+                                                        <div class="">
+                                                            <!-- <div class="u-purple-text"><span class="u-c-pointer u-t-hover-underline u-bold o-media--middle u-purple-text">Prime</span><i class="icon-ic_done_badge u-jumbo-font u-pos-rel icon--no-margin icon--top-push"></i></div> -->
+                                                            <div data-qa-id="wait_time" class="u-purple-text"><span
+                                                                    style="color: purple;">Max. 20 mins wait else <span
+                                                                        style="font-weight: 600;">full
+                                                                        refund</span></span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="c-profile--clinic__cta pure-g">
+                                    <div class="pure-u-1-3 u-cushion--right"></div>
+                                    <div class="pure-u-2-3">
+                                        <div class="c-profile--clinic__cta-action"><button class="u-t-capitalize u-bold c-btn--dark-medium" data-qa-id="book_button"><span class="icon-ic_instant_filled u-large-font uv2-spacer--xs-negative"></span>Book Appointment
+                                            <div class="u-xx-small-font">No Booking Fee</div></button>
+                                        </div>
+                                    </div>
+                                </div> -->
+                                            <div class="u-spacer--top"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel" id="react-tabs-75459"
+                    aria-labelledby="react-tabs-75458">
+                    <div class="c-profile--sections">
+                        <div>
+                            <div>
+                                <div class="u-title-font u-bold"><span>Patient Reviews for</span>&nbsp;<span>Dr. <%=
+                                            doctor.first_name %></span></div>
+                                <div class="u-color--grey3 u-cushion--bottom"><span style="font-size: 14px;">These are
+                                        patient’s opinions and do not necessarily reflect the doctor’s medical
+                                        capabilities.</span>&nbsp;</div><br>
+                                <!-- <div class="u-light-border u-cushion-less">
+                        <div class="pure-g">
+                            <div class="pure-u-1-2"><span class="u-slate-grey-text u-smallest-font u-bold" data-qa-id="filter-feedback"><span>Filter by health problem/treatment</span></span></div>
+                            <div class="pure-u-1-2 u-t-right">
+                                <div class="Select select u-no-outline Select--single is-searchable">
+                                    <div class="Select-control"><span class="Select-multi-value-wrapper" id="react-select-7--value">
+                                        <div class="Select-placeholder">Search other issues</div>
+                                        <div class="Select-input" style="display: inline-block;"><style>input#undefined::-ms-clear {display: none;}</style><input role="combobox" aria-expanded="false" aria-owns="" aria-haspopup="false" aria-activedescendant="react-select-7--value" value="" style="width: 5px; box-sizing: content-box;">
+                                            <div style="position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: 13px; font-family: Lato; font-weight: 400; font-style: normal; letter-spacing: normal; text-transform: none;"></div>
+                                        </div></span><span class="Select-arrow-zone"><span class="Select-arrow"></span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="feedback--filter"><span data-qa-id="feedback-filter" class="feedback__filteritem active">All</span><span data-qa-id="feedback-filter" class="feedback__filteritem ">Dental Implant Fixing</span><span data-qa-id="feedback-filter" class="feedback__filteritem ">Zirconia Crowns</span><span data-qa-id="feedback-filter" class="feedback__filteritem ">Root Canal Treatment (RCT)</span><span data-qa-id="feedback-filter" class="feedback__filteritem ">Cosmetic/ Aesthetic Dentistry</span></div>
+                    </div>
+                    <div class="u-cushion--vertical-less pure-g">
+                        <div class="pure-u-1-2"><span data-qa--id="feedback-results-count" class="u-slate-grey-text u-smallest-font u-bold feedback__results"><span data-qa-id="feedback-review-count-number">2546</span>&nbsp;<span>results</span></span></div>
+                        <div class="pure-u-1-2 u-t-right"><span class="u-slate-grey-text u-smallest-font u-bold"><span>Sort By</span> :</span>
+                            <div class="Select select u-no-outline Select--single has-value"><input type="hidden" name="form-field-name" value="true">
+                                <div class="Select-control">
+                                    <span class="Select-multi-value-wrapper" id="react-select-8--value">
+                                    <div class="Select-value"><span class="Select-value-label" role="option" aria-selected="true" id="react-select-8--value-item">Most Helpful</span></div>
+                                    <div role="combobox" aria-expanded="false" aria-owns="react-select-8--value" aria-activedescendant="react-select-8--value" class="Select-input" tabindex="0" aria-readonly="false" style="border: 0px; width: 1px; display: inline-block;"></div>
+                                    </span>
+                                    <span class="Select-arrow-zone">
+                                        <span class="Select-arrow"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+                                <div class="u-separator"></div>
+                            </div>
+                            <div class="feedback--list-container">
+                                <div>
+                                    <% for (var i=0; i < review.length; i++) { %>
+                                        <div class="pure-g feedback--item u-cushion--medium-vertical"
+                                            data-qa-id="feedback_item">
+                                            <div class="pure-u-2-24">
+                                                <div class="feedback__icon" data-qa-id="reviewer-image"
+                                                    style="background-color: rgb(255, 249, 179);">
+                                                    <%= review[i].patientname[0] %>
+                                                </div>
+                                            </div>
+                                            <div class="pure-u-22-24 u-lheight-default">
+                                                <div
+                                                    class="u-d-flex flex-wrap flex-jc-space-between u-gap-12 u-cushion--small-top u-cushion--bottom">
+                                                    <div class="u-d-flex flex-wrap u-gap-12">
+                                                        <div class="u-color--grey3"><span class="u-bold"
+                                                                data-qa-id="reviewer-name">
+                                                                <%= review[i].patientname %>
+                                                            </span>&nbsp;<span class="u-bold"></span></div>
+                                                        <div><span
+                                                                class="u-blue-2-background u-smallest-font u-color--white u-round-corner--12 u-cushion--right-less u-cushion--small-left u-cushion--small-top u-cushion--small-bottom"></span>
+                                                        </div>
+                                                    </div>
+                                                    <span data-qa-id="web-review-time"
+                                                        class="u-spacer--left-thin u-f-right u-color--grey3">3&nbsp;<span>days
+                                                            ago</span>&nbsp;</span>
+                                                </div>
+                                                <div class="feedback__body">
+                                                    <p class="feedback__content u-cushion--bottom u-title-font u-bold"
+                                                        data-qa-id="visited-for"><span><span>Visited
+                                                                For</span>&nbsp;</span><span class="procedure">
+                                                            <%= review[i].consult %>
+                                                        </span></p>
+                                                    <% if(review[i].recommend==true) { %>
+                                                        <div class="u-cushion--small-bottom u-large-font"><span><img
+                                                                    src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+                                                                    width="17px" height="17px"></span><span
+                                                                style="font-weight: 500;margin-left: 6px;">Doctor
+                                                                Recommended</span></div>
+                                                        <% } else { %>
+                                                            <div class="u-cushion--small-bottom u-large-font"><span><img
+                                                                        src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+                                                                        width="17px" height="17px"></span><span
+                                                                    style="font-weight: 500;margin-left: 6px;">Doctor
+                                                                    Not Recommended</span></div>
+                                                            <% } %>
+                                                                <div>
+                                                                    <p class="feedback__content u-large-font "
+                                                                        data-qa-id="review-text">
+                                                                        <%= review[i].feedback %>
+                                                                    </p>
+                                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <% } %>
+                                </div>
+                                <button data-qa-id="view-more-feedback"
+                                    class="c-btn--dark feedback__pagination-btn"><span>Read More</span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center"><button type="submit" style="margin-top: 3rem;">Book Appointment</button></div>
+            </div>
+            <br><br>
+
+            <%- include('../partials/footer')%>
+    </body>
+
+    <style>
+        *,
+        ::after,
+        ::before {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Open Sans", sans-serif;
+            color: #444444;
+            margin: 0;
+        }
+
+        #header {
+            background: #fff;
+            transition: all 0.5s;
+            z-index: 997;
+            padding: 15px 0;
+            box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
+        }
+
+        .fixed-top {
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1030;
+        }
+
+        .mr-auto {
+            margin-right: auto !important;
+        }
+
+        .align-items-center {
+            align-items: center !important;
+        }
+
+        .d-flex {
+            display: flex !important;
+        }
+
+        @media (min-width: 992px) {
+
+            .container,
+            .container-lg,
+            .container-md,
+            .container-sm {
+                max-width: 960px;
+            }
+        }
+
+        #header .logo {
+            font-size: 30px;
+            margin: 0;
+            padding: 0;
+            line-height: 1;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            font-family: "Poppins", sans-serif;
+            text-decoration: none;
+        }
+
+        #header .logo a {
+            color: #2c4964;
+            text-decoration: none;
+        }
+
+        a {
+            color: #1977cc;
+            text-decoration: none;
+        }
+
+        .navbar {
+            padding: 0;
+        }
+
+        @media (min-width: 992px) {
+            .order-lg-0 {
+                order: 0 !important;
+            }
+        }
+
+        .navbar ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            list-style: none;
+            /* align-items: center; */
+        }
+
+        .navbar>ul>li {
+            position: relative;
+            white-space: nowrap;
+            padding: 8px 0 8px 20px;
+        }
+
+        .navbar a {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 19px;
+            /* color: #2c4964; */
+            white-space: nowrap;
+            transition: 0.3s;
+            border-bottom: 2px solid #fff;
+            padding: 5px 2px;
+        }
+
+        .navbar .active,
+        .navbar .active:focus,
+        .navbar li:hover>a {
+            color: #1977cc;
+            border-color: #1977cc;
+        }
+
+        .navbar li {
+            position: relative;
+        }
+
+        .navbar a,
+        .navbar a:focus {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #2c4964;
+            white-space: nowrap;
+            transition: 0.3s;
+            border-bottom: 2px solid #fff;
+            padding: 5px 2px;
+        }
+
+        .mobile-nav-toggle {
+            color: #2c4964;
+            font-size: 28px;
+            cursor: pointer;
+            display: none;
+            line-height: 0;
+            transition: 0.5s;
+        }
+
+        .appointment-btn {
+            margin-left: 25px;
+            background: #1977cc;
+            color: #fff;
+            border-radius: 50px;
+            padding: 8px 25px;
+            white-space: nowrap;
+            transition: 0.3s;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .appointment-btn:hover {
+            background: #055296;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* body{
+    margin-top:20px;
+    color: #1a202c;
+    text-align: left;
+    background-color: #e2e8f0;    
+} */
+        .pure-u-2-3,
+        .pure-u-16-24 {
+            width: 66.6667%;
+            /* margin-left: 2rem; */
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 4rem;
+            /* *width: 66.6357%; */
+        }
+
+        .g-card {
+            background-color: #fff;
+            padding: 20px;
+        }
+
+        .pure-g {
+            letter-spacing: -.31em;
+            letter-spacing: normal;
+            /* *word-spacing: -.43em;  */
+            text-rendering: optimizespeed;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            flex-flow: row wrap;
+            display: -webkit-flex;
+            /* display: -ms-flexbox;
+    -ms-flex-flow: row wrap;
+    -ms-align-content: flex-start;
+    -ms-flex-line-pack: start; */
+            align-content: flex-start;
+        }
+
+        .pure-u-4-24 {
+            width: 16.6667%;
+            /* *width: 16.6357%; */
+            display: inline-block;
+            zoom: 1;
+            letter-spacing: normal;
+            word-spacing: normal;
+            vertical-align: top;
+            text-rendering: auto;
+        }
+
+        .rounded-image {
+            height: 150px;
+            width: 150px;
+        }
+
+        .pure-u-20-24 {
+            width: 83.3333%;
+            /* *width: 83.3023%; */
+        }
+
+        .flex-jc-space-between {
+            justify-content: space-between;
+        }
+
+        .c-profile__title {
+            margin-bottom: 3px;
+            color: #414146;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .u-d-inlineblock {
+            display: inline-block;
+        }
+
+        .u-spacer--left-less {
+            margin-left: 8px;
+        }
+
+        .u-c-pointer {
+            cursor: pointer;
+        }
+
+        .u-grey_3-text {
+            color: #787887;
+        }
+
+        .u-bold {
+            font-weight: 700 !important;
+        }
+
+        .__react_component_tooltip.place-top {
+            margin-top: -10px;
+        }
+
+        .__react_component_tooltip.type-dark {
+            color: #fff;
+            background-color: #222;
+        }
+
+        .__react_component_tooltip {
+            border-radius: 3px;
+            display: inline-block;
+            font-size: 13px;
+            left: -999em;
+            opacity: 0;
+            padding: 8px 21px;
+            position: fixed;
+            pointer-events: none;
+            transition: opacity 0.3s ease-out;
+            top: -999em;
+            visibility: hidden;
+            z-index: 999;
+        }
+
+        .c-profile--qualification,
+        .c-profile--verification,
+        .c-profile__description {
+            margin-bottom: 8px;
+            color: #414146;
+        }
+
+        .c-profile__details {
+            margin-bottom: 3px;
+            margin-top: 0;
+            color: #414146;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 1.3;
+        }
+
+        .flex-ai-center {
+            align-items: center;
+        }
+
+        .u-d-inline-flex {
+            display: inline-flex;
+        }
+
+        .u-valign--middle {
+            vertical-align: middle;
+        }
+
+        .u-green-text {
+            color: #1977cc;
+        }
+
+        .u-jumbo-font {
+            font-size: 20px;
+        }
+
+        .icon-ic_done_solid_system:before {
+            content: "\e9aa";
+        }
+
+        [class^=icon-]:before {
+            /* font-family: practicon; */
+            font-style: normal;
+            font-weight: 400;
+            speak: none;
+            display: inline-block;
+            text-decoration: inherit;
+            width: 1em;
+            margin-right: 0.2em;
+            text-align: center;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1em;
+            margin-left: 0.2em;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .icon-ic_star_solid:before {
+            content: "\e934";
+        }
+
+        [class^=icon-]:before {
+            /* font-family: practicon; */
+            font-style: normal;
+            font-weight: 400;
+            speak: none;
+            display: inline-block;
+            text-decoration: inherit;
+            width: 1em;
+            margin-right: 0.2em;
+            text-align: center;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1em;
+            margin-left: 0.2em;
+            -webkit-font-smoothing: antialiased;
+            /* -moz-osx-font-smoothing: grayscale; */
+        }
+
+        ::before {
+            box-sizing: inherit;
+        }
+
+        .u-large-font {
+            font-size: 16px;
+        }
+
+        .react-tabs__tab-panel--selected {
+            display: block;
+        }
+
+        .c-profile--sections {
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .u-bold {
+            font-weight: 700 !important;
+        }
+
+        .u-title-font {
+            font-size: 18px;
+        }
+
+        .u-color--grey3 {
+            color: #787887;
+        }
+
+        .u-cushion--bottom {
+            padding-bottom: 16px;
+        }
+
+        .feedback--list-container {
+            min-height: 100px;
+        }
+
+        .feedback--item {
+            border-bottom: 1px solid #dcdcdc;
+        }
+
+        .u-cushion--medium-vertical {
+            padding: 28px 0;
+        }
+
+        .pure-u-2-24 {
+            width: 8.3333%;
+            /* *width: 8.3023%; */
+        }
+
+        .feedback__icon {
+            color: #787887;
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 700;
+            border-radius: 50%;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .u-lheight-default {
+            line-height: 1.5;
+        }
+
+        .pure-u-22-24 {
+            width: 91.6667%;
+            /* *width: 91.6357%; */
+        }
+
+        .u-gap-12 {
+            gap: 12px;
+        }
+
+        .flex-wrap {
+            /* -ms-flex-wrap: wrap; */
+            flex-wrap: wrap;
+        }
+
+        .u-d-flex {
+            /* display: -webkit-box;
+    display: -ms-flexbox; */
+            display: flex;
+        }
+
+        .u-cushion--small-top {
+            padding-top: 4px;
+        }
+
+        .u-cushion--bottom {
+            padding-bottom: 16px;
+        }
+
+        .flex-jc-space-between {
+            justify-content: space-between;
+        }
+
+        .u-spacer--left-thin {
+            margin-left: 4px;
+        }
+
+        .u-f-right {
+            float: right;
+        }
+
+        .feedback__body {
+            width: 90%;
+        }
+
+        .u-title-font {
+            font-size: 18px;
+        }
+
+        .u-cushion--small-bottom {
+            padding-bottom: 4px;
+        }
+
+        .u-large-font {
+            font-size: 16px;
+        }
+
+        .u-cushion--small-right {
+            padding-right: 4px;
+        }
+
+        .icon-ic_like {
+            content: "\e986";
+        }
+
+        .feedback__pagination-btn {
+            display: block;
+            margin: auto;
+            width: 130px;
+        }
+
+        .c-btn--dark {
+            height: 30px;
+            /* width: 100%; */
+            outline: none;
+            padding: 2px 0 8px;
+            color: white;
+            background-color: #010101;
+            cursor: pointer;
+            margin-top: 2rem;
+        }
+
+        .c-btn--dark:hover {
+            background-color: #36393c;
+        }
+
+        .u-spacer--top {
+            margin-top: 16px;
+        }
+
+        .c-profile--clinic--item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .c-profile--clinic--item:first-child {
+            padding-top: 0;
+        }
+
+        .c-profile--clinic__location {
+            color: #414146;
+            line-height: 1.3;
+            font-weight: 400;
+            font-size: 16px;
+        }
+
+        .u-cushion--right {
+            padding-right: 16px;
+        }
+
+        .pure-u-1-3 {
+            width: 33.33333%;
+        }
+
+        .u-pos-rel {
+            position: relative;
+        }
+
+        .u-d-inlineblock {
+            display: inline-block;
+        }
+
+        .common__star-rating,
+        .common__star-rating--small {
+            display: inline-block;
+            font-size: 16px;
+            color: #01a400;
+            position: relative;
+            background-color: #f0f0f5;
+            padding: 3px 0 3px 3px;
+            margin-right: 3px;
+            border-radius: 3px;
+        }
+
+        .common__star-rating__value {
+            font-weight: 700;
+            font-size: 14px;
+            margin-left: 3px;
+            margin-right: 3px;
+        }
+
+        .c-profile--clinic__address {
+            margin-bottom: 3px margin-top: 8px;
+        }
+
+        .u-cushion--left {
+            padding-left: 16px;
+        }
+
+        .timings__days {
+            font-weight: 700;
+            margin: 0 0 3px;
+        }
+
+        .timings__time {
+            margin: 0 0 12px;
+        }
+
+        button[type=submit] {
+            background: #1977cc;
+            border: 0;
+            padding: 10px 35px;
+            color: #fff;
+            transition: 0.4s;
+            border-radius: 50px;
+        }
+
+        button[type=submit]:hover {
+            background: #063a68;
+        }
+
+
+
+        #footer {
+            color: #444444;
+            font-size: 14px;
+            background: #f1f7fd;
+        }
+
+        #footer .footer-top {
+            padding: 60px 0 30px 0;
+            background: #fff;
+            box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
+        }
+
+        .row {
+            --bs-gutter-x: 1.5rem;
+            --bs-gutter-y: 0;
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: calc(-1 * var(--bs-gutter-y));
+            margin-right: calc(-.5 * var(--bs-gutter-x));
+            margin-left: calc(-.5 * var(--bs-gutter-x));
+        }
+
+        footer .footer-top .footer-contact {
+            margin-bottom: 30px;
+        }
+
+        @media (min-width: 992px) {
+            .col-lg-3 {
+                flex: 0 0 auto;
+                width: 25%;
+            }
+        }
+
+        #footer .footer-top .footer-contact p {
+            font-size: 14px;
+            line-height: 24px;
+            margin-bottom: 0;
+            font-family: "Raleway", sans-serif;
+            color: #777777;
+        }
+
+        #footer .footer-top .footer-links {
+            margin-bottom: 30px;
+        }
+
+        #footer .footer-top h4 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #444444;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        #footer .footer-top .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #footer .footer-top .footer-links ul li {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        #footer .footer-top .footer-links ul i {
+            padding-right: 2px;
+            color: #1c84e3;
+            font-size: 15px;
+            line-height: 1;
+        }
+
+        #footer .footer-top .footer-links ul a {
+            color: #777777;
+            transition: 0.3s;
+            display: inline-block;
+            line-height: 1;
+            margin-left: 5px;
+            text-decoration: none;
+        }
+
+        #footer .footer-top .footer-links ul a:hover {
+            color: #2d8dbd;
+        }
+
+        #footer .footer-newsletter h4 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #444444;
+            position: relative;
+            padding-bottom: 12px;
+        }
+
+        p {
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+
+        #footer .footer-newsletter form {
+            margin-top: 30px;
+            background: #fff;
+            padding: 6px 10px;
+            position: relative;
+            border-radius: 50px;
+            text-align: left;
+            border: 1px solid #bfdcf7;
+        }
+
+        #footer .footer-newsletter form input[type=email] {
+            border: 0;
+            padding: 4px 8px;
+            width: calc(100% - 100px);
+        }
+
+        #footer .footer-newsletter form input[type=submit] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            border: 0;
+            font-size: 16px;
+            padding: 0 20px;
+            background: #1977cc;
+            color: #fff;
+            transition: 0.3s;
+            border-radius: 50px;
+        }
+
+        @media (min-width: 768px) {
+            .me-md-auto {
+                margin-right: auto !important;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .pt-md-0 {
+                padding-top: 0 !important;
+            }
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        #footer .social-links a {
+            font-size: 18px;
+            display: inline-block;
+            background: #1977cc;
+            color: #fff;
+            line-height: 1;
+            padding: 8px 0;
+            margin-right: 4px;
+            border-radius: 50%;
+            text-align: center;
+            width: 36px;
+            height: 36px;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        @media (min-width: 768px) {
+            .d-md-flex {
+                display: flex !important;
+            }
+        }
+
+        .py-4 {
+            padding-top: 1.5rem !important;
+            padding-bottom: 1.5rem !important;
+        }
+    </style>
