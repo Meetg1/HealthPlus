@@ -7,16 +7,35 @@
 
             <br><br><br><br>
             <div class="d-flex justify-content-center h-100">
-                <div class="searchbar">
+                <div class="search">
+                    <form method="POST" action="/searchbar">
+                        <input type="text" class="search-input" placeholder="Search for Doctors..." name="searchbar">
+                        <br>
+                        <div class="text-center">
+                            <button type="submit" class="search-icon"> <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- <div class="searchbar">
                     <form method="POST" action="/searchbar">
                         <input type="text" name="searchbar" placeholder="Search for Doctors...">
                         <button type="submit">Search</button>
                     </form>
-                    <!-- <input class="search_input" type="text" name="" placeholder="Search for Doctors...">
-                        <a href="#" class="search_icon"><i class="fas fa-search"></i></a> -->
-                </div>
+                </div> -->
             </div>
+            <!-- <div class="d-flex justify-content-center px-5">
+                <div class="search">
+                    <form method="POST" action="/searchbar">
+                        <input type="text" class="search-input" placeholder="Search for Doctors..." name="searchbar">
+                        &nbsp;&nbsp;
+                        <button type="submit" class="search-icon"> <i class="fa fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div> -->
 
+            <br><br>
             <section class="search-sec">
                 <div class="container">
                     <form action="/search" method="post" novalidate="novalidate">
@@ -89,8 +108,7 @@
                     </div>
                     <div class="row">
                         <% for(var i=0;i<doctors.length;i++) {%>
-                            <div class="col-lg-4" onclick="document.getElementById('myForm').submit();"
-                                style="cursor: pointer;">
+                            <div class="col-lg-4">
                                 <div class="member d-flex align-items-start">
                                     <div class="pic"><img
                                             src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg"
@@ -120,9 +138,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <form id="myForm" action="/doctor_specific/<%= doctors[i]._id %>" method="POST">
-                                <input type="hidden" name="id" value="">
-                            </form>
                             <% } %>
                     </div>
                 </div>

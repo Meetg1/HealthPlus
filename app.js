@@ -895,26 +895,23 @@ app.get('/doctor_specific/profile', async function (req, res, next) {
 })
 
 
-function loggedInDoctor(req, res, next) {
-   if (req.user instanceof Doctor) {
-      next();
-   }
-   // else if (req.user instanceof Patient) {
-   //    next()
-   // }
-   else {
-      res.redirect('/doctorlogin');
-   }
-}
+// function loggedInDoctor(req, res, next) {
+//    if (req.user instanceof Doctor) {
+//       next();
+//    }
+//    else {
+//       res.redirect('/doctorlogin');
+//    }
+// }
 
-function loggedInPatient(req, res, next) {
-   if (req.user instanceof Patient) {
-      next();
-   }
-   else {
-      res.redirect('/patientlogin');
-   }
-}
+// function loggedInPatient(req, res, next) {
+//    if (req.user instanceof Patient) {
+//       next();
+//    }
+//    else {
+//       res.redirect('/patientlogin');
+//    }
+// }
 // app.get('/cancel_appointment_patient', loggedInPatient, async function (req, res, next) {
 //    try {
 //       let patientid = req.user._id;
@@ -934,6 +931,19 @@ function loggedInPatient(req, res, next) {
 //       res.status(500).send({ message: error.message || 'Error Occured' })
 //    }
 // })
+
+function isLoggedIn(req, res, next) {
+   if (req.user instanceof Patient) {
+      next();
+   }
+   else if (req.user instanceof Doctor) {
+      next();
+   }
+   else {
+      res.redirect('/patientlogin');
+   }
+}
+
 app.post('/cancel_appointment', async function (req, res, next) {
    const data = req.body.id;
    console.log(data);
@@ -941,61 +951,104 @@ app.post('/cancel_appointment', async function (req, res, next) {
    res.render('home.ejs');
 })
 
-app.get('/doctor/profile', loggedInDoctor, async function (req, res, next) {
+app.get('/profile', isLoggedIn, async function (req, res, next) {
    try {
-      let doctorId = req.user._id;
-      const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
-      console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
-      const review = await Review.find({ doctorid: doctorId });
+      if (req.user instanceof Doctor) {
+         let doc = req.user;
+         let doctorId = req.user._id;
+         const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
+         console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
+         const review = await Review.find({ doctorid: doctorId });
 
-      // Cancel Appointment
-      let patientid = req.user._id;
-      const patient = await Doctor.findById(patientid);
-      console.log(patient.scheduledAppointments);
-      const appointment = await Appointment.find({ doctorid: patientid })
-      let arr = [];
-      appointment.forEach(async function (item) {
-         console.log(item._id);
-         const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-         arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
-      });
-      const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
-      console.log(appointment._id);
-      const tempdoctor = await Doctor.find(doctorId);
-      const oldrating = tempdoctor[0].ratings;
-      res.render('doctor/doctor_profile.ejs', { doctor: doctor, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, appointment: appointment, slots: arr, rating: oldrating })
+         let patientid = req.user._id;
+         const patient = await Doctor.findById(patientid);
+         console.log(patient.scheduledAppointments);
+         const appointment = await Appointment.find({ doctorid: patientid })
+         let arr = [];
+         appointment.forEach(async function (item) {
+            console.log(item._id);
+            const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+         });
+         const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+         console.log(appointment._id);
+         const tempdoctor = await Doctor.find(doctorId);
+         const oldrating = tempdoctor[0].ratings;
+         res.render('doctor/doctor_profile.ejs', { doctor: doctor, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, appointment: appointment, slots: arr, rating: oldrating })
+      }
+      else if (req.user instanceof Patient) {
+         let patientid = req.user._id;
+         const patient = await Patient.findById(patientid);
+         console.log(patient.scheduledAppointments);
+         const appointment = await Appointment.find({ patientid: patientid })
+         let arr = [];
+         appointment.forEach(async function (item) {
+            console.log(item._id);
+            const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+         });
+         const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+         console.log(appointment._id);
+         res.render('patient/patient_profile.ejs', { patient: patient, appointment: appointment, slots: arr });
+      }
    } catch (error) {
       res.status(500).send({ message: error.message || 'Error Occured' })
    }
 })
+// app.get('/doctor/profile', loggedInDoctor, async function (req, res, next) {
+//    try {
+//       let doctorId = req.user._id;
+//       const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
+//       console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
+//       const review = await Review.find({ doctorid: doctorId });
 
-app.get('/doctor/profile/edit', loggedInDoctor, function (req, res, next) {
-   res.render('doctor/edit_doctor.ejs')
-})
+//       let patientid = req.user._id;
+//       const patient = await Doctor.findById(patientid);
+//       console.log(patient.scheduledAppointments);
+//       const appointment = await Appointment.find({ doctorid: patientid })
+//       let arr = [];
+//       appointment.forEach(async function (item) {
+//          console.log(item._id);
+//          const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+//          arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+//       });
+//       const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+//       console.log(appointment._id);
+//       const tempdoctor = await Doctor.find(doctorId);
+//       const oldrating = tempdoctor[0].ratings;
+//       res.render('doctor/doctor_profile.ejs', { doctor: doctor, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, appointment: appointment, slots: arr, rating: oldrating })
+//    } catch (error) {
+//       res.status(500).send({ message: error.message || 'Error Occured' })
+//    }
+// })
 
-app.get('/patient/profile', loggedInPatient, async function (req, res, next) {
-   try {
-      let patientid = req.user._id;
-      const patient = await Patient.findById(patientid);
-      console.log(patient.scheduledAppointments);
-      const appointment = await Appointment.find({ patientid: patientid })
-      let arr = [];
-      appointment.forEach(async function (item) {
-         console.log(item._id);
-         const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-         arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
-      });
-      const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
-      console.log(appointment._id);
-      res.render('patient/patient_profile.ejs', { patient: patient, appointment: appointment, slots: arr });
-   } catch (error) {
-      res.status(500).send({ message: error.message || 'Error Occured' })
-   }
-})
+// app.get('/doctor/profile/edit', loggedInDoctor, function (req, res, next) {
+//    res.render('doctor/edit_doctor.ejs')
+// })
 
-app.get('/patient/profile/edit', loggedInPatient, function (req, res, next) {
-   res.render('patient/edit_patient.ejs')
-})
+// app.get('/patient/profile', loggedInPatient, async function (req, res, next) {
+//    try {
+//       let patientid = req.user._id;
+//       const patient = await Patient.findById(patientid);
+//       console.log(patient.scheduledAppointments);
+//       const appointment = await Appointment.find({ patientid: patientid })
+//       let arr = [];
+//       appointment.forEach(async function (item) {
+//          console.log(item._id);
+//          const time = await AppointmentSlot.findOne({ slotId: item.slotId });
+//          arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+//       });
+//       const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
+//       console.log(appointment._id);
+//       res.render('patient/patient_profile.ejs', { patient: patient, appointment: appointment, slots: arr });
+//    } catch (error) {
+//       res.status(500).send({ message: error.message || 'Error Occured' })
+//    }
+// })
+
+// app.get('/patient/profile/edit', loggedInPatient, function (req, res, next) {
+//    res.render('patient/edit_patient.ejs')
+// })
 
 app.get('/feedback/:appointmentid', async (req, res) => {
    const appointmentid = req.params.appointmentid;
