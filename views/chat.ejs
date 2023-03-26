@@ -23,7 +23,12 @@
                 <div class="chat-container">
                     <header class="chat-header">
                         <h1>HealthPlus</h1>
-                        <a href="/" id="leave-btn" class="btn btn1">End Session</a>
+                        <% if (usertype=='patient' ){%>
+                            <a href="/feedback/<%= appointmentid %>" id="leave-btn" class="btn btn1">End Session</a>
+                            <% } else { %>
+                                <a href="/" id="leave-btn" class="btn btn1">End Session</a>
+                                <% } %>
+
                     </header>
                     <main class="chat-main">
                         <div class="chat-sidebar">
@@ -32,7 +37,8 @@
                         </div>
                         <div class="chat-messages">
                             <% for( let i=0; i < chatMessages.length; i++ ) { %>
-                                <% if (chatMessages[i].username== `${currentUser.first_name} ${currentUser.last_name}`) { %>
+                                <% if (chatMessages[i].username==`${currentUser.first_name} ${currentUser.last_name}`) {
+                                    %>
                                     <div class="message mymessage">
                                         <p class="meta">You <span>
                                                 <%=chatMessages[i].time%>

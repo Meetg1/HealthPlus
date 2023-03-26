@@ -89,7 +89,8 @@
                     </div>
                     <div class="row">
                         <% for(var i=0;i<doctors.length;i++) {%>
-                            <div class="col-lg-4">
+                            <div class="col-lg-4" onclick="document.getElementById('myForm').submit();"
+                                style="cursor: pointer;">
                                 <div class="member d-flex align-items-start">
                                     <div class="pic"><img
                                             src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg"
@@ -119,6 +120,9 @@
                                     </div>
                                 </div>
                             </div>
+                            <form id="myForm" action="/doctor_specific/<%= doctors[i]._id %>" method="POST">
+                                <input type="hidden" name="id" value="">
+                            </form>
                             <% } %>
                     </div>
                 </div>

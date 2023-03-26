@@ -16,8 +16,9 @@
                                 <a href="#">
                                     <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
                                 </a>
-                                <h1 style="margin-top: 8px;">Camila Smith</h1>
-                                <p>deydey@theEmail.com</p>
+                                <h1 style="margin-top: 8px;">
+                                    <%= patient.first_name+' '+ patient.last_name %></h1>
+                                <p><%= patient.username%></p>
                             </div>
 
                             <ul class="nav nav-pills nav-stacked" style="margin-top: 4px;">
@@ -27,7 +28,7 @@
                                 <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
                                         style="text-decoration: none;"> <i class="fa fa-cancel"
                                             style="margin-left: 4px;"></i> Report an Error</a></li>
-                                <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
+                                <li style="margin-top: 2px; margin-bottom: 3px;"><a href="patient/profile/edit"
                                         style="text-decoration: none;"> <i class="fa fa-edit"
                                             style="margin-left: 4px;"></i> Edit profile</a></li>
                             </ul>
@@ -64,23 +65,23 @@
                                 <h1 style="margin-top: 13px; color: rgb(45, 45, 45);">Your Dashboard</h1>
                                 <div class="row">
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91); font: 600;"><span> Name </span>: Walter White
+                                        <p style="color: rgb(92, 91, 91); font: 600;"><span> Name </span>: <%= patient.first_name+' '+ patient.last_name %>
                                             <a href="" class="nameedit"><i class="fa fa-edit"
                                                     style="margin-left: 12px;"></i></a>
                                         </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Username </span>: White123 <a href=""
+                                        <p style="color: rgb(92, 91, 91);"><span>Username </span>: <%= patient.username%> <a href=""
                                                 class="useredit"><i class="fa fa-edit"
                                                     style="margin-left: 12px;"></i></a></p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: jsmith@flatlab.com <a
+                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: <%= patient.username%> <a
                                                 href="" class="emailedit"><i class="fa fa-edit"
                                                     style="margin-left: 12px;"></i></a></p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: (12)-04-4567890 <a
+                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: <%= patient.phone %> <a
                                                 href="" class="contactedit"><i class="fa fa-edit"
                                                     style="margin-left: 12px;"></i></a></p>
                                     </div>
@@ -98,24 +99,23 @@
                                       </div> -->
                                             <div class="bio-desk">
                                                 <h4 class="red">Scheduled Appointments</h4>
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a class="download-btn-1"><i class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                        Sunday, 12th Feb 2023, 09:30 AM - 10:00 AM </a>
-                                                </div>
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a class="download-btn-1"><i class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                        Saturday, 10th Feb 2023, 09:30 AM - 10:00 AM </a>
-                                                </div>
-                                                <a class="listmore"
-                                                    style="text-align: center; background: transparent; cursor: pointer;"><i
-                                                        class="fa fa-chevron-down"></i></a>
-                                                <!-- <p>Mon, Wed - Fri, Sun
-    
-                                            09:00 AM - 06:00 PM
-                                            </p>
-                                          <p>Sat
-                                            
-                                            09:30 AM - 06:00 PM</p> -->
+                                                <% slots.forEach(function(item) { %>
+                                                    <div style="margin: 0in 0in 8pt">
+                                                        <a name="id" value=<%=appointment._id %>
+                                                            class="download-btn-1"><i
+                                                                class="fa fa-clock"></i>&nbsp;&nbsp;
+                                                            <%= item.date %>, <%= item.time %>
+                                                        </a>
+                                                        <form action="/cancel_appointment" method="post">
+                                                            <button type="submit" name="id" value=<%=item.id %>>
+                                                                Cancel</button>
+                                                        </form>
+                                                    </div>
+                                                    <% }); %>
+
+                                                        <a class="listmore"
+                                                            style="text-align: center; background: transparent; cursor: pointer;"><i
+                                                                class="fa fa-chevron-down"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -126,24 +126,7 @@
                                             <!-- <div class="bio-chart">
                                           <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="63" data-fgcolor="#4CC5CD" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(76, 197, 205); padding: 0px; -webkit-appearance: none; background: none;"></div>
                                       </div> -->
-                                            <div class="bio-desk">
-                                                <h4 class="terques">Past Appointments </h4>
-                                                <!-- <p>Started : 15 July</p> -->
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a class="download-btn-2"><i
-                                                            class="fa fa-clock-rotate-left"></i>&nbsp;&nbsp; Friday,
-                                                        10th Feb 2023, 09:30 AM - 10:00 AM </a>
-                                                </div>
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a class="download-btn-2"><i
-                                                            class="fa fa-clock-rotate-left"></i>&nbsp;&nbsp; Thursday,
-                                                        9th Feb 2023, 09:30 AM - 10:00 AM </a>
-                                                </div>
-                                                <a class="listmore"
-                                                    style="text-align: center; background: transparent; cursor: pointer;"><i
-                                                        class="fa fa-chevron-down"></i></a>
-                                                <!-- <p>Deadline : 15 August</p> -->
-                                            </div>
+                                           
                                         </div>
                                     </div>
                                 </div>

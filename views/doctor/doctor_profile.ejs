@@ -8,158 +8,281 @@
         <%- include('../partials/navbar')%>
 
             <br><br>
-
-            <div class="container bootstrap snippets bootdey" style="margin-top: 40px;">
-                <div class="row">
-                    <div class="profile-nav col-md-3">
-                        <div class="panel">
-                            <div class="user-heading round">
-                                <a href="#">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
-                                </a>
-                                <h1 style="margin-top: 8px;">
-                                    Doctor User
-                                </h1>
-                                <p>
-                                    doctr123@gmail.com
-                                </p>
+            <% if(doctor !=null) { %>
+                <div class="container bootstrap snippets bootdey" style="margin-top: 40px;">
+                    <div class="row">
+                        <div class="profile-nav col-md-3">
+                            <div class="panel">
+                                <div class="user-heading round">
+                                    <a href="#">
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                    </a>
+                                    <h1 style="margin-top: 8px;">
+                                        <%- doctor.first_name + ' ' + doctor.last_name %>
+                                    </h1>
+                                    <p>
+                                        <%- doctor.username %>
+                                    </p>
+                                </div>
+                                <ul class="nav nav-pills nav-stacked" style="margin-top: 4px;">
+                                    <li class="active" style="margin-top: 4px; margin-bottom: 3px;"><a href="#"
+                                            style="text-decoration: none;"> <i class="fa fa-user"
+                                                style="margin-left: 4px;"></i> Profile</a></li><br>
+                                    <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
+                                            style="text-decoration: none;"> <i class="fa fa-cancel"
+                                                style="margin-left: 4px;"></i> Report an Error</a></li>
+                                    <li style="margin-top: 2px; margin-bottom: 3px;"><a onclick="magic()" id="anchor"
+                                            href="" style="text-decoration: none;"> <i class="fa fa-edit"
+                                                style="margin-left: 4px;"></i> Edit profile</a></li>
+                                </ul>
                             </div>
-
-                            <ul class="nav nav-pills nav-stacked" style="margin-top: 4px;">
-                                <li class="active" style="margin-top: 4px; margin-bottom: 3px;"><a href="#"
-                                        style="text-decoration: none;"> <i class="fa fa-user"
-                                            style="margin-left: 4px;"></i> Profile</a></li><br>
-                                <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
-                                        style="text-decoration: none;"> <i class="fa fa-cancel"
-                                            style="margin-left: 4px;"></i> Report an Error</a></li>
-                                <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
-                                        style="text-decoration: none;"> <i class="fa fa-edit"
-                                            style="margin-left: 4px;"></i> Edit profile</a></li>
-                            </ul>
                         </div>
-                    </div>
-                    <div class="profile-info col-md-9">
-                        <div class="panel">
-                            <div class="bio-graph-heading">
-                                Dr. Sumanth M. Shetty completed his post graduation in masters of dental surgery[
+                        <div class="profile-info col-md-9">
+                            <div class="panel">
+                                <div class="bio-graph-heading">
+                                    <%- doctor.description %>
+                                        <!-- Dr. Sumanth M. Shetty completed his post graduation in masters of dental surgery[
                                 mds]
                                 in the field of Pedodontics and preventive dentistry, from the esteemed Bapuji
                                 Dental
                                 College, Davangere, a Karnataka, India. He is now serving as professor and HOD in
                                 the
-                                department of pediatric dentistry.
+                                department of pediatric dentistry. -->
+                                </div>
+                                <div class="panel-body bio-graph-info">
+                                    <h1 style="margin-top: 13px; color: rgb(45, 45, 45);">Your Dashboard</h1>
+                                    <div class="row">
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91); font: 600;"><span>First Name </span>:
+                                                <%- doctor.first_name %>
+                                            </p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Last Name </span>: <%-
+                                                    doctor.last_name %>
+                                            </p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Email </span>: <%- doctor.username
+                                                    %>
+                                            </p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Contact </span>: <%- doctor.phone
+                                                    %>
+                                            </p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Specialization </span> : <%-
+                                                    doctor.speciality %>
+                                            </p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Experience </span>: <%-
+                                                    doctor.yearsOfExperience %> years</p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Clinic </span>:
+                                                <!-- 18, 1st Main,
+                                            Koramangala 1st Block, Bangalore -->
+                                                <%- doctor.clinicLocation %>
+                                            </p>
+                                        </div>
+                                        <div class="bio-row">
+                                            <p style="color: rgb(92, 91, 91);"><span>Consultation Fee </span>: ₹ <%-
+                                                    doctor.consultationFee %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="panel-body bio-graph-info">
-                                <h1 style="margin-top: 13px; color: rgb(45, 45, 45);">Your Dashboard</h1>
+                            <div class="special-box">
                                 <div class="row">
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91); font: 600;"><span>First Name </span>:
-                                            Walter
-                                        </p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Last Name </span>: White</p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: jsmith@flatlab.com
-                                        </p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: (12)-04-4567890
-                                        </p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Specialization </span> : Denstist
-                                        </p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Experience </span>: 12 years</p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Clinic </span>: 18, 1st Main,
-                                            Koramangala 1st Block, Bangalore</p>
-                                    </div>
-                                    <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Consultation Fee </span>: ₹ 600</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="special-box">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            <div class="bio-desk">
-                                                <h4 class="red">Slot Timings</h4>
-                                                <p>Mon, Wed - Fri, Sun
-
-                                                    09:00 AM - 06:00 PM
-                                                </p>
-                                                <p>Sat
-
-                                                    09:30 AM - 06:00 PM</p>
+                                    <div class="col-md-6">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <div class="bio-desk">
+                                                    <h4 class="red">Slot Timings</h4>
+                                                    <% slots.forEach(function(item) { %>
+                                                        <div style="margin: 0in 0in 8pt">
+                                                            <a name="id" value=<%=appointment._id %>
+                                                                class="download-btn-1"><i
+                                                                    class="fa fa-clock"></i>&nbsp;&nbsp;
+                                                                <%= item.date %>, <%= item.time %>
+                                                            </a>
+                                                            <form action="/cancel_appointment" method="post">
+                                                                <button type="submit" name="id" value=<%=item.id %>>
+                                                                    Cancel</button>
+                                                            </form>
+                                                        </div>
+                                                        <% }); %>
+                                                            <div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Mon</span>
+                                                                    </p>
+                                                                    <% monday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Tue</span>
+                                                                    </p>
+                                                                    <% tuesday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Wed</span>
+                                                                    </p>
+                                                                    <% wednesday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Thurs</span>
+                                                                    </p>
+                                                                    <% thursday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Fri</span>
+                                                                    </p>
+                                                                    <% friday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Sat</span>
+                                                                    </p>
+                                                                    <% saturday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                                <div data-qa-id="timings_list">
+                                                                    <p class="timings__days"
+                                                                        data-qa-id="clinic-timings-day">
+                                                                        <span><span>Sun</span>
+                                                                    </p>
+                                                                    <% sunday.forEach(function(item) { %>
+                                                                        <p class="timings__time"
+                                                                            data-qa-id="clinic-timings-session">
+                                                                            <%= item.slotTime %>
+                                                                                </span>
+                                                                        </p>
+                                                                        <% }); %>
+                                                                </div>
+                                                            </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            <div class="bio-desk">
-                                                <h4 class="terques">Certificates </h4>
-                                                <!-- <p>Started : 15 July</p> -->
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a href="javascript:;" class="download-btn"><i
-                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp; Aadhar
-                                                        Card</a>
+                                    <div class="col-md-6">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <div class="bio-desk">
+                                                    <h4 class="terques">Graduation & Digital KYC </h4>
+                                                    <!-- <p>Started : 15 July</p> -->
+                                                    <div style="margin: 0in 0in 8pt">
+                                                        <a href="/doctorCertificates/degreeCertificates/<%- doctor.gradMarksheet %>"
+                                                            class="download-btn"><i
+                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp;
+                                                            Graduation/Post-Graduation
+                                                            Marksheet</a>
+                                                    </div>
+                                                    <div style="margin: 0in 0in 8pt">
+                                                        <a href="/doctorCertificates/digitalKYC/<%- doctor.digitalKYC %>"
+                                                            class="download-btn"><i
+                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp;
+                                                            Digital KYC</a>
+                                                    </div>
+                                                    <!-- <p>Deadline : 15 August</p> -->
                                                 </div>
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a href="javascript:;" class="download-btn"><i
-                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp; PAN
-                                                        Card</a>
-                                                </div>
-                                                <div style="margin: 0in 0in 8pt">
-                                                    <a href="javascript:;" class="download-btn"><i
-                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp;
-                                                        Graduation/Post-Graduation
-                                                        Marksheet</a>
-                                                </div>
-                                                <!-- <p>Deadline : 15 August</p> -->
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            <!-- <div class="bio-chart">
+                                    <div class="col-md-6">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <!-- <div class="bio-chart">
                                       <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="75" data-fgcolor="#96be4b" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(150, 190, 75); padding: 0px; -webkit-appearance: none; background: none;"></div>
                                   </div> -->
-                                            <div class="bio-desk">
-                                                <h4 class="green">Education</h4>
-                                                <p style="margin-top: 8px;">BDS, MDS - Paedodontics And Preventive
-                                                    Dentistry</p>
-                                                <p>Dentist, Implantologist</p>
+                                                <div class="bio-desk">
+                                                    <h4 class="green">Aadhar & PAN Card</h4>
+                                                    <div style="margin: 0in 0in 8pt">
+                                                        <a href="/doctorCertificates/aadharCard/<%- doctor.aadharCard %>"
+                                                            class="download-btn"><i
+                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp; Aadhar
+                                                            Card</a>
+                                                    </div>
+                                                    <div style="margin: 0in 0in 8pt">
+                                                        <a href="/doctorCertificates/panCard/<%- doctor.panCard %>"
+                                                            class="download-btn"><i
+                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp; PAN
+                                                            Card</a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            <!-- <div class="bio-chart">
+                                    <div class="col-md-6">
+                                        <div class="panel">
+                                            <div class="panel-body">
+                                                <!-- <div class="bio-chart">
                                       <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="50" data-fgcolor="#cba4db" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(203, 164, 219); padding: 0px; -webkit-appearance: none; background: none;"></div>
                                   </div> -->
-                                            <div class="bio-desk">
-                                                <h4 class="purple">Registration</h4>
-                                                <p style="color: rgb(170, 18, 18); margin-top: 4px;"><i
-                                                        class="fa fa-cancel"></i>&nbsp;&nbsp;Verification Pending
-                                                </p>
-                                                <p style="color: rgb(53, 126, 7);"><i
-                                                        class="fa fa-check"></i>&nbsp;&nbsp;Verification Successful
-                                                </p>
-                                                <!-- <p>Deadline : 15 August</p> -->
+                                                <div class="bio-desk">
+                                                    <h4 class="purple">Registration</h4>
+                                                    <% if(!doctor.isVerified) { %>
+                                                        <p style="color: rgb(170, 18, 18); margin-top: 4px;"><i
+                                                                class="fa fa-cancel"></i>&nbsp;&nbsp;Verification
+                                                            Pending
+                                                        </p>
+                                                        <% } %>
+                                                            <% if(doctor.isVerified) { %>
+                                                                <p style="color: rgb(53, 126, 7);"><i
+                                                                        class="fa fa-check"></i>&nbsp;&nbsp;Verification
+                                                                    Successful
+                                                                </p>
+                                                                <% } %>
+                                                                    <!-- <p>Deadline : 15 August</p> -->
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -168,9 +291,133 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <section id="review" class="review">
+                    <div class="section-title">
+                        <h2>Reviews for Dr. <%- doctor.first_name + ' ' + doctor.last_name %>
+                        </h2>
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="content text-center">
+                            <div class="avg-ratings">
+                                <span class="product-rating">
+                                    <%= rating %>
+                                </span><span>/5</span>
+                                <div class="stars">
+                                    <% for(let i=0; i < rating; i++) { %>
+                                        <i class="fa fa-star"></i>
+                                        <% } %>
+                                            <!-- <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i> -->
+                                </div>
+                                <div class="rating-text">
+                                    <span>
+                                        <%= review.length %> reviews
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="react-tabs__tab-panel react-tabs__tab-panel--selected" role="tabpanel"
+                        id="react-tabs-75459" aria-labelledby="react-tabs-75458">
+                        <div class="c-profile--sections">
+                            <div>
+                                <div class="feedback--list-container">
+                                    <div>
 
-            <%- include('../partials/footer')%>
+
+
+
+
+                                        <% for (var i=0; i < review.length; i++) { %>
+                                            <div class="pure-g feedback--item u-cushion--medium-vertical"
+                                                data-qa-id="feedback_item">
+                                                <div class="pure-u-2-24">
+                                                    <div class="feedback__icon" data-qa-id="reviewer-image"
+                                                        style="background-color: rgb(255, 249, 179);">
+                                                        <%= review[i].patientname[0] %>
+                                                    </div>
+                                                </div>
+                                                <div class="pure-u-22-24 u-lheight-default">
+                                                    <div
+                                                        class="u-d-flex flex-wrap flex-jc-space-between u-gap-12 u-cushion--small-top u-cushion--bottom">
+                                                        <div class="u-d-flex flex-wrap u-gap-12">
+                                                            <div class="u-color--grey3"><span class="u-bold"
+                                                                    data-qa-id="reviewer-name">
+                                                                    <%= review[i].patientname %>
+                                                                </span>&nbsp;<span class="u-bold"></span></div>
+                                                            <div><span
+                                                                    class="u-blue-2-background u-smallest-font u-color--white u-round-corner--12 u-cushion--right-less u-cushion--small-left u-cushion--small-top u-cushion--small-bottom"></span>
+                                                            </div>
+                                                        </div>
+                                                        <span data-qa-id="web-review-time"
+                                                            class="u-spacer--left-thin u-f-right u-color--grey3">
+                                                            <% for(let j=0;j < review[i].rating ;j++) { %>
+                                                                <i class="fa fa-star"></i>
+                                                                <% } %>
+                                                        </span>
+                                                    </div>
+                                                    <div class="feedback__body">
+                                                        <p class="feedback__content u-cushion--bottom u-title-font u-bold"
+                                                            data-qa-id="visited-for"><span><span>Visited
+                                                                    For</span>&nbsp;</span><span class="procedure">
+                                                                <%= review[i].consult %>
+                                                            </span></p>
+                                                        <% if(review[i].recommend==true) { %>
+                                                            <div class="u-cushion--small-bottom u-large-font"><span><img
+                                                                        src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+                                                                        width="17px" height="17px"></span><span
+                                                                    style="font-weight: 500;margin-left: 6px;">Doctor
+                                                                    Recommended</span></div>
+                                                            <% } else { %>
+                                                                <div class="u-cushion--small-bottom u-large-font">
+                                                                    <span><img
+                                                                            src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
+                                                                            width="17px" height="17px"></span><span
+                                                                        style="font-weight: 500;margin-left: 6px;">Doctor
+                                                                        Not Recommended</span>
+                                                                </div>
+                                                                <% } %>
+                                                                    <div>
+                                                                        <p class="feedback__content u-large-font "
+                                                                            data-qa-id="review-text">
+                                                                            <%= review[i].feedback %>
+                                                                        </p>
+                                                                    </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <% } %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                    </div>
+                                    <button data-qa-id="view-more-feedback"
+                                        class="c-btn--dark feedback__pagination-btn"><span>Read
+                                            More</span></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <% } %>
+
+                    <%- include('../partials/footer')%>
+
 
     </body>
 
@@ -475,7 +722,6 @@
             background: #063a68;
         }
 
-
         .profile-nav,
         .profile-info {
             margin-top: 30px;
@@ -559,7 +805,6 @@
             margin: 6px 0 0;
             font-size: 12px;
         }
-
 
         .p-text-area,
         .p-text-area:focus {
@@ -659,7 +904,6 @@
     padding-right: 15px;
     padding-left: 15px;
 } */
-
         .profile-activity h5 {
             font-weight: 300;
             margin-top: 0;
@@ -819,7 +1063,6 @@
             display: inline-block;
         }
 
-
         .activity .activity-desk .arrow {
             border-right: 8px solid #F4F4F4 !important;
         }
@@ -891,7 +1134,233 @@
             border-color: #055296;
         }
 
+        .content {
+            width: 350px;
+            margin-top: 10px;
+        }
 
+        .avg-ratings {
+            background-color: #fff;
+            padding: 48px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0px 10px 10px #b8b5b5;
+        }
+
+        .product-rating {
+            font-size: 50px;
+        }
+
+        .stars i {
+            font-size: 18px;
+            color: #28a745;
+        }
+
+        .rating-text {
+            margin-top: 10px;
+        }
+
+        .react-tabs__tab-panel--selected {
+            display: block;
+        }
+
+        .c-profile--sections {
+            padding: 20px;
+            background-color: #fff;
+            width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feedback--list-container {
+            min-height: 100px;
+        }
+
+        .feedback--item {
+            border-bottom: 1px solid #dcdcdc;
+        }
+
+        .u-cushion--medium-vertical {
+            padding: 28px 0;
+        }
+
+        .pure-u-2-24 {
+            width: 8.3333%;
+            /* *width: 8.3023%; */
+        }
+
+        .feedback__icon {
+            color: #787887;
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+            text-align: center;
+            font-weight: 700;
+            border-radius: 50%;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .u-lheight-default {
+            line-height: 1.5;
+        }
+
+        .pure-u-22-24 {
+            width: 91.6667%;
+            /* *width: 91.6357%; */
+        }
+
+        .u-gap-12 {
+            gap: 12px;
+        }
+
+        .flex-wrap {
+            /* -ms-flex-wrap: wrap; */
+            flex-wrap: wrap;
+        }
+
+        .u-d-flex {
+            /* display: -webkit-box;
+    display: -ms-flexbox; */
+            display: flex;
+        }
+
+        .u-cushion--small-top {
+            padding-top: 4px;
+        }
+
+        .u-cushion--bottom {
+            padding-bottom: 16px;
+        }
+
+        .flex-jc-space-between {
+            justify-content: space-between;
+        }
+
+        .u-spacer--left-thin {
+            margin-left: 4px;
+        }
+
+        .u-f-right {
+            float: right;
+        }
+
+        .feedback__body {
+            width: 90%;
+        }
+
+        .u-title-font {
+            font-size: 18px;
+        }
+
+        .u-cushion--small-bottom {
+            padding-bottom: 4px;
+        }
+
+        .u-large-font {
+            font-size: 16px;
+        }
+
+        .u-cushion--small-right {
+            padding-right: 4px;
+        }
+
+        .icon-ic_like {
+            content: "\e986";
+        }
+
+        .feedback__pagination-btn {
+            display: block;
+            margin: auto;
+            width: 130px;
+        }
+
+        .c-btn--dark {
+            height: 30px;
+            /* width: 100%; */
+            outline: none;
+            padding: 2px 0 8px;
+            color: white;
+            background-color: #010101;
+            cursor: pointer;
+            margin-top: 2rem;
+        }
+
+        .c-btn--dark:hover {
+            background-color: #36393c;
+        }
+
+        .u-spacer--top {
+            margin-top: 16px;
+        }
+
+        .c-profile--clinic--item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .c-profile--clinic--item:first-child {
+            padding-top: 0;
+        }
+
+        .c-profile--clinic__location {
+            color: #414146;
+            line-height: 1.3;
+            font-weight: 400;
+            font-size: 16px;
+        }
+
+        .u-cushion--right {
+            padding-right: 16px;
+        }
+
+        .pure-u-1-3 {
+            width: 33.33333%;
+        }
+
+        .u-pos-rel {
+            position: relative;
+        }
+
+        .u-d-inlineblock {
+            display: inline-block;
+        }
+
+        .common__star-rating,
+        .common__star-rating--small {
+            display: inline-block;
+            font-size: 16px;
+            color: #01a400;
+            position: relative;
+            background-color: #f0f0f5;
+            padding: 3px 0 3px 3px;
+            margin-right: 3px;
+            border-radius: 3px;
+        }
+
+        .common__star-rating__value {
+            font-weight: 700;
+            font-size: 14px;
+            margin-left: 3px;
+            margin-right: 3px;
+        }
+
+        .c-profile--clinic__address {
+            margin-bottom: 3px;
+            margin-top: 8px;
+        }
+
+        .u-cushion--left {
+            padding-left: 16px;
+        }
+
+        .timings__days {
+            font-weight: 700;
+            margin: 0 0 3px;
+        }
+
+        .timings__time {
+            margin: 0 0 12px;
+        }
 
         #footer {
             color: #444444;
@@ -1064,3 +1533,10 @@
             padding-bottom: 1.5rem !important;
         }
     </style>
+
+    <script>
+        function magic() {
+            var a = document.getElementById("anchor");
+            a.href = "http://www.stackoverflow.com";
+        }
+    </script>
