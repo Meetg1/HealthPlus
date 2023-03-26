@@ -27,6 +27,10 @@ const DoctorSchema = new mongoose.Schema({
       required: true,
       default: -1
    },
+   profilePic: {
+      type: String,
+      // required: true,
+   },
    aadharCard: {
       type: String,
       // required: true,

@@ -344,6 +344,37 @@ io.on('connection', (socket) => {
 })
 // ================================================================================
 
+// ==========================VIDEO CALL====================================
+
+app.get("/videocall/:appointmentid&:username&:usertype", async (req, res) => {
+   const appointmentid = req.params.appointmentid
+
+   if (!mongoose.isValidObjectId(appointmentid))
+      return res.send('No Appointment found')
+
+   const foundAppointment = await Appointment.findById(appointmentid)
+   if (!foundAppointment) {
+      req.flash('danger', 'No appointment found!')
+      return res.redirect('back')
+   }
+
+   var usertype
+   if (req.user instanceof Doctor) {  // if specilaity field exists,user is a doctor else a patient
+      usertype = 'doctor'
+   }
+   else {
+      usertype = 'patient'
+   }
+
+   const fullname = `${req.user.first_name} ${req.user.last_name}`
+
+   res.render("video_call.ejs", {
+      roomId: appointmentid,
+      username: fullname
+   });
+});
+
+
 const storage2 = multer.diskStorage({
    destination: (req, file, cb) => {
       if (file.fieldname === 'aadharCard') {
@@ -355,6 +386,8 @@ const storage2 = multer.diskStorage({
             null,
             path.join(__dirname, 'public/doctorCertificates/degreeCertificates'),
          )
+      } else if (file.fieldname === 'profilePic') {
+         cb(null, path.join(__dirname, 'public/doctorCertificates/profilePic'))
       } else if (file.fieldname === 'digitalKYC') {
          cb(null, path.join(__dirname, 'public/doctorCertificates/digitalKYC'))
       }
@@ -365,6 +398,8 @@ const storage2 = multer.diskStorage({
       } else if (file.fieldname === 'panCard') {
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
       } else if (file.fieldname === 'degreeCertificates') {
+         cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
+      } else if (file.fieldname === 'profilePic') {
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
       } else if (file.fieldname === 'digitalKYC') {
          cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
@@ -387,6 +422,7 @@ function checkFileType(file, cb) {
       file.fieldname === 'aadharCard' ||
       file.fieldname === 'panCard' ||
       file.fieldname === 'degreeCertificates' ||
+      file.fieldname === 'profilePic' ||
       file.fieldname === 'digitalKYC'
    ) {
       if (
@@ -440,6 +476,12 @@ var validator = function (req, res, next) {
    req.checkBody('degreeCertificates', 'Graduation Marksheet is required').isFile(
       grad_Marksheet,
    )
+
+   profile_Pic =
+      typeof req.files['profilePic'] !== 'undefined'
+         ? req.files['profilePic'][0].filename
+         : ''
+   req.checkBody('profilePic', 'Profile Pic is required').isFile(profile_Pic)
 
    digital_KYC =
       typeof req.files['digitalKYC'] !== 'undefined'
@@ -516,6 +558,10 @@ app.post(
       },
       {
          name: 'degreeCertificates',
+         maxCount: 5,
+      },
+      {
+         name: 'profilePic',
          maxCount: 1,
       },
       {
@@ -538,6 +584,7 @@ app.post(
             const aadharCard = req.files.aadharCard[0].filename
             const panCard = req.files.panCard[0].filename
             const degreeCertificates = req.files.degreeCertificates[0].filename
+            const profilePic = req.files.profilePic[0].filename
             const digitalKYC = req.files.digitalKYC[0].filename
 
             // console.log('availableAppointmentSlots')
@@ -635,6 +682,7 @@ app.post(
                aadharCard: aadharCard,
                panCard: panCard,
                degreeCertificates: degreeCertificates,
+               profilePic: profilePic,
                digitalKYC: digitalKYC,
                mondayAvailableAppointmentSlots,
                tuesdayAvailableAppointmentSlots,
@@ -841,7 +889,6 @@ app.get('/register/pending', (req, res) => {
 app.post('/patientRegister', async (req, res) => {
    try {
       const { username, fname, lname, phone, gender, age, location, pswd } = req.body
-
       req.checkBody('fname', 'Name is required').notEmpty()
       req.checkBody('lname', 'Name is required').notEmpty()
       req.checkBody('phone', 'Phone is required').notEmpty()
@@ -854,7 +901,6 @@ app.post('/patientRegister', async (req, res) => {
       //   .checkBody("password", "password must be of minimum 6 characters")
       //   .isLength({ min: 6 });
       req.checkBody('cpswd', 'Passwords do not match').equals(pswd)
-
       let errors = req.validationErrors()
       if (errors) {
          req.flash('danger', errors[0].msg)
@@ -875,7 +921,6 @@ app.post('/patientRegister', async (req, res) => {
          })
          const registedUser = await Patient.register(patient, pswd)
          console.log(registedUser)
-
          // const secret = JWT_SECRET
          // const payload = {
          //    username: patient.username,
@@ -887,31 +932,31 @@ app.post('/patientRegister', async (req, res) => {
             'You are now registered! Please verify your account through mail.',
          )
          console.log(link)
-         // const transporter = nodemailer.createTransport({
-         //    host: 'smtp.gmail.com',
-         //    port: 465,
-         //    secure: true, // use SSL
-         //    auth: {
-         //       user: 'healthplus182@gmail.com', // your email address
-         //       pass: 'aiwqesgsnywrsrcu' // your email password
-         //    }
-         // });
-         // const mailOptions = {
-         //    from: 'healthplus182@gmail.com',
-         //    to: username,
-         //    subject: 'Verify your email address',
-         //    html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
-         // };
-         // transporter.sendMail(mailOptions, (error, info) => {
-         //    if (error) {
-         //       console.log(error);
-         //    } else {
-         //       console.log('Email sent: ' + info.response);
-         //    }
-         // });
-         // sendverifyMail(username, link).then((result) =>
-         //    console.log('Email sent....', result),
-         // )
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: username,
+            subject: 'Verify your email address',
+            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
+         sendverifyMail(username, link).then((result) =>
+            console.log('Email sent....', result),
+         )
          res.redirect('back')
       }
    } catch (error) {
