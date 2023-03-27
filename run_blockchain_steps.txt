@@ -1,0 +1,10 @@
+python -m venv ./HealthPlus_Blockchain/virtualenv
+
+./HealthPlus_Blockchain/virtualenv/Scripts/Activate.ps1
+
+pip install -r ./HealthPlus_Blockchain/requirements.txt
+
+add Crypto folder to virtualenv/lib/site-packages
+
+python ./HealthPlus_Blockchain/node.py for default port 5000 or
+python ./HealthPlus_Blockchain/node.py -5001 for port 5001 or any other

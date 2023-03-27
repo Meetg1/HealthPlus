@@ -174,6 +174,14 @@ app.use(expressValidator({
    }
 }));
 
+const isLoggedIn = (req, res, next) => {
+   if (!req.isAuthenticated()) {
+      req.flash('danger', 'Please Log In First!')
+      return res.redirect('back')
+   }
+   next()
+}
+
 const isPatientVerified = async function (req, res, next) {
    try {
       const user = await Patient.findOne({ username: req.body.username })
@@ -1065,31 +1073,31 @@ app.post('/patientRegister', async (req, res) => {
             'You are now registered! Please verify your account through mail.',
          )
          console.log(link)
-         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com',
-            port: 465,
-            secure: true, // use SSL
-            auth: {
-               user: 'healthplus182@gmail.com', // your email address
-               pass: 'aiwqesgsnywrsrcu' // your email password
-            }
-         });
-         const mailOptions = {
-            from: 'healthplus182@gmail.com',
-            to: username,
-            subject: 'Verify your email address',
-            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
-         };
-         transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-               console.log(error);
-            } else {
-               console.log('Email sent: ' + info.response);
-            }
-         });
-         sendverifyMail(username, link).then((result) =>
-            console.log('Email sent....', result),
-         )
+         // const transporter = nodemailer.createTransport({
+         //    host: 'smtp.gmail.com',
+         //    port: 465,
+         //    secure: true, // use SSL
+         //    auth: {
+         //       user: 'healthplus182@gmail.com', // your email address
+         //       pass: 'aiwqesgsnywrsrcu' // your email password
+         //    }
+         // });
+         // const mailOptions = {
+         //    from: 'healthplus182@gmail.com',
+         //    to: username,
+         //    subject: 'Verify your email address',
+         //    html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         // };
+         // transporter.sendMail(mailOptions, (error, info) => {
+         //    if (error) {
+         //       console.log(error);
+         //    } else {
+         //       console.log('Email sent: ' + info.response);
+         //    }
+         // });
+         // sendverifyMail(username, link).then((result) =>
+         //    console.log('Email sent....', result),
+         // )
          res.redirect('back')
       }
    } catch (error) {
@@ -1281,6 +1289,10 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
       doctor.scheduledAppointments.push(ap)
       await doctor.save()
 
+      const patient = await Patient.findById(patientid)
+      patient.scheduledAppointments.push(ap)
+      await patient.save()
+
       // console.log(ap)
 
       // res.redirect(/slotBookingSucesss)
@@ -1298,7 +1310,7 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
 
 
 app.get(
-   '/chat_appointment/:appointmentid&:username&:usertype',
+   '/chat_appointment/:appointmentid',
    async (req, res) => {
 
       try {
@@ -1354,7 +1366,7 @@ app.get(
 )
 
 const generatePrescriptionTemplate = async (req, res, next) => {
-
+   const patientId = req.body.patientid
    // Load the docx file as binary content
    const content = fs.readFileSync(
       path.resolve(__dirname, "prescription_template.docx"),
@@ -1371,7 +1383,7 @@ const generatePrescriptionTemplate = async (req, res, next) => {
    // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
    // console.log('req.body')
    // console.log(req.body)
-   const patient = await Patient.findById(req.body.patientid)
+   const patient = await Patient.findById(patientId)
    // console.log(patient)
 
    const doctor = req.user
@@ -1399,7 +1411,8 @@ const generatePrescriptionTemplate = async (req, res, next) => {
       "meds": meds,
       "info": req.body.info
    }
-
+   // console.log('prescriptionJSON')
+   // console.log(prescriptionJSON)
    doc.render(prescriptionJSON);
 
    const buf = doc.getZip().generate({
@@ -1414,6 +1427,34 @@ const generatePrescriptionTemplate = async (req, res, next) => {
    let filename = patient.first_name + '_' + patient.last_name + '_prescription.docx'
    fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
    req.chat_prescription = filename
+
+   // // add record to blockchain
+   try {
+      const record = {
+         doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
+         patient: patientId,
+         data: {
+            date: prescriptionJSON.date,
+            diagnosis: prescriptionJSON.diag,
+            medicines: prescriptionJSON.meds,
+            suggestions: prescriptionJSON.info,
+            prescription: filename,
+            report: ""
+         }
+      }
+      axios
+         .post(`http://localhost:5000/blockchain/insertTransaction`, record)
+         .then((response) => {
+            console.log(response.data);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+
+   } catch (error) {
+      console.log(error);
+   }
+
    next()
 }
 
@@ -1442,6 +1483,64 @@ app.post(
       }
    },
 )
+
+// =====================BLOCKCHAIN ROUTES===========================
+// fetch records of a patient from blockchain
+app.get('/blockchain/:patientid', isLoggedIn, async (req, res) => {
+   try {
+      const patientId = req.params.patientid
+      const foundPatient = await Patient.findById(patientId).populate('scheduledAppointments')
+      if (!foundPatient) {
+         return res.redirect('back')
+      }
+      // console.log(foundPatient)
+
+      //patient's records only accessible by doctor having appointment with patient
+      // or by the patient itself
+      let flag = 0
+      for (let idx = 0; idx < foundPatient.scheduledAppointments.length; idx++) {
+         const appointment = foundPatient.scheduledAppointments[idx];
+         if (appointment.doctorid == req.user._id) {
+            flag = 1
+            break
+         }
+      }
+      // console.log(flag)
+      // console.log(patientId)
+      // console.log(req.user._id)
+      if (flag == 0 && !(req.user._id.equals(patientId))) {
+         req.flash('error', 'Not authorized!')
+         return res.redirect('back')
+      }
+      axios
+         .get(`http://localhost:5000/blockchain/getPatientRecords/${patientId}`)
+         .then(function (response) {
+            return response.data.records
+
+         })
+         .then((records) => {
+
+            // remove empty record arrays from response
+            // formattedRecords = []
+            // records.forEach(record => {
+            //    if (record.length > 0) {
+            //       record.forEach(rec => {
+            //          formattedRecords.push(rec)
+            //       })
+            //    }
+            // })
+            // console.log('formattedRecords')
+            // console.log(records)
+            return res.render('patient_medical_history.ejs', { patient: foundPatient, records: records })
+         })
+         .catch((err) => {
+            res.send(err)
+         })
+      // res.render('patient_medical_history.ejs', { patient: foundPatient })
+   } catch (error) {
+      console.log(error)
+   }
+})
 
 app.get('/:filename', (req, res) => {
    res.download(

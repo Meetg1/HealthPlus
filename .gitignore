@@ -1,4 +1,7 @@
 node_modules/
 .env
 /public/doctorCertificates/
+/HealthPlus_Blockchain/virtualenv
+/HealthPlus_Blockchain/*.txt
+
 

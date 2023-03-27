@@ -1,0 +1,97 @@
+<% layout('layouts/boilerplate') %>
+
+    <link rel="stylesheet" href="../stylesheets/patient_profile.css">
+
+
+    </head>
+
+    <body>
+        <%- include('partials/navbar')%>
+
+            <div class="container bootstrap snippets bootdey" style="margin-top: 70px;">
+                <div class="row">
+                    <div style="margin-left: 40%;" class="profile-nav col-md-3">
+                        <div class="panel">
+                            <div style="width: 130px; height: 130px; " class="user-heading round">
+                                <a href="#">
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                </a>
+                                < </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="panel">
+                            <!-- <div class="bio-graph-heading">
+                    Dr. Sumanth M. Shetty completed his post graduation in masters of dental surgery[ mds] in the field of Pedodontics and preventive dentistry, from the esteemed Bapuji Dental College, Davangere, a Karnataka, India. He is now serving as professor and HOD in the department of pediatric dentistry.
+                  </div> -->
+                            <div class="panel-body bio-graph-info">
+                                <h1 style="margin-top: 13px; color: rgb(45, 45, 45); font-size: 30px;">Patient Details
+                                </h1>
+                                <hr>
+                                <div class="row">
+                                    <div class="bio-row">
+                                        <p style="font: 600;"><span> Name: </span>
+                                            <%= patient.first_name+' '+ patient.last_name %>
+                                        
+                                    </p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Email: </span> <%= patient.username%> </p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Contact: </span> <%= patient.phone %> </p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Gender: </span> <%= patient.gender %> </p>
+                                </div>
+                                <div class="bio-row">
+                                    <p><span>Age: </span> <%= patient.age %></p>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <div class="panel-body bio-graph-info"></divclass>
+                            <h1 style="margin-top: 13px; color: rgb(45, 45, 45); font-size: 30px;"> Patient Medical History</h1>
+                            <hr>
+
+                            <% records.forEach(record => { %>
+                                <div class="card mt-3" style="border-color: #1977cc;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Diagnosis: 
+                                            <% record.data.diagnosis.forEach(diag => { %>
+                                                <b><%=diag.name%> (<%=diag.comment%>),</b>
+                                            <% }) %>  
+                                            <span style="float:right;"><%=record.data.date%></span>
+                                        </h5>
+                                      <p class="card-text">
+                                        <ul class="pl-3">
+                                            <li >Submitted By: <b><a href="/doctor_specific/profile/<%=record.doctor.id%>"><%=record.doctor.name%></a></b></li>
+                                            <li>Medicines: 
+                                                <% record.data.medicines.forEach(med => { %>
+                                                    <b><%=med.name%> (<%=med.dosage%>),</b>
+                                                <% }) %>                                                  
+                                            </li>
+                                            <li>Suggestions: <b><%=record.data.suggestions%></b></li>
+                                        </ul>
+                                      </p>
+                                      <a href="/<%=record.data.prescription%>" class="card-link">See Prescription</a>
+                                      <span  style="float: right;">Signature Valid: <% if (record.isSignatureValid) { %>
+                                        <p title="This record is not tampered."><img src="../images/websitePics/icons8-checkmark-48.png" alt="" srcset=""> </p>
+                                      <% }else{ %>
+                                        <p title="This record has been tampered!"><img src="../images/websitePics/icons8-close-window-48.png" alt="" srcset=""></p>
+                                      <% } %>  </span>
+                                    </div>
+                                  </div>
+                            <% }) %>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+
+    </body>
