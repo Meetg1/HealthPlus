@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Healthplus</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../stylesheets/video_call.css'>
+</head>
+<body>
+
+    <div id="videos">
+        <video class="video-player" id="user-1" autoplay playsinline></video>
+        <video class="video-player" id="user-2" autoplay playsinline></video>
+    </div>
+
+    <div id="controls">
+
+        <div class="control-container" id="camera-btn">
+            <img src="../images/websitePics/camera.png" />
+        </div>
+
+        <div class="control-container" id="mic-btn">
+            <img src="../images/websitePics/mic.png" />
+        </div>
+
+        <a href="/feedback">
+            <div class="control-container" id="leave-btn">
+                <img src="../images/websitePics/phone.png" />
+            </div>
+        </a>
+
+    </div>
+    
+</body>
+<script>
+    const roomId = <%-JSON.stringify(roomId) %>;
+</script>
+<script src='../javascripts/agora-rtm-sdk-1.4.4.js'></script>
+<script src='../javascripts/video_call.js'></script>
+</html>

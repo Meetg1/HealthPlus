@@ -36,6 +36,7 @@
       "passport": "^0.4.1",
       "passport-local": "^1.0.0",
       "passport-local-mongoose": "^6.1.0",
+      "peer": "^0.6.1",
       "pizzip": "^3.1.4",
       "socket.io": "^4.5.3",
       "socket.io-client": "^4.5.3"

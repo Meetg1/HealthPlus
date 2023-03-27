@@ -5,14 +5,274 @@
       <ul>
         <li><a class="nav-link scrollto" href="#hero">Home</a></li>
         <li><a class="nav-link scrollto" href="#about">About</a></li>
-        <li><a class="nav-link scrollto" href="/patientlogin">Patient Login</a></li>
-        <li><a class="nav-link scrollto" href="/doctorlogin">Doctor Login</a></li>
-        <!-- <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
+        <% if(currentUser) { %>
+          <li class="dropdown">
+            <a class="nav-link scrollto" href="#" style="text-decoration: none;" data-toggle="dropdown"><span>My
+                Account &nbsp;<img src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png" height="23"
+                  width="23"></span> <i class="fa fa-chevron-down"></i></a>
+            <div class="dropdown-menu">
+              <a href="profile" class="dropdown-item">Profile</a>
+              <a href="/logout" class="dropdown-item">Logout</a>
+            </div>
+          </li>
+          <% } else { %>
+            <li><a class="nav-link scrollto" href="/patientlogin">Patient Login</a></li>
+            <li><a class="nav-link scrollto" href="/doctorlogin">Doctor Login</a></li>
+            <% } %>
+              <!-- <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
               <li><a class="nav-link scrollto" href="#contact">Contact</a></li> -->
       </ul> <i class="bi bi-list mobile-nav-toggle"></i>
     </nav>
-    <a href="#appointment" class="appointment-btn scrollto" style="color: white;text-decoration: none;"><span
-        class="d-none d-md-inline">Make an</span> Appointment</a>
+    <!-- <a href="#appointment" class="appointment-btn scrollto" style="color: white;text-decoration: none;"><span
+        class="d-none d-md-inline">Make an</span> Appointment</a> -->
   </div>
 </header>
 <%- messages('messages', locals) %>
+
+  <style>
+    *,
+    ::after,
+    ::before {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Open Sans", sans-serif;
+      color: #444444;
+      margin: 0;
+      text-align: var(--bs-body-text-align);
+      background-color: var(--bs-body-bg);
+      -webkit-text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #header {
+      background: #fff;
+      transition: all 0.5s;
+      z-index: 997;
+      padding: 15px 0;
+      box-shadow: 0px 2px 15px rgb(25 119 204 / 10%);
+    }
+
+    .fixed-top {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1030;
+    }
+
+    .mr-auto {
+      margin-right: auto !important;
+    }
+
+    .align-items-center {
+      align-items: center !important;
+    }
+
+    .d-flex {
+      display: flex !important;
+    }
+
+    @media (min-width: 992px) {
+
+      .container,
+      .container-lg,
+      .container-md,
+      .container-sm {
+        max-width: 960px;
+      }
+    }
+
+    #header .logo {
+      font-size: 30px;
+      margin: 0;
+      padding: 0;
+      line-height: 1;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      font-family: "Poppins", sans-serif;
+      text-decoration: none;
+    }
+
+    #header .logo a {
+      color: #2c4964;
+      text-decoration: none;
+    }
+
+    a {
+      color: #1977cc;
+      text-decoration: none;
+    }
+
+    .navbar {
+      padding: 0;
+    }
+
+    @media (min-width: 992px) {
+      .order-lg-0 {
+        order: 0 !important;
+      }
+    }
+
+    .navbar ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      list-style: none;
+      /* align-items: center; */
+    }
+
+    .navbar>ul>li {
+      position: relative;
+      white-space: nowrap;
+      padding: 8px 0 8px 20px;
+    }
+
+    .navbar a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 19px;
+      color: #2c4964;
+      white-space: nowrap;
+      transition: 0.3s;
+      border-bottom: 2px solid #fff;
+      padding: 5px 2px;
+    }
+
+    .navbar a i {
+      font-size: 12px;
+      line-height: 0;
+      margin-left: 5px;
+    }
+
+    .navbar .dropdown-menu .dropdown-item {
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      padding: 10px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, .1);
+      font-weight: 500;
+      text-transform: none;
+      color: #1977cc;
+      transition: 0.3s;
+    }
+
+    .navbar .active,
+    .navbar .active:focus,
+    .navbar li:hover>a {
+      color: #1977cc;
+      border-color: #1977cc;
+    }
+
+    .navbar li {
+      position: relative;
+    }
+
+    .navbar a,
+    .navbar a:focus {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #2c4964;
+      white-space: nowrap;
+      transition: 0.3s;
+      border-bottom: 2px solid #fff;
+      padding: 5px 2px;
+    }
+
+    .mobile-nav-toggle {
+      color: #2c4964;
+      font-size: 28px;
+      cursor: pointer;
+      display: none;
+      line-height: 0;
+      transition: 0.5s;
+    }
+
+    .appointment-btn {
+      margin-left: 25px;
+      background: #1977cc;
+      color: #fff;
+      border-radius: 50px;
+      padding: 8px 25px;
+      white-space: nowrap;
+      transition: 0.3s;
+      font-size: 14px;
+      display: inline-block;
+    }
+
+    .appointment-btn:hover {
+      background: #055296;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .section-bg {
+      background-color: #f1f7fd;
+    }
+
+    section {
+      padding: 100px 0;
+      overflow: hidden;
+    }
+
+    @media (min-width: 992px) {
+
+      .container,
+      .container-lg,
+      .container-md,
+      .container-sm {
+        max-width: 960px;
+      }
+    }
+
+    .container {
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 0;
+      width: 100%;
+      padding-right: calc(var(--bs-gutter-x) * .5);
+      padding-left: calc(var(--bs-gutter-x) * .5);
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .section-title {
+      text-align: center;
+      padding-bottom: 30px;
+    }
+
+    .section-title h2 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      position: relative;
+      color: #2c4964;
+    }
+
+    .appointment .php-email-form {
+      width: 100%;
+    }
+
+    .row {
+      --bs-gutter-x: 1.5rem;
+      --bs-gutter-y: 0;
+      display: flex;
+      flex-wrap: wrap;
+      margin-top: calc(-1 * var(--bs-gutter-y));
+      margin-right: calc(-.5 * var(--bs-gutter-x));
+      margin-left: calc(-.5 * var(--bs-gutter-x));
+    }
+
+    @media (min-width: 768px) {
+      .col-md-4 {
+        flex: 0 0 auto;
+        width: 33.33333333%;
+      }
+    }
+  </style>
