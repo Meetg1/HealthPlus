@@ -174,6 +174,7 @@ app.use(expressValidator({
    }
 }));
 
+// =================MIDDLEWARES=========================
 const isLoggedIn = (req, res, next) => {
    if (!req.isAuthenticated()) {
       req.flash('danger', 'Please Log In First!')
@@ -254,6 +255,99 @@ const isAdmin = async function (req, res, next) {
    }
 }
 
+// generatePrescriptionTemplate AND ADD record to BLOCKCHAIN
+const generatePrescriptionTemplate = async (req, res, next) => {
+   const patientId = req.body.patientid
+   // Load the docx file as binary content
+   const content = fs.readFileSync(
+      path.resolve(__dirname, "prescription_template.docx"),
+      "binary"
+   );
+
+   const zip = new PizZip(content);
+
+   const doc = new Docxtemplater(zip, {
+      paragraphLoop: true,
+      linebreaks: true,
+   });
+
+   // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
+   // console.log('req.body')
+   // console.log(req.body)
+   const patient = await Patient.findById(patientId)
+   // console.log(patient)
+
+   const doctor = req.user
+   const diag = []
+   const meds = []
+
+   for (let index = 0; index < req.body.diagnosis.length; index++) {
+      diag.push({ "name": req.body.diagnosis[index], "comment": req.body.diagnosis_comment[index] })
+   }
+
+   for (let index = 0; index < req.body.medicineName.length; index++) {
+      meds.push({ "name": req.body.medicineName[index], "dosage": req.body.dosage[index] })
+   }
+
+   prescriptionJSON = {
+      "date": moment().format("DD/MM/YYYY"),
+      "dr_fname": doctor.first_name,
+      "dr_lname": doctor.last_name,
+      "dr_speciality": doctor.specialty,
+      "dr_clinic_location": doctor.clinicLocation,
+      "patient_name": patient.first_name + ' ' + patient.last_name,
+      "patient_age": patient.age,
+      "patient_gender": patient.gender,
+      "diag": diag,
+      "meds": meds,
+      "info": req.body.info
+   }
+   // console.log('prescriptionJSON')
+   // console.log(prescriptionJSON)
+   doc.render(prescriptionJSON);
+
+   const buf = doc.getZip().generate({
+      type: "nodebuffer",
+      // compression: DEFLATE adds a compression step.
+      // For a 50MB output document, expect 500ms additional CPU time
+      compression: "DEFLATE",
+   });
+
+   // buf is a nodejs Buffer, you can either write it to a
+   // file or res.send it with express for example.
+   let filename = patient.first_name + '_' + patient.last_name + '_prescription.docx'
+   fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
+   req.chat_prescription = filename
+
+   // // add record to blockchain
+   try {
+      const record = {
+         doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
+         patient: patientId,
+         data: {
+            date: prescriptionJSON.date,
+            diagnosis: prescriptionJSON.diag,
+            medicines: prescriptionJSON.meds,
+            suggestions: prescriptionJSON.info,
+            prescription: filename,
+            report: ""
+         }
+      }
+      axios
+         .post(`http://localhost:5000/blockchain/insertTransaction`, record)
+         .then((response) => {
+            console.log(response.data);
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+
+   } catch (error) {
+      console.log(error);
+   }
+
+   next()
+}
 
 // ==========================SOCKET.IO====================================
 const { formatMessage, getRoomUsers } = require('./utils/messages')
@@ -352,37 +446,6 @@ io.on('connection', (socket) => {
    })
 })
 // ================================================================================
-
-// ==========================VIDEO CALL====================================
-
-app.get("/videocall/:appointmentid&:username&:usertype", async (req, res) => {
-   const appointmentid = req.params.appointmentid
-
-   if (!mongoose.isValidObjectId(appointmentid))
-      return res.send('No Appointment found')
-
-   const foundAppointment = await Appointment.findById(appointmentid)
-   if (!foundAppointment) {
-      req.flash('danger', 'No appointment found!')
-      return res.redirect('back')
-   }
-
-   var usertype
-   if (req.user instanceof Doctor) {  // if specilaity field exists,user is a doctor else a patient
-      usertype = 'doctor'
-   }
-   else {
-      usertype = 'patient'
-   }
-
-   const fullname = `${req.user.first_name} ${req.user.last_name}`
-
-   res.render("video_call.ejs", {
-      roomId: appointmentid,
-      username: fullname
-   });
-});
-
 
 const storage2 = multer.diskStorage({
    destination: (req, file, cb) => {
@@ -903,60 +966,11 @@ app.get('/doctor_specific/profile', async function (req, res, next) {
 })
 
 
-// function loggedInDoctor(req, res, next) {
-//    if (req.user instanceof Doctor) {
-//       next();
-//    }
-//    else {
-//       res.redirect('/doctorlogin');
-//    }
-// }
-
-// function loggedInPatient(req, res, next) {
-//    if (req.user instanceof Patient) {
-//       next();
-//    }
-//    else {
-//       res.redirect('/patientlogin');
-//    }
-// }
-// app.get('/cancel_appointment_patient', loggedInPatient, async function (req, res, next) {
-//    try {
-//       let patientid = req.user._id;
-//       const patient = await Patient.findById(patientid);
-//       console.log(patient.scheduledAppointments);
-//       const appointment = await Appointment.find({ patientid: patientid })
-//       let arr = [];
-//       appointment.forEach(async function (item) {
-//          console.log(item._id);
-//          const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-//          arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
-//       });
-//       const slots = await AppointmentSlot.find({ slotId: appointment.slotId });
-//       console.log(appointment._id);
-//       res.render('patient/patient_profile.ejs', { appointment: appointment, slots: arr });
-//    } catch (error) {
-//       res.status(500).send({ message: error.message || 'Error Occured' })
-//    }
-// })
-
-function isLoggedIn(req, res, next) {
-   if (req.user instanceof Patient) {
-      next();
-   }
-   else if (req.user instanceof Doctor) {
-      next();
-   }
-   else {
-      res.redirect('/patientlogin');
-   }
-}
-
-app.post('/cancel_appointment', async function (req, res, next) {
-   const data = req.body.id;
-   console.log(data);
-   await Appointment.findByIdAndDelete(data);
-   res.render('home.ejs');
+app.get('/cancel_appointment/:appointmentid', async function (req, res, next) {
+   const appointmentid = req.params.appointmentid;
+   await Appointment.findByIdAndDelete(appointmentid);
+   req.flash('success', 'Appointment has been cancelled.')
+   res.redirect('/profile');
 })
 
 app.get('/profile', isLoggedIn, async function (req, res, next) {
@@ -1409,15 +1423,12 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
 
 })
 
-
 app.get(
-   '/chat_appointment/:appointmentid',
+   '/joinAppointment/:appointmentid',
    async (req, res) => {
 
       try {
-
          const appointmentid = req.params.appointmentid
-
          if (!mongoose.isValidObjectId(appointmentid))
             return res.send('No Appointment found')
 
@@ -1427,6 +1438,28 @@ app.get(
             return res.redirect('back')
          }
 
+         if (foundAppointment.mode == 'chat') {
+            return res.redirect(`/chat_appointment/${appointmentid}`)
+         } else {
+            return res.redirect(`/videocall/${appointmentid}`)
+         }
+      }
+      catch (error) {
+         console.log(error)
+         res.redirect('back')
+      }
+
+   })
+
+
+// ==================CHAT SESSION=========================
+app.get(
+   '/chat_appointment/:appointmentid',
+   async (req, res) => {
+
+      try {
+         const appointmentid = req.params.appointmentid
+         const foundAppointment = await Appointment.findById(appointmentid)
          var usertype
          if (req.user instanceof Doctor) {  // if specilaity field exists,user is a doctor else a patient
             usertype = 'doctor'
@@ -1466,98 +1499,32 @@ app.get(
    }
 )
 
-const generatePrescriptionTemplate = async (req, res, next) => {
-   const patientId = req.body.patientid
-   // Load the docx file as binary content
-   const content = fs.readFileSync(
-      path.resolve(__dirname, "prescription_template.docx"),
-      "binary"
-   );
+// ==========================VIDEO CALL SESSION====================================
 
-   const zip = new PizZip(content);
-
-   const doc = new Docxtemplater(zip, {
-      paragraphLoop: true,
-      linebreaks: true,
-   });
-
-   // Render the document (Replace {first_name} by John, {last_name} by Doe, ...)
-   // console.log('req.body')
-   // console.log(req.body)
-   const patient = await Patient.findById(patientId)
-   // console.log(patient)
-
-   const doctor = req.user
-   const diag = []
-   const meds = []
-
-   for (let index = 0; index < req.body.diagnosis.length; index++) {
-      diag.push({ "name": req.body.diagnosis[index], "comment": req.body.diagnosis_comment[index] })
-   }
-
-   for (let index = 0; index < req.body.medicineName.length; index++) {
-      meds.push({ "name": req.body.medicineName[index], "dosage": req.body.dosage[index] })
-   }
-
-   prescriptionJSON = {
-      "date": moment().format("DD/MM/YYYY"),
-      "dr_fname": doctor.first_name,
-      "dr_lname": doctor.last_name,
-      "dr_speciality": doctor.specialty,
-      "dr_clinic_location": doctor.clinicLocation,
-      "patient_name": patient.first_name + ' ' + patient.last_name,
-      "patient_age": patient.age,
-      "patient_gender": patient.gender,
-      "diag": diag,
-      "meds": meds,
-      "info": req.body.info
-   }
-   // console.log('prescriptionJSON')
-   // console.log(prescriptionJSON)
-   doc.render(prescriptionJSON);
-
-   const buf = doc.getZip().generate({
-      type: "nodebuffer",
-      // compression: DEFLATE adds a compression step.
-      // For a 50MB output document, expect 500ms additional CPU time
-      compression: "DEFLATE",
-   });
-
-   // buf is a nodejs Buffer, you can either write it to a
-   // file or res.send it with express for example.
-   let filename = patient.first_name + '_' + patient.last_name + '_prescription.docx'
-   fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
-   req.chat_prescription = filename
-
-   // // add record to blockchain
+app.get("/videocall/:appointmentid", async (req, res) => {
    try {
-      const record = {
-         doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
-         patient: patientId,
-         data: {
-            date: prescriptionJSON.date,
-            diagnosis: prescriptionJSON.diag,
-            medicines: prescriptionJSON.meds,
-            suggestions: prescriptionJSON.info,
-            prescription: filename,
-            report: ""
-         }
+      const appointmentid = req.params.appointmentid
+      var usertype
+      if (req.user instanceof Doctor) {  // if specilaity field exists,user is a doctor else a patient
+         usertype = 'doctor'
       }
-      axios
-         .post(`http://localhost:5000/blockchain/insertTransaction`, record)
-         .then((response) => {
-            console.log(response.data);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
+      else {
+         usertype = 'patient'
+      }
 
+      const fullname = `${req.user.first_name} ${req.user.last_name}`
+
+      res.render("video_call.ejs", {
+         roomId: appointmentid,
+         username: fullname
+      });
    } catch (error) {
-      console.log(error);
+      console.log(error)
+      req.flash('danger', 'Something went wrong')
+      res.redirect('back')
    }
 
-   next()
-}
+});
 
 app.post(
    '/:appointmentid/uploadChatPrescription',

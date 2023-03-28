@@ -89,6 +89,7 @@
                                 </div>
                             </div>
                         </div>
+                        <hr>
                         <div class="special-box">
                             <div class="row">
                                 <div class="col-md-12">
@@ -98,24 +99,16 @@
                                           <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="35" data-fgcolor="#e06b7d" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(224, 107, 125); padding: 0px; -webkit-appearance: none; background: none;"></div>
                                       </div> -->
                                             <div class="bio-desk">
-                                                <h4 class="red">Scheduled Appointments</h4>
+                                                <h4 style="font-size: 20px;" class="red">Scheduled Appointments</h4 style="font-size: 20px;">
                                                 <% slots.forEach(function(item) { %>
-                                                    <div style="margin: 0in 0in 8pt">
-                                                        <a name="id" value=<%=appointment._id %>
-                                                            class="download-btn-1"><i
-                                                                class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                            <%= item.date %>, <%= item.time %>
-                                                        </a>
-                                                        <form action="/cancel_appointment" method="post">
-                                                            <button type="submit" name="id" value=<%=item.id %>>
-                                                                Cancel</button>
-                                                        </form>
+                                                    <div class="mb-3 p-3" style="border: 1px solid blue ;">
+                                                        <i class="fa fa-clock"></i>&nbsp;&nbsp;
+                                                            <%= item.date %>, <%= item.time %>  
+                                                        <br><br>          
+                                                        <a href="/joinAppointment/<%=item.id%>" class="btn btn-outline-primary" >Join Session</a>
+                                                        <a href="/cancel_appointment/<%=item.id%>" class="ml-4 btn btn-primary" >Cancel Appointment</a>
                                                     </div>
-                                                    <% }); %>
-
-                                                        <a class="listmore"
-                                                            style="text-align: center; background: transparent; cursor: pointer;"><i
-                                                                class="fa fa-chevron-down"></i></a>
+                                                    <% }); %>                                                        
                                             </div>
                                         </div>
                                     </div>

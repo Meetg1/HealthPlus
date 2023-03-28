@@ -97,26 +97,21 @@
                                 </div>
                             </div>
                             <div class="special-box">
-                                <div class="row">
-                                    <div class="col-md-6">
+                                
+                                    <div>
                                         <div class="panel">
                                             <div class="panel-body">
-                                                <div class="bio-desk">
-                                                    <h4 class="red">Slot Timings</h4>
-                                                    <% slots.forEach(function(item) { %>
-                                                        <div style="margin: 0in 0in 8pt">
-                                                            <a name="id" value=<%=appointment._id %>
-                                                                class="download-btn-1"><i
-                                                                    class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                                <%= item.date %>, <%= item.time %>
-                                                            </a>
-                                                            <form action="/cancel_appointment" method="post">
-                                                                <button class="btn btn-primary" type="submit" name="id"
-                                                                    value=<%=item.id %>>
-                                                                    Cancel</button>
-                                                            </form>
-                                                        </div>
-                                                        <% }); %>
+                                                <div class="bio-desk">  
+                                                    <h4 style="font-size: 20px;" class="red">Scheduled Appointments</h4 style="font-size: 20px;">
+                                                        <% slots.forEach(function(item) { %>
+                                                            <div class="mb-3 p-3" style="border: 1px solid blue ;">
+                                                                <i class="fa fa-clock"></i>&nbsp;&nbsp;
+                                                                    <%= item.date %>, <%= item.time %>  
+                                                                <br><br>          
+                                                                <a href="/joinAppointment/<%=item.id%>" class="btn btn-outline-primary" >Join Session</a>
+                                                                <a href="/cancel_appointment/<%=item.id%>" class="ml-4 btn btn-primary" >Cancel Appointment</a>
+                                                            </div>
+                                                            <% }); %>     
                                                             <div>
                                                                 <div data-qa-id="timings_list">
                                                                     <p class="timings__days"
@@ -214,7 +209,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div>
                                         <div class="panel">
                                             <div class="panel-body">
                                                 <div class="bio-desk">
@@ -287,7 +282,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                             
                             </div>
                         </div>
                     </div>
