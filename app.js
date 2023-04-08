@@ -30,6 +30,7 @@ const PizZip = require("pizzip");
 const Docxtemplater = require("docxtemplater");
 const server = http.createServer(app)
 const nodemailer = require('nodemailer');
+const { readdir } = require('fs/promises');
 const socketio = require('socket.io')
 const io = socketio(server, {
    cors: {
@@ -66,34 +67,6 @@ app.use(
       saveUninitialized: true,
    }),
 )
-
-// SET STORAGE FOR chat prescriptions
-var storage = multer.diskStorage({
-   destination: function (req, chat_prescription, cb) {
-      cb(null, path.join(__dirname, 'public/images/prescriptions'))
-   },
-   filename: function (req, chat_prescription, cb) {
-      // console.log('chat_prescription')
-      // console.log(req.chat_prescription)
-      cb(null, uuidv1() + path.extname(chat_prescription.originalname))
-   },
-})
-
-var upload = multer({ storage: storage })
-
-// SET STORAGE for doctor certificates
-var storage1 = multer.diskStorage({
-   destination: function (req, files, cb) {
-      cb(null, path.join(__dirname, 'public/images/prescriptions'))
-   },
-   filename: function (req, chat_prescription, cb) {
-      console.log('chat_prescription')
-      console.log(chat_prescription)
-      cb(null, uuidv1() + path.extname(chat_prescription.originalname))
-   },
-})
-
-var upload = multer({ storage: storage1 })
 
 //========================PASSPORT SETUP=============================
 app.use(passport.initialize())
@@ -288,19 +261,21 @@ const generatePrescriptionTemplate = async (req, res, next) => {
    for (let index = 0; index < req.body.medicineName.length; index++) {
       meds.push({ "name": req.body.medicineName[index], "dosage": req.body.dosage[index] })
    }
-
+   const date = moment().format("DD-MM-YYYY")
+   const prescID = uuidv1()
    prescriptionJSON = {
-      "date": moment().format("DD/MM/YYYY"),
+      "date": date,
       "dr_fname": doctor.first_name,
       "dr_lname": doctor.last_name,
-      "dr_speciality": doctor.specialty,
+      "dr_speciality": doctor.speciality,
       "dr_clinic_location": doctor.clinicLocation,
       "patient_name": patient.first_name + ' ' + patient.last_name,
       "patient_age": patient.age,
       "patient_gender": patient.gender,
       "diag": diag,
       "meds": meds,
-      "info": req.body.info
+      "info": req.body.info,
+      "prescID": prescID
    }
    // console.log('prescriptionJSON')
    // console.log(prescriptionJSON)
@@ -315,36 +290,36 @@ const generatePrescriptionTemplate = async (req, res, next) => {
 
    // buf is a nodejs Buffer, you can either write it to a
    // file or res.send it with express for example.
-   let filename = patient.first_name + '_' + patient.last_name + '_prescription.docx'
+   let filename = patient.first_name + '_' + patient.last_name + '_' + date + '_' + prescID + '_prescription.docx'
    fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
    req.chat_prescription = filename
 
-   // // add record to blockchain
-   try {
-      const record = {
-         doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
-         patient: patientId,
-         data: {
-            date: prescriptionJSON.date,
-            diagnosis: prescriptionJSON.diag,
-            medicines: prescriptionJSON.meds,
-            suggestions: prescriptionJSON.info,
-            prescription: filename,
-            report: ""
-         }
-      }
-      axios
-         .post(`http://localhost:5000/blockchain/insertTransaction`, record)
-         .then((response) => {
-            console.log(response.data);
-         })
-         .catch((error) => {
-            console.log(error);
-         });
+   //  ADD RECORD TO BLOCKCHAIN
+   // try {
+   //    const record = {
+   //       doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
+   //       patient: patientId,
+   //       data: {
+   //          date: prescriptionJSON.date,
+   //          diagnosis: prescriptionJSON.diag,
+   //          medicines: prescriptionJSON.meds,
+   //          suggestions: prescriptionJSON.info,
+   //          prescription: filename,
+   //          report: ""
+   //       }
+   //    }
+   //    axios
+   //       .post(`http://localhost:5000/blockchain/insertTransaction`, record)
+   //       .then((response) => {
+   //          console.log(response.data);
+   //       })
+   //       .catch((error) => {
+   //          console.log(error);
+   //       });
 
-   } catch (error) {
-      console.log(error);
-   }
+   // } catch (error) {
+   //    console.log(error);
+   // }
 
    next()
 }
@@ -459,7 +434,7 @@ const storage2 = multer.diskStorage({
             path.join(__dirname, 'public/doctorCertificates/degreeCertificates'),
          )
       } else if (file.fieldname === 'profilePic') {
-         cb(null, path.join(__dirname, 'public/doctorCertificates/profilePic'))
+         cb(null, path.join(__dirname, 'public/images/doctorProfilePics/'))
       } else if (file.fieldname === 'digitalKYC') {
          cb(null, path.join(__dirname, 'public/doctorCertificates/digitalKYC'))
       }
@@ -897,7 +872,7 @@ app.post('/search', (req, res) => {
       $lt: upperBound2
    };
    filter = {
-      specialty: speciality,
+      speciality: speciality,
       consultationFee: feeobj,
       yearsOfExperience: expobj
    };
@@ -1411,9 +1386,8 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
       // console.log(ap)
 
       // res.redirect(/slotBookingSucesss)
-      res.redirect('back')
-
-
+      req.flash('success', 'Appointment booked successfully.')
+      res.redirect('/')
    } catch (error) {
       console.log(error)
       req.flash('danger', 'Something went wrong')
@@ -1608,6 +1582,31 @@ app.get('/blockchain/:patientid', isLoggedIn, async (req, res) => {
    } catch (error) {
       console.log(error)
    }
+})
+
+app.get('/verify_prescription', (req, res) => {
+   res.render('verify_prescription.ejs')
+})
+
+app.post('/verify_prescription/', async (req, res) => {
+   const prescID = req.body.prescID
+   let matchedFile = false;
+
+   dir = __dirname + '/public/images/prescriptions/'
+   const files = await readdir(dir);
+
+   for (const file of files) {
+      // Method 3:
+      if (file.includes(prescID)) {
+         matchedFile = file;
+      }
+   }
+   // console.log('matchedFile')
+   // console.log(matchedFile)
+   res.download(
+      __dirname + '/public/images/prescriptions/' + matchedFile
+   )
+
 })
 
 app.get('/:filename', (req, res) => {
