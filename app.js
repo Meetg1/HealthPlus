@@ -294,32 +294,34 @@ const generatePrescriptionTemplate = async (req, res, next) => {
    fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
    req.chat_prescription = filename
 
-   //  ADD RECORD TO BLOCKCHAIN
-   // try {
-   //    const record = {
-   //       doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
-   //       patient: patientId,
-   //       data: {
-   //          date: prescriptionJSON.date,
-   //          diagnosis: prescriptionJSON.diag,
-   //          medicines: prescriptionJSON.meds,
-   //          suggestions: prescriptionJSON.info,
-   //          prescription: filename,
-   //          report: ""
-   //       }
-   //    }
-   //    axios
-   //       .post(`http://localhost:5000/blockchain/insertTransaction`, record)
-   //       .then((response) => {
-   //          console.log(response.data);
-   //       })
-   //       .catch((error) => {
-   //          console.log(error);
-   //       });
+   //  ADD RECORD TO BLOCKCHAIN IF CONSENT
 
-   // } catch (error) {
-   //    console.log(error);
-   // }
+   try {
+      if (patient.blockchainConsent) {
+         const record = {
+            doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
+            patient: patientId,
+            data: {
+               date: prescriptionJSON.date,
+               diagnosis: prescriptionJSON.diag,
+               medicines: prescriptionJSON.meds,
+               suggestions: prescriptionJSON.info,
+               prescription: filename,
+               report: ""
+            }
+         }
+         axios
+            .post(`http://localhost:5000/blockchain/insertTransaction`, record)
+            .then((response) => {
+               console.log(response.data);
+            })
+            .catch((error) => {
+               console.log(error);
+            });
+      }
+   } catch (error) {
+      console.log(error);
+   }
 
    next()
 }
@@ -1477,17 +1479,21 @@ app.get('/blockchain/:patientid', isLoggedIn, async (req, res) => {
    try {
       const patientId = req.params.patientid
       const foundPatient = await Patient.findById(patientId).populate('scheduledAppointments')
+
       if (!foundPatient) {
          return res.redirect('back')
       }
-      // console.log(foundPatient)
+
+      if (!foundPatient.blockchainConsent) {
+         return res.render('patient_medical_history.ejs', { patient: foundPatient, records: false })
+      }
 
       //patient's records only accessible by doctor having appointment with patient
       // or by the patient itself
       let flag = 0
       for (let idx = 0; idx < foundPatient.scheduledAppointments.length; idx++) {
          const appointment = foundPatient.scheduledAppointments[idx];
-         if (appointment.doctorid == req.user._id) {
+         if (req.user._id.equals(appointment.doctorid)) {
             flag = 1
             break
          }
