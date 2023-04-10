@@ -33,6 +33,7 @@ class Blockchain:
         self.public_key = public_key
         self.__peer_nodes = set()
         self.node_id = node_id
+        self.resolve_conflicts = False
         self.load_data()
 
     # This turns the chain attribute into a property with a getter (the method below) and a setter (@chain.setter)
@@ -152,7 +153,7 @@ class Blockchain:
         transaction = Transaction(sender, doctor, patient, signature, data)
         if Verification.verify_transaction(transaction):
             self.__open_transactions.append(transaction)
-            self.save_data()
+            self.save_data()            
             if not is_receiving:
                 for node in self.__peer_nodes:
                     url = 'http://{}/broadcast-transaction'.format(node)
@@ -164,6 +165,13 @@ class Blockchain:
                             return False
                     except requests.exceptions.ConnectionError:
                         continue
+
+                # MINE THE BLOCK IF MORE THAN 2 TRANSACTIONS HAVE BEEN ACCUMULATED
+                if len(self.__open_transactions)>=2:
+                    print('omm')
+                    print(self.node_id)
+                    url = 'http://localhost:{}/mine'.format(self.node_id)
+                    requests.post(url)
             return True
         return False
 
@@ -180,8 +188,7 @@ class Blockchain:
         powHash = temp[0]
         proof = temp[1]
         mined_by = self.node_id
-        # Copy transaction instead of manipulating the original open_transactions list
-        # This ensures that if for some reason the mining should fail, we don't have the reward transaction stored in the open transactions
+
         copied_transactions = self.__open_transactions[:]
         for tx in copied_transactions:
             if not Wallet.verify_transaction(tx):
@@ -201,9 +208,51 @@ class Blockchain:
                 print(response)
                 if response.status_code == 400 or response.status_code == 500:
                     print('Block declined, needs resolving')
+                if response.status_code == 409:
+                    self.resolve_conflicts = True
             except requests.exceptions.ConnectionError:
+                # continue to next node
                 continue
         return [block,'']
+    
+    def resolve(self):
+        # we use the longest chain to achieve consensus
+        winner_chain = self.get_chain()
+        replace = False
+        for node in self.__peer_nodes:
+            url = 'http://{}:{}/chain'.format(
+                self.hostname, node)
+            try:
+                response = requests.get(url)
+                node_chain = response.json()
+                node_chain = [Block(
+                    block['index'],
+                    block['previous_hash'],
+                    [Transaction(
+                        tx['sender'],
+                        tx['receiver'],
+                        tx['signature'],
+                        tx['details'],
+                        tx['timestamp'],
+                        ) for tx in block['transactions']],
+                    block['proof'],
+                    block['timestamp'],
+                ) for block in node_chain]
+                node_chain_length = len(node_chain)
+                local_chain_length = len(winner_chain)
+                if node_chain_length > local_chain_length and Verification.verify_chain(node_chain):
+                    winner_chain = node_chain
+                    replace = True
+            except requests.exceptions.ConnectionError:
+                # continue to next node
+                continue
+
+        self.resolve_conflicts = False
+        self.__chain = winner_chain
+        if replace:
+            self.__open_transactions = []
+        self.save_data()
+        return 
 
     def add_block(self, block):
         transactions = [Transaction(

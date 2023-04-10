@@ -112,15 +112,16 @@ def broadcast_block():
     if block['index'] == blockchain.chain[-1].index + 1:
         if blockchain.add_block(block):
             response = {'message': 'Block added'}
-            return jsonify(response), 201
+            return jsonify(response), 200
         else:
             response = {'message': 'Block seems invalid.'}
-            return jsonify(response), 500
+            return jsonify(response), 409
     elif block['index'] > blockchain.chain[-1].index:
-        return jsonify(response), 900
-        pass
+        blockchain.resolve_conflicts = True
+        response = {'message': 'Blockchain differes from local chain!'}
+        return jsonify(response), 200
     else: 
-        response = {'message': 'Blockchain seems to be shorter, block not added'}
+        response = {'message': 'Blockchain is shorter, block not added!'}
         return jsonify(response), 409
 
 
@@ -128,6 +129,10 @@ def broadcast_block():
 # POST - Mine a block (add a new block to the blockchain)
 @app.route('/mine', methods=['POST'])
 def mine():
+    if blockchain.resolve_conflicts:
+        response = {'message': 'Resolve conflicts first,block not added!'}
+        return jsonify(response), 409
+
     block = blockchain.mine_block()
     if block[0] != None:
         dict_block = block[0].__dict__.copy()
@@ -145,6 +150,15 @@ def mine():
         }
         return jsonify(response), 500
 
+@app.route('/resolve_conflicts', methods=['POST'])
+def resolve_conflicts():
+    replaced = blockchain.resolve()
+    if replaced:
+        response = {'message': 'Chain was replaced!'}
+        return jsonify(response), 400
+    else:
+        response = {'message': 'Local chain kept!'}
+    return jsonify(response), 200
 
 # GET - Get History of Transactions
 @app.route('/transactions', methods=['GET'])
