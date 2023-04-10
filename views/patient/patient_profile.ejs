@@ -103,7 +103,7 @@
                                                 <% slots.forEach(function(item) { %>
                                                     <div class="mb-3 p-3" style="border: 1px solid blue ;">
                                                         <i class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                            <%= item.date %>, <%= item.time %>  
+                                                            <%= item.date %>, <%= item.time %> <span>with Dr.</span> <%= item.doctor %>
                                                         <br><br>          
                                                         <a href="/joinAppointment/<%=item.id%>" class="btn btn-outline-primary" >Join Session</a>
                                                         <a href="/cancel_appointment/<%=item.id%>" class="ml-4 btn btn-primary" >Cancel Appointment</a>

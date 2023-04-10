@@ -114,9 +114,11 @@
                                             src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg"
                                             class="img-fluid" alt=""></div>
                                     <div class="member-info">
-                                        <h4>
-                                            <%= doctors[i].first_name %>
-                                        </h4> <span>
+                                        <a href="doctor_specific/profile/<%= doctors[i]._id %>">
+                                            <h4>
+                                                <%= doctors[i].first_name %>
+                                            </h4>
+                                        </a> <span>
                                             <%= doctors[i].speciality %>
                                         </span>
                                         <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
