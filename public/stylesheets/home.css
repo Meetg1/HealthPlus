@@ -257,7 +257,8 @@ section {
     color: #2c4964;
 }
 .about .video-box {
-    background: url(https://bootstrapmade.com/demo/templates/Medilab/assets/img/about.jpg) center center no-repeat;
+    /* background: url(https://bootstrapmade.com/demo/templates/Medilab/assets/img/about.jpg) center center no-repeat; */
+    background: url(../images/websitePics/doctors4.jpg) center center no-repeat;
     background-size: cover;
     min-height: 500px;
 }

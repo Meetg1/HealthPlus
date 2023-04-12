@@ -16,6 +16,8 @@
                                 <div class="user-heading round">
                                     <a href="#">
                                         <img src="https://bootdey.com/img/Content/avatar/avatar3.png" alt="">
+                                        <!-- <img src="/images/doctorProfilePics/<%- doctor.doctorProfilePics %>"> -->
+                                        <!-- <img src="/public/images/doctorProfilePics/profilePic1681320144258.png"> -->
                                     </a>
                                     <h1 style="margin-top: 8px;">
                                         <%- doctor.first_name + ' ' + doctor.last_name %>
@@ -47,7 +49,7 @@
                                 Dental
                                 College, Davangere, a Karnataka, India. He is now serving as professor and HOD in
                                 the
-                                department of pediatric dentistry. -->
+                                department of pediatric dentistry. /doctorCertificates/aadharCard/<%- doctor.aadharCard %>-->
                                 </div>
                                 <div class="panel-body bio-graph-info">
                                     <h1 style="margin-top: 13px; color: rgb(45, 45, 45);">Your Dashboard</h1>
@@ -118,83 +120,99 @@
                                                     </div>
                                                     <% }); %>
                                                         <div>
-                                                            <div data-qa-id="timings_list">
-                                                                <p class="timings__days"
-                                                                    data-qa-id="clinic-timings-day">
-                                                                    <span><span>Mon</span>
-                                                                </p>
-                                                                <% monday.forEach(function(item) { %>
-                                                                    <p class="timings__time"
-                                                                        data-qa-id="clinic-timings-session">
-                                                                        <%= item.slotTime %>
-                                                                            </span>
-                                                                    </p>
-                                                                    <% }); %>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div data-qa-id="timings_list">
+                                                                        <p class="timings__days"
+                                                                            data-qa-id="clinic-timings-day">
+                                                                            <span><span>Mon</span>
+                                                                        </p>
+                                                                        <% monday.forEach(function(item) { %>
+                                                                            <p class="timings__time"
+                                                                                data-qa-id="clinic-timings-session">
+                                                                                <%= item.slotTime %>
+                                                                                    </span>
+                                                                            </p>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div data-qa-id="timings_list">
+                                                                        <p class="timings__days"
+                                                                            data-qa-id="clinic-timings-day">
+                                                                            <span><span>Tue</span>
+                                                                        </p>
+                                                                        <% tuesday.forEach(function(item) { %>
+                                                                            <p class="timings__time"
+                                                                                data-qa-id="clinic-timings-session">
+                                                                                <%= item.slotTime %>
+                                                                                    </span>
+                                                                            </p>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div data-qa-id="timings_list">
+                                                                        <p class="timings__days"
+                                                                            data-qa-id="clinic-timings-day">
+                                                                            <span><span>Wed</span>
+                                                                        </p>
+                                                                        <% wednesday.forEach(function(item) { %>
+                                                                            <p class="timings__time"
+                                                                                data-qa-id="clinic-timings-session">
+                                                                                <%= item.slotTime %>
+                                                                                    </span>
+                                                                            </p>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div data-qa-id="timings_list">
-                                                                <p class="timings__days"
-                                                                    data-qa-id="clinic-timings-day">
-                                                                    <span><span>Tue</span>
-                                                                </p>
-                                                                <% tuesday.forEach(function(item) { %>
-                                                                    <p class="timings__time"
-                                                                        data-qa-id="clinic-timings-session">
-                                                                        <%= item.slotTime %>
-                                                                            </span>
-                                                                    </p>
-                                                                    <% }); %>
-                                                            </div>
-                                                            <div data-qa-id="timings_list">
-                                                                <p class="timings__days"
-                                                                    data-qa-id="clinic-timings-day">
-                                                                    <span><span>Wed</span>
-                                                                </p>
-                                                                <% wednesday.forEach(function(item) { %>
-                                                                    <p class="timings__time"
-                                                                        data-qa-id="clinic-timings-session">
-                                                                        <%= item.slotTime %>
-                                                                            </span>
-                                                                    </p>
-                                                                    <% }); %>
-                                                            </div>
-                                                            <div data-qa-id="timings_list">
-                                                                <p class="timings__days"
-                                                                    data-qa-id="clinic-timings-day">
-                                                                    <span><span>Thurs</span>
-                                                                </p>
-                                                                <% thursday.forEach(function(item) { %>
-                                                                    <p class="timings__time"
-                                                                        data-qa-id="clinic-timings-session">
-                                                                        <%= item.slotTime %>
-                                                                            </span>
-                                                                    </p>
-                                                                    <% }); %>
-                                                            </div>
-                                                            <div data-qa-id="timings_list">
-                                                                <p class="timings__days"
-                                                                    data-qa-id="clinic-timings-day">
-                                                                    <span><span>Fri</span>
-                                                                </p>
-                                                                <% friday.forEach(function(item) { %>
-                                                                    <p class="timings__time"
-                                                                        data-qa-id="clinic-timings-session">
-                                                                        <%= item.slotTime %>
-                                                                            </span>
-                                                                    </p>
-                                                                    <% }); %>
-                                                            </div>
-                                                            <div data-qa-id="timings_list">
-                                                                <p class="timings__days"
-                                                                    data-qa-id="clinic-timings-day">
-                                                                    <span><span>Sat</span>
-                                                                </p>
-                                                                <% saturday.forEach(function(item) { %>
-                                                                    <p class="timings__time"
-                                                                        data-qa-id="clinic-timings-session">
-                                                                        <%= item.slotTime %>
-                                                                            </span>
-                                                                    </p>
-                                                                    <% }); %>
+                                                            <div class="row">
+                                                                <div class="col-md-4">
+                                                                    <div data-qa-id="timings_list">
+                                                                        <p class="timings__days"
+                                                                            data-qa-id="clinic-timings-day">
+                                                                            <span><span>Thurs</span>
+                                                                        </p>
+                                                                        <% thursday.forEach(function(item) { %>
+                                                                            <p class="timings__time"
+                                                                                data-qa-id="clinic-timings-session">
+                                                                                <%= item.slotTime %>
+                                                                                    </span>
+                                                                            </p>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div data-qa-id="timings_list">
+                                                                        <p class="timings__days"
+                                                                            data-qa-id="clinic-timings-day">
+                                                                            <span><span>Fri</span>
+                                                                        </p>
+                                                                        <% friday.forEach(function(item) { %>
+                                                                            <p class="timings__time"
+                                                                                data-qa-id="clinic-timings-session">
+                                                                                <%= item.slotTime %>
+                                                                                    </span>
+                                                                            </p>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div data-qa-id="timings_list">
+                                                                        <p class="timings__days"
+                                                                            data-qa-id="clinic-timings-day">
+                                                                            <span><span>Sat</span>
+                                                                        </p>
+                                                                        <% saturday.forEach(function(item) { %>
+                                                                            <p class="timings__time"
+                                                                                data-qa-id="clinic-timings-session">
+                                                                                <%= item.slotTime %>
+                                                                                    </span>
+                                                                            </p>
+                                                                            <% }); %>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                             <div data-qa-id="timings_list">
                                                                 <p class="timings__days"
@@ -366,11 +384,13 @@
                                                                 <%= review[i].consult %>
                                                             </span></p>
                                                         <% if(review[i].recommend==true) { %>
-                                                            <div class="u-cushion--small-bottom u-large-font"><span><img
+                                                            <div class="u-cushion--small-bottom u-large-font">
+                                                                <span><img
                                                                         src="https://cdn-icons-png.flaticon.com/512/1828/1828640.png"
                                                                         width="17px" height="17px"></span><span
                                                                     style="font-weight: 500;margin-left: 6px;">Doctor
-                                                                    Recommended</span></div>
+                                                                    Recommended</span>
+                                                            </div>
                                                             <% } else { %>
                                                                 <div class="u-cushion--small-bottom u-large-font">
                                                                     <span><img
