@@ -912,9 +912,9 @@ app.post('/doctor_specific/:doctorid', (req, res, next) => {
    res.redirect('/doctor_specific/profile');
 })
 
-app.get('/doctor_specific/profile', async function (req, res, next) {
+app.get('/doctor_specific/profile/:doctorId', async function (req, res, next) {
    try {
-      const Id = curr_docid;
+      const Id = req.params.doctorId;
       const doc = await Doctor.findOne({ _id: Id });
       const doctorId = doc._id;
       const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
@@ -967,7 +967,8 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
          for (const item of doctorAppointments) {
             // console.log(item._id);
             const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+            const patientname = await Patient.findById(item.patientid);
+            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id, patient: patientname.first_name })
          }
          const tempdoctor = await Doctor.find(doctorId);
          const oldrating = tempdoctor[0].ratings;
@@ -977,11 +978,13 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
          let patientid = req.user._id;
          const patient = await Patient.findById(patientid);
          const patientAppointments = await Appointment.find({ patientid: patientid })
+
          let arr = [];
          for (const item of patientAppointments) {
             // console.log(item._id);
             const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id })
+            const doctorname = await Doctor.findById(item.doctorid);
+            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id, doctor: doctorname.first_name })
          }
          res.render('patient/patient_profile.ejs', { patient: patient, slots: arr, patientAppointments: patientAppointments });
       }
@@ -1311,7 +1314,7 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
       const patientid = req.user._id
       // const patientid = '63adfbd04d8f181c14d229b4'
       const doctorid = req.params.doctorid
-
+      console.log(patientid);
       // const slot = await AppointmentSlot.findOne({ slotId: req.body.selectedSlot })
       // const dateOfAppointment = moment(req.params.pickedDate, 'DD-MM-YYYY').toDate();
 
@@ -1437,7 +1440,8 @@ app.get("/videocall/:appointmentid", async (req, res) => {
 
       res.render("video_call.ejs", {
          roomId: appointmentid,
-         username: fullname
+         username: fullname,
+         usertype: usertype
       });
    } catch (error) {
       console.log(error)

@@ -97,192 +97,197 @@
                                 </div>
                             </div>
                             <div class="special-box">
-                                
-                                    <div>
-                                        <div class="panel">
-                                            <div class="panel-body">
-                                                <div class="bio-desk">  
-                                                    <h4 style="font-size: 20px;" class="red">Scheduled Appointments</h4 style="font-size: 20px;">
-                                                        <% slots.forEach(function(item) { %>
-                                                            <div class="mb-3 p-3" style="border: 1px solid blue ;">
-                                                                <i class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                                    <%= item.date %>, <%= item.time %>  
-                                                                <br><br>          
-                                                                <a href="/joinAppointment/<%=item.id%>" class="btn btn-outline-primary" >Join Session</a>
-                                                                <a href="/cancel_appointment/<%=item.id%>" class="ml-4 btn btn-primary" >Cancel Appointment</a>
+
+                                <div>
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <div class="bio-desk">
+                                                <h4 style="font-size: 20px;" class="red">Scheduled Appointments</h4
+                                                    style="font-size: 20px;">
+                                                <% slots.forEach(function(item) { %>
+                                                    <div class="mb-3 p-3" style="border: 1px solid blue ;">
+                                                        <i class="fa fa-clock"></i>&nbsp;&nbsp;
+                                                        <%= item.date %>, <%= item.time %> <span>with </span>
+                                                                <%= item.patient%>
+                                                                    <br><br>
+                                                                    <a href="/joinAppointment/<%=item.id%>"
+                                                                        class="btn btn-outline-primary">Join Session</a>
+                                                                    <a href="/cancel_appointment/<%=item.id%>"
+                                                                        class="ml-4 btn btn-primary">Cancel
+                                                                        Appointment</a>
+                                                    </div>
+                                                    <% }); %>
+                                                        <div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Mon</span>
+                                                                </p>
+                                                                <% monday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
                                                             </div>
-                                                            <% }); %>     
-                                                            <div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Mon</span>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Tue</span>
+                                                                </p>
+                                                                <% tuesday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
                                                                     </p>
-                                                                    <% monday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Tue</span>
-                                                                    </p>
-                                                                    <% tuesday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Wed</span>
-                                                                    </p>
-                                                                    <% wednesday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Thurs</span>
-                                                                    </p>
-                                                                    <% thursday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Fri</span>
-                                                                    </p>
-                                                                    <% friday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Sat</span>
-                                                                    </p>
-                                                                    <% saturday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
-                                                                <div data-qa-id="timings_list">
-                                                                    <p class="timings__days"
-                                                                        data-qa-id="clinic-timings-day">
-                                                                        <span><span>Sun</span>
-                                                                    </p>
-                                                                    <% sunday.forEach(function(item) { %>
-                                                                        <p class="timings__time"
-                                                                            data-qa-id="clinic-timings-session">
-                                                                            <%= item.slotTime %>
-                                                                                </span>
-                                                                        </p>
-                                                                        <% }); %>
-                                                                </div>
+                                                                    <% }); %>
                                                             </div>
-                                                </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Wed</span>
+                                                                </p>
+                                                                <% wednesday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Thurs</span>
+                                                                </p>
+                                                                <% thursday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Fri</span>
+                                                                </p>
+                                                                <% friday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Sat</span>
+                                                                </p>
+                                                                <% saturday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                            <div data-qa-id="timings_list">
+                                                                <p class="timings__days"
+                                                                    data-qa-id="clinic-timings-day">
+                                                                    <span><span>Sun</span>
+                                                                </p>
+                                                                <% sunday.forEach(function(item) { %>
+                                                                    <p class="timings__time"
+                                                                        data-qa-id="clinic-timings-session">
+                                                                        <%= item.slotTime %>
+                                                                            </span>
+                                                                    </p>
+                                                                    <% }); %>
+                                                            </div>
+                                                        </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div class="panel">
-                                            <div class="panel-body">
-                                                <div class="bio-desk">
-                                                    <h4 class="terques">Graduation & Digital KYC </h4>
-                                                    <!-- <p>Started : 15 July</p> -->
-                                                    <div style="margin: 0in 0in 8pt">
-                                                        <a href="/doctorCertificates/degreeCertificates/<%- doctor.gradMarksheet %>"
-                                                            class="download-btn"><i
-                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp;
-                                                            Graduation/Post-Graduation
-                                                            Marksheet</a>
-                                                    </div>
-                                                    <div style="margin: 0in 0in 8pt">
-                                                        <a href="/doctorCertificates/digitalKYC/<%- doctor.digitalKYC %>"
-                                                            class="download-btn"><i
-                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp;
-                                                            Digital KYC</a>
-                                                    </div>
-                                                    <!-- <p>Deadline : 15 August</p> -->
+                                </div>
+                                <div>
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <div class="bio-desk">
+                                                <h4 class="terques">Graduation & Digital KYC </h4>
+                                                <!-- <p>Started : 15 July</p> -->
+                                                <div style="margin: 0in 0in 8pt">
+                                                    <a href="/doctorCertificates/degreeCertificates/<%- doctor.gradMarksheet %>"
+                                                        class="download-btn"><i
+                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp;
+                                                        Graduation/Post-Graduation
+                                                        Marksheet</a>
                                                 </div>
+                                                <div style="margin: 0in 0in 8pt">
+                                                    <a href="/doctorCertificates/digitalKYC/<%- doctor.digitalKYC %>"
+                                                        class="download-btn"><i
+                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp;
+                                                        Digital KYC</a>
+                                                </div>
+                                                <!-- <p>Deadline : 15 August</p> -->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="panel">
-                                            <div class="panel-body">
-                                                <!-- <div class="bio-chart">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <!-- <div class="bio-chart">
                                       <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="75" data-fgcolor="#96be4b" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(150, 190, 75); padding: 0px; -webkit-appearance: none; background: none;"></div>
                                   </div> -->
-                                                <div class="bio-desk">
-                                                    <h4 class="green">Aadhar & PAN Card</h4>
-                                                    <div style="margin: 0in 0in 8pt">
-                                                        <a href="/doctorCertificates/aadharCard/<%- doctor.aadharCard %>"
-                                                            class="download-btn"><i
-                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp; Aadhar
-                                                            Card</a>
-                                                    </div>
-                                                    <div style="margin: 0in 0in 8pt">
-                                                        <a href="/doctorCertificates/panCard/<%- doctor.panCard %>"
-                                                            class="download-btn"><i
-                                                                class="fa fa-cloud-download"></i>&nbsp;&nbsp; PAN
-                                                            Card</a>
-                                                    </div>
+                                            <div class="bio-desk">
+                                                <h4 class="green">Aadhar & PAN Card</h4>
+                                                <div style="margin: 0in 0in 8pt">
+                                                    <a href="/doctorCertificates/aadharCard/<%- doctor.aadharCard %>"
+                                                        class="download-btn"><i
+                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp; Aadhar
+                                                        Card</a>
+                                                </div>
+                                                <div style="margin: 0in 0in 8pt">
+                                                    <a href="/doctorCertificates/panCard/<%- doctor.panCard %>"
+                                                        class="download-btn"><i
+                                                            class="fa fa-cloud-download"></i>&nbsp;&nbsp; PAN
+                                                        Card</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="panel">
-                                            <div class="panel-body">
-                                                <!-- <div class="bio-chart">
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel">
+                                        <div class="panel-body">
+                                            <!-- <div class="bio-chart">
                                       <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="50" data-fgcolor="#cba4db" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(203, 164, 219); padding: 0px; -webkit-appearance: none; background: none;"></div>
                                   </div> -->
-                                                <div class="bio-desk">
-                                                    <h4 class="purple">Registration</h4>
-                                                    <% if(!doctor.isVerified) { %>
-                                                        <p style="color: rgb(170, 18, 18); margin-top: 4px;"><i
-                                                                class="fa fa-cancel"></i>&nbsp;&nbsp;Verification
-                                                            Pending
-                                                        </p>
-                                                        <% } %>
-                                                            <% if(doctor.isVerified) { %>
-                                                                <p style="color: rgb(53, 126, 7);"><i
-                                                                        class="fa fa-check"></i>&nbsp;&nbsp;Verification
-                                                                    Successful
-                                                                </p>
-                                                                <% } %>
-                                                                    <!-- <p>Deadline : 15 August</p> -->
-                                                </div>
+                                            <div class="bio-desk">
+                                                <h4 class="purple">Registration</h4>
+                                                <% if(!doctor.isVerified) { %>
+                                                    <p style="color: rgb(170, 18, 18); margin-top: 4px;"><i
+                                                            class="fa fa-cancel"></i>&nbsp;&nbsp;Verification
+                                                        Pending
+                                                    </p>
+                                                    <% } %>
+                                                        <% if(doctor.isVerified) { %>
+                                                            <p style="color: rgb(53, 126, 7);"><i
+                                                                    class="fa fa-check"></i>&nbsp;&nbsp;Verification
+                                                                Successful
+                                                            </p>
+                                                            <% } %>
+                                                                <!-- <p>Deadline : 15 August</p> -->
                                             </div>
                                         </div>
                                     </div>
-                             
+                                </div>
+
                             </div>
                         </div>
                     </div>
