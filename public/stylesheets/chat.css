@@ -123,6 +123,13 @@ a {
 
 .chat-messages .message.mymessage {
    margin-left: 70%;
+   background: #eee;
+   box-shadow: 0 8px 8px -4px lightblue;
+}
+
+.chat-messages .message.othermessage {
+   background: #eee;
+   box-shadow: 0 8px 8px -4px #1977cc;
 }
 
 .chat-messages .message.update {

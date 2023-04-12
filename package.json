@@ -17,6 +17,7 @@
       "connect-flash": "^0.1.1",
       "cookie-parser": "^1.4.6",
       "cookie-session": "^1.4.0",
+      "crypto": "^1.0.1",
       "docx-pdf": "^0.0.1",
       "docxtemplater": "^3.34.0",
       "dotenv": "^8.6.0",
