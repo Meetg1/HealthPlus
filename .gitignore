@@ -1,5 +1,5 @@
 node_modules/
-Crypto/
+# Crypto/
 .env
 /public/doctorCertificates/
 /HealthPlus_Blockchain/virtualenv
