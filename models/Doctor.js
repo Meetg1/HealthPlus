@@ -47,6 +47,10 @@ const DoctorSchema = new mongoose.Schema({
       type: String,
       // required: true,
    },
+   uprn: {   //unique permanent registration number alloted by Medical Council of India
+      type: String,
+      // required: true,
+   },
    description: {
       type: String,
       // required: true,

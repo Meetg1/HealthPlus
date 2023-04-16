@@ -30,12 +30,9 @@
                                     <li class="active" style="margin-top: 4px; margin-bottom: 3px;"><a href="#"
                                             style="text-decoration: none;"> <i class="fa fa-user"
                                                 style="margin-left: 4px;"></i> Profile</a></li><br>
-                                    <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
-                                            style="text-decoration: none;"> <i class="fa fa-cancel"
-                                                style="margin-left: 4px;"></i> Report an Error</a></li>
-                                    <li style="margin-top: 2px; margin-bottom: 3px;"><a onclick="magic()" id="anchor"
-                                            href="" style="text-decoration: none;"> <i class="fa fa-edit"
-                                                style="margin-left: 4px;"></i> Edit profile</a></li>
+                                    <li id="langChange" style="margin-top: 2px; margin-bottom: 3px;"> <i
+                                            class="fa fa-edit" style="margin-left: 4px; cursor: pointer;"></i> Change
+                                        website language</li>
                                 </ul>
                             </div>
                         </div>
@@ -95,6 +92,11 @@
                                                     doctor.consultationFee %>
                                             </p>
                                         </div>
+                                        <div class="bio-row" style="width: 100%;">
+                                            <p style="color: rgb(92, 91, 91);"><span style="width: 100%;">Unique Permanent Registration Number (UPRN):  <%-
+                                                doctor.uprn %> </span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -108,15 +110,21 @@
                                                     style="font-size: 20px;">
                                                 <% slots.forEach(function(item) { %>
                                                     <div class="mb-3 p-3" style="border: 1px solid blue ;">
-                                                        <i class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                        <%= item.date %>, <%= item.time %> <span>with </span>
-                                                                <%= item.patient%>
-                                                                    <br><br>
-                                                                    <a href="/joinAppointment/<%=item.id%>"
-                                                                        class="btn btn-outline-primary">Join Session</a>
-                                                                    <a href="/cancel_appointment/<%=item.id%>"
-                                                                        class="ml-4 btn btn-primary">Cancel
-                                                                        Appointment</a>
+                                                        <i class="fa-solid fa-calendar"></i>&nbsp;&nbsp; <%= item.date
+                                                            %> <br>
+                                                            <i class="fa fa-clock"></i>&nbsp;&nbsp; <%= item.time %>
+                                                                <br>
+                                                                <span> <i class="fa-solid fa-user"></i>&nbsp;&nbsp; With
+                                                                    patient: <%= item.patient%>.</span> <a
+                                                                    href="/blockchain/<%= item.id%>">See
+                                                                    Patient's Medical History</a>
+
+                                                                <br><br>
+                                                                <a href="/joinAppointment/<%=item.id%>"
+                                                                    class="btn btn-outline-primary">Join Session</a>
+                                                                <a href="/cancel_appointment/<%=item.id%>"
+                                                                    class="ml-4 btn btn-primary">Cancel
+                                                                    Appointment</a>
                                                     </div>
                                                     <% }); %>
                                                         <div>
@@ -1556,8 +1564,19 @@
     </style>
 
     <script>
-        function magic() {
-            var a = document.getElementById("anchor");
-            a.href = "http://www.stackoverflow.com";
-        }
+        $(document).ready(function () {
+            //   setTimeout(() => {
+            //     if (!currUser || currUser.preferredLanguage == 0) {
+            //       return
+            //     }
+            //     let a = document.querySelector(".goog-te-combo");
+            //     console.log(a)
+
+            //     a.selectedIndex = currUser.preferredLanguage;
+            //     a.dispatchEvent(new Event('change'));
+            //   }, 1300);
+            $("#langChange").click(function () {
+                $("#exampleModal").modal("show");
+            });
+        })
     </script>

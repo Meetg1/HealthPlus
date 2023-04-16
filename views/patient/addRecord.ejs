@@ -1,0 +1,129 @@
+<% layout('layouts/boilerplate') %>
+
+    <link rel="stylesheet" href="../stylesheets/chat.css">
+
+    <style>
+        .prescriptionTab {
+            width: 70%;
+            margin: 0 auto;
+            margin-top: 150px;
+        }
+    </style>
+
+    <%- include('../partials/navbar')%>
+
+        <div class="prescriptionTab prescriptionTabDoctor">
+            <h2 class="text-center">Medical Record</h2>
+
+            <form action="/blockchain" enctype="multipart/form-data" method="POST" style="display: grid;"
+                id="chatPresc">
+
+                <hr>
+                <label for="diag">Date of diagnosis</label>
+                <!-- <input type="text" class="form-control" id="diag" placeholder="Diabetes" name="diagnosis[]"> -->
+                <div class="mt-2" id="diagnosis">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="diag">Diagnosis</label>
+                            <input type="text" class="form-control" id="diag" placeholder="Diabetes" name="diagnosis[]">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="dosage">Comment</label>
+                            <input type="text" class="form-control" id="dosage" placeholder="initial stage, severe..."
+                                name="diagnosis_comment[]">
+                        </div>
+                    </div>
+                </div>
+                <button id="rowAdder1" type="button" class="btn btn1 btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> ADD more diagnosis
+                </button>
+                <hr>
+                <div id="meds">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="medicineName">Medicine Name</label>
+                            <input type="text" class="form-control" id="medicineName" name="medicineName[]"
+                                placeholder="Crocin 500mg">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="dosage">Dosage</label>
+                            <input type="text" class="form-control" id="dosage" name="dosage[]"
+                                placeholder="0-1-0 / 1-1-1 / 2-1-2 for 12 days...">
+                        </div>
+                    </div>
+                </div>
+                <button id="rowAdder2" type="button" class="btn btn1 btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> ADD more medicines
+                </button>
+                <label for="info">Any other comments</label>
+                <textarea class="form-control" id="info" rows="3" name="info"></textarea> <br><br>
+                <hr>
+                <div id="reports">
+                    <h3>Add Reports</h3>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Report Name</label>
+                            <input type="text" class="form-control" id="report" name="reportNames[]"
+                                placeholder="Blood report" style="width: 50%;">
+                            <input type="file" name="reportFiles" />
+                        </div>
+                    </div>
+                </div>
+
+                <button id="rowAdder3" type="button" class="btn btn1 btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> ADD more reports
+                </button>
+
+                <br>
+                <input type="submit" class="btn btn-primary" value="Submit Record" />
+
+            </form>
+
+
+        </div>
+
+
+
+
+        <%- include('../partials/footer')%>
+
+            <script>
+                $("#rowAdder1").click(function () {
+                    newRowAdd =
+                        '<div class="form-row">' +
+                        '<div class="form-group col-md-6">' +
+                        '<label for="diag">Diagnosis</label>' +
+                        '<input type="text" class="form-control" id="diag" placeholder="Diabetes" name="diagnosis[]" required> </div>' +
+                        '<div class="form-group col-md-6"> <label for="dosage">Comment</label> <input type="text" class="form-control" id="dosage" placeholder="initial stage, severe..." name="diagnosis_comment[]" required> </div>' +
+                        '</div>';
+
+                    $('#diagnosis').append(newRowAdd);
+                });
+
+                $("#rowAdder2").click(function () {
+                    newRowAdd =
+                        '<div class="form-row">' +
+                        '<div class="form-group col-md-6">' +
+                        '<label for="medicineName">Medicine Name</label>' +
+                        '<input type="text" class="form-control" id="medicineName" name="medicineName[]" placeholder="Crocin 500mg" required> </div>' +
+                        '<div class="form-group col-md-6">  <label for="dosage">Dosage</label> <input type="text" class="form-control" id="dosage" name="dosage[]" placeholder="0-1-0, 1-1-1, 2-1-2" required> </div>' +
+                        '</div>';
+
+                    $('#meds').append(newRowAdd);
+                });
+
+                $("#rowAdder3").click(function () {
+                    newRowAdd =
+                        '<div class="form-row">' +
+                        '<div class="form-group col-md-6">' +
+                        '<label>Report Name</label>' +
+                        '<input type="text" class="form-control" id="report" name="reportNames[]" placeholder="Blood report" style="width: 50%;">' +
+                        '<input type="file" name="reportFiles" placeholder="" required />' +
+                        '</div>';
+
+                    $('#reports').append(newRowAdd);
+                });
+            </script>

@@ -268,6 +268,7 @@ const generatePrescriptionTemplate = async (req, res, next) => {
       "dr_fname": doctor.first_name,
       "dr_lname": doctor.last_name,
       "dr_speciality": doctor.speciality,
+      "dr_uprn": doctor.uprn,
       "dr_clinic_location": doctor.clinicLocation,
       "patient_name": patient.first_name + ' ' + patient.last_name,
       "patient_age": patient.age,
@@ -490,6 +491,19 @@ function checkFileType(file, cb) {
       }
    }
 }
+
+const storage3 = multer.diskStorage({
+   destination: (req, file, cb) => {
+      cb(null, path.join(__dirname, 'public/patientReports'))
+   },
+   filename: (req, file, cb) => {
+      cb(null, file.fieldname + Date.now() + path.extname(file.originalname))
+   },
+})
+
+const upload3 = multer({
+   storage: storage3,
+})
 
 var validator = function (req, res, next) {
    req.checkBody('fname', 'First name is required').notEmpty()
@@ -728,6 +742,7 @@ app.post(
                consultationFee: req.body.fee,
                clinicLocation: req.body.location,
                description: req.body.desc,
+               uprn: req.body.uprn,
                aadharCard: aadharCard,
                panCard: panCard,
                degreeCertificates: degreeCertificates,
@@ -781,7 +796,7 @@ app.get('/admin/doctors', async (req, res) => {
    try {
       const limitNumber = 20
       const doctors = await Doctor.find({}).limit(limitNumber)
-      res.render('doctors.ejs', { doctors })
+      res.render('doctorApplications.ejs', { doctors })
    } catch (error) {
       res.status(500).send({ message: error.message || 'Error Occured' })
    }
@@ -956,12 +971,12 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
          let doc = req.user;
          let doctorId = req.user._id;
          const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
-         console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
+         // console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
          const review = await Review.find({ doctorid: doctorId });
 
          let patientid = req.user._id;
          const patient = await Doctor.findById(patientid);
-         console.log(patient.scheduledAppointments);
+         // console.log(patient.scheduledAppointments);
          const doctorAppointments = await Appointment.find({ doctorid: patientid })
          let arr = [];
          for (const item of doctorAppointments) {
@@ -983,8 +998,8 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
          for (const item of patientAppointments) {
             // console.log(item._id);
             const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-            const doctorname = await Doctor.findById(item.doctorid);
-            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id, doctor: doctorname.first_name })
+            const doctor = await Doctor.findById(item.doctorid);
+            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id, doctorname: doctor.first_name, doctorid: doctor._id })
          }
          res.render('patient/patient_profile.ejs', { patient: patient, slots: arr, patientAppointments: patientAppointments });
       }
@@ -1485,7 +1500,8 @@ app.get('/blockchain/:patientid', isLoggedIn, async (req, res) => {
       const foundPatient = await Patient.findById(patientId).populate('scheduledAppointments')
 
       if (!foundPatient) {
-         return res.redirect('back')
+         req.flash('error', 'No patient found!')
+         return res.redirect('/')
       }
 
       if (!foundPatient.blockchainConsent) {
@@ -1539,6 +1555,72 @@ app.get('/blockchain/:patientid', isLoggedIn, async (req, res) => {
    }
 })
 
+// add record to blockchain from patient side
+app.post('/blockchain', isLoggedIn, upload3.array('reportFiles', 5), async (req, res) => {
+   try {
+      const patientId = req.user._id
+      const foundPatient = await Patient.findById(patientId)
+
+      if (!foundPatient) {
+         req.flash('error', 'No patient found!')
+         return res.redirect('/')
+      }
+
+      if (!foundPatient.blockchainConsent) {
+         req.flash('error', 'NO patient consent to upload record to blockchain!')
+         return res.redirect('/')
+      }
+
+      const diag = []
+      const meds = []
+      const reports = []
+
+      console.log('om')
+      console.log(req.files)
+      console.log(req.body)
+
+      for (let index = 0; index < req.body.diagnosis.length; index++) {
+         diag.push({ "name": req.body.diagnosis[index], "comment": req.body.diagnosis_comment[index] })
+      }
+
+      for (let index = 0; index < req.body.medicineName.length; index++) {
+         meds.push({ "name": req.body.medicineName[index], "dosage": req.body.dosage[index] })
+      }
+
+      for (let index = 0; index < req.body.reportNames.length; index++) {
+         reports.push({ "reportName": req.body.reportNames[index], "filename": req.files[index].filename })
+      }
+
+      const record = {
+         doctor: false, //record added by patient itself
+         patient: patientId,
+         data: {
+            date: '11/11/11',
+            // date: prescriptionJSON.date,
+            diagnosis: prescriptionJSON.diag,
+            medicines: prescriptionJSON.meds,
+            suggestions: prescriptionJSON.info,
+            prescription: "",
+            reports: reports
+         }
+      }
+      axios
+         .post(`http://localhost:5000/blockchain/insertTransaction`, record)
+         .then((response) => {
+            console.log(response.data);
+            req.flash('success', 'Medical record added successfully to blockchain.')
+            res.render('/')
+         })
+         .catch((error) => {
+            console.log(error);
+         });
+
+   } catch (error) {
+      console.log(error)
+   }
+})
+
+
 app.get('/verify_prescription', (req, res) => {
    res.render('verify_prescription.ejs')
 })
@@ -1562,6 +1644,10 @@ app.post('/verify_prescription/', async (req, res) => {
       __dirname + '/public/images/prescriptions/' + matchedFile
    )
 
+})
+
+app.get('/add_record', (req, res) => {
+   res.render('patient/addRecord.ejs')
 })
 
 app.get('/:filename', (req, res) => {

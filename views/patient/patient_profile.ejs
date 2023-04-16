@@ -24,13 +24,14 @@
                             <ul class="nav nav-pills nav-stacked" style="margin-top: 4px;">
                                 <li class="active" style="margin-top: 4px; margin-bottom: 3px;"><a href="#"
                                         style="text-decoration: none;"> <i class="fa fa-user"
-                                            style="margin-left: 4px;"></i> Profile</a></li><br>
-                                <li style="margin-top: 2px; margin-bottom: 3px;"><a href="#"
-                                        style="text-decoration: none;"> <i class="fa fa-cancel"
-                                            style="margin-left: 4px;"></i> Report an Error</a></li>
-                                <li style="margin-top: 2px; margin-bottom: 3px;"><a href="patient/profile/edit"
-                                        style="text-decoration: none;"> <i class="fa fa-edit"
-                                            style="margin-left: 4px;"></i> Edit profile</a></li>
+                                            style="margin-left: 4px;"></i> Profile</a></li><br>                                
+                                <li id="langChange" style="margin-top: 2px; margin-bottom: 3px;"> <i class="fa fa-edit"
+                                            style="margin-left: 4px; cursor: pointer;"></i> Change website language</li>
+                                <li id="langChange" style="margin-top: 2px; margin-bottom: 3px;">
+                                    <a href="/add_record"
+                                        style="text-decoration: none; color: black;"> <i class="fa-solid fa-suitcase-medical"
+                                            style="margin-left: 4px;"></i> Add health record</a>
+                                    </li>
                             </ul>
                         </div>
                     </div>
@@ -102,8 +103,12 @@
                                                 <h4 style="font-size: 20px;" class="red">Scheduled Appointments</h4 style="font-size: 20px;">
                                                 <% slots.forEach(function(item) { %>
                                                     <div class="mb-3 p-3" style="border: 1px solid blue ;">
-                                                        <i class="fa fa-clock"></i>&nbsp;&nbsp;
-                                                            <%= item.date %>, <%= item.time %> <span>with Dr.</span> <%= item.doctor %>
+                                                        <i class="fa-solid fa-calendar"></i>&nbsp;&nbsp; <%= item.date
+                                                            %> <br>
+                                                            <i class="fa fa-clock"></i>&nbsp;&nbsp; <%= item.time %>
+                                                                <br>
+                                                                <span> <i class="fa-solid fa-user"></i>&nbsp;&nbsp; With
+                                                                    doctor: <a href="/doctor_specific/profile/<%=item.doctorid%>"><%= item.doctorname%></a> </span> 
                                                         <br><br>          
                                                         <a href="/joinAppointment/<%=item.id%>" class="btn btn-outline-primary" >Join Session</a>
                                                         <a href="/cancel_appointment/<%=item.id%>" class="ml-4 btn btn-primary" >Cancel Appointment</a>
@@ -1117,3 +1122,21 @@
             padding-bottom: 1.5rem !important;
         }
     </style>
+
+    <script>
+        $(document).ready(function () {
+            //   setTimeout(() => {
+            //     if (!currUser || currUser.preferredLanguage == 0) {
+            //       return
+            //     }
+            //     let a = document.querySelector(".goog-te-combo");
+            //     console.log(a)
+
+            //     a.selectedIndex = currUser.preferredLanguage;
+            //     a.dispatchEvent(new Event('change'));
+            //   }, 1300);
+            $("#langChange").click(function () {
+                $("#exampleModal").modal("show");
+            });
+        })
+    </script>
