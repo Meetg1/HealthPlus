@@ -74,7 +74,14 @@
                                             </h5>
                                           <p class="card-text">
                                             <ul class="pl-3">
-                                                <li >Submitted By: <b><a href="/doctor_specific/profile/<%=record.doctor.id%>"><%=record.doctor.name%></a></b></li>
+                                                
+                                                <li >Submitted By: 
+                                                    <% if (!record.doctor) { %>
+                                                        <b>self</b>
+                                                    <% }else{ %>
+                                                        <b><a href="/doctor_specific/profile/<%=record.doctor.id%>"><%=record.doctor.name%></a></b>
+                                                    <% } %>                                                    
+                                                </li>
                                                 <li>Medicines: 
                                                     <% record.data.medicines.forEach(med => { %>
                                                         <b><%=med.name%> (<%=med.dosage%>),</b>
@@ -83,7 +90,14 @@
                                                 <li>Suggestions: <b><%=record.data.suggestions%></b></li>
                                             </ul>
                                           </p>
-                                          <a href="/<%=record.data.prescription%>" class="card-link">See Prescription</a>
+
+                                          <% if (record.data.reports == "") { %>
+                                            <a href="/<%=record.data.prescription%>" class="card-link">See prescription %></a>
+                                          <% }else{ %>
+                                            <% for( let idx = 0; idx < record.data.reports.length; idx++ ) { %>
+                                                <a href="/patientReports/<%=record.data.reports[idx].filename%>" class="card-link">See <%= record.data.reports[idx].reportName %></a>
+                                              <% } %>
+                                          <%}%>                                                                                    
                                           <span  style="float: right;">Signature Valid: <% if (record.isSignatureValid) { %>
                                             <p title="This record is not tampered."><img src="../images/websitePics/icons8-checkmark-48.png" alt="" srcset=""> </p>
                                           <% }else{ %>

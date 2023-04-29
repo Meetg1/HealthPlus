@@ -35,7 +35,7 @@
         const doctorid = <%-JSON.stringify(doctorid)%>
 
         $(function () {
-            $("#datepicker").datepicker({ minDate: +1, maxDate: +7, dateFormat: 'dd-mm-yy' });
+            $("#datepicker").datepicker({ minDate: 0, maxDate: +7, dateFormat: 'dd-mm-yy' });
         });
 
         const proceed = () => {

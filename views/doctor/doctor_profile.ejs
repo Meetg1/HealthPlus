@@ -115,8 +115,8 @@
                                                             <i class="fa fa-clock"></i>&nbsp;&nbsp; <%= item.time %>
                                                                 <br>
                                                                 <span> <i class="fa-solid fa-user"></i>&nbsp;&nbsp; With
-                                                                    patient: <%= item.patient%>.</span> <a
-                                                                    href="/blockchain/<%= item.id%>">See
+                                                                    patient: <b> <%= item.patient.first_name%> </b> | </span> <a
+                                                                    href="/blockchain/<%= item.patient.id%>">See
                                                                     Patient's Medical History</a>
 
                                                                 <br><br>

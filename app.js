@@ -300,7 +300,7 @@ const generatePrescriptionTemplate = async (req, res, next) => {
    try {
       if (patient.blockchainConsent) {
          const record = {
-            doctor: { name: doctor.first_name + doctor.last_name, id: doctor.id },
+            doctor: { name: doctor.first_name + ' ' + doctor.last_name, id: doctor.id },
             patient: patientId,
             data: {
                date: prescriptionJSON.date,
@@ -308,7 +308,7 @@ const generatePrescriptionTemplate = async (req, res, next) => {
                medicines: prescriptionJSON.meds,
                suggestions: prescriptionJSON.info,
                prescription: filename,
-               report: ""
+               reports: ""
             }
          }
          axios
@@ -982,8 +982,8 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
          for (const item of doctorAppointments) {
             // console.log(item._id);
             const time = await AppointmentSlot.findOne({ slotId: item.slotId });
-            const patientname = await Patient.findById(item.patientid);
-            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id, patient: patientname.first_name })
+            const patient = await Patient.findById(item.patientid);
+            arr.push({ date: item.dateOfAppointment, time: time.slotTime, id: item._id, patient: patient })
          }
          const tempdoctor = await Doctor.find(doctorId);
          const oldrating = tempdoctor[0].ratings;
@@ -1278,10 +1278,24 @@ app.get('/:doctorid&:pickedDate', async (req, res) => {
 
       slots.sort(function (a, b) { return a.slotId - b.slotId });
 
-      // console.log(myDate)
+      bookedCounter = 0 //counter for disabled slots
 
-      // console.log(slots)
-      bookedCounter = 0
+      //disable slots before current time
+      var today = moment().format('DD-MM-YYYY');
+      if (pickedDate == today) {
+         // get current hours
+         let date_time = new Date();
+         let currentHour = date_time.getHours();
+         slots.forEach(slot => {
+            slotEndTime = slot.slotTime.slice(-5, -3)
+            if (slotEndTime <= currentHour) {
+               slot['booked'] = true
+               bookedCounter += 1
+            }
+         })
+      }
+
+      // disable slots which are booked already 
       doctor.scheduledAppointments.forEach(appointment => {
          // console.log('appointment', appointment)
          // console.log('pickedDate', pickedDate)
@@ -1289,7 +1303,6 @@ app.get('/:doctorid&:pickedDate', async (req, res) => {
             slots.forEach(slot => {
                // console.log('slot', slot)
                if (slot.slotId == appointment.slotId) {
-
                   slot['booked'] = true
                   bookedCounter += 1
                   return
@@ -1543,13 +1556,11 @@ app.get('/blockchain/:patientid', isLoggedIn, async (req, res) => {
             //    }
             // })
             // console.log('formattedRecords')
-            // console.log(records)
             return res.render('patient_medical_history.ejs', { patient: foundPatient, records: records })
          })
          .catch((err) => {
             res.send(err)
          })
-      // res.render('patient_medical_history.ejs', { patient: foundPatient })
    } catch (error) {
       console.log(error)
    }
@@ -1575,10 +1586,6 @@ app.post('/blockchain', isLoggedIn, upload3.array('reportFiles', 5), async (req,
       const meds = []
       const reports = []
 
-      console.log('om')
-      console.log(req.files)
-      console.log(req.body)
-
       for (let index = 0; index < req.body.diagnosis.length; index++) {
          diag.push({ "name": req.body.diagnosis[index], "comment": req.body.diagnosis_comment[index] })
       }
@@ -1593,23 +1600,23 @@ app.post('/blockchain', isLoggedIn, upload3.array('reportFiles', 5), async (req,
 
       const record = {
          doctor: false, //record added by patient itself
-         patient: patientId,
+         patient: patientId.toString(),
          data: {
-            date: '11/11/11',
-            // date: prescriptionJSON.date,
-            diagnosis: prescriptionJSON.diag,
-            medicines: prescriptionJSON.meds,
-            suggestions: prescriptionJSON.info,
-            prescription: "",
-            reports: reports
+            date: req.body.date,
+            diagnosis: diag,
+            medicines: meds,
+            suggestions: req.body.info,
+            reports: reports, //here reports can be either a report or a prescription 
+            prescription: ""
          }
       }
+      // console.log('record', record)
       axios
          .post(`http://localhost:5000/blockchain/insertTransaction`, record)
          .then((response) => {
             console.log(response.data);
             req.flash('success', 'Medical record added successfully to blockchain.')
-            res.render('/')
+            res.redirect('back')
          })
          .catch((error) => {
             console.log(error);
