@@ -228,6 +228,38 @@ const isAdmin = async function (req, res, next) {
    }
 }
 
+const { PDFNet } = require('@pdftron/pdfnet-node');
+const PDFNetEndpoint = (main, inputPath, outputPath, res) => {
+   PDFNet.runWithCleanup(main, process.env.PDFNET_KEY)
+      .then(() => {
+         PDFNet.shutdown();
+
+         //deleting word file
+         let pathToFile = inputPath
+         //console.log("path: "+pathToFile)
+         fs.unlink(pathToFile, function (err) {
+            if (err) {
+               throw err
+            } else {
+               // console.log('Successfully deleted the file : ' + pathToFile)
+            }
+         })
+         // fs.readFile(, (err, data) => {
+         //    if (err) {
+         //       res.statusCode = 500;
+         //       res.end(`Error getting the file: ${err}.`);
+         //    } else {
+         //       res.setHeader('Content-type', 'application/pdf');
+         //       res.end(data);
+         //    }
+         // });
+      })
+      .catch((error) => {
+         res.statusCode = 500;
+         res.end(error);
+      });
+};
+
 // generatePrescriptionTemplate AND ADD record to BLOCKCHAIN
 const generatePrescriptionTemplate = async (req, res, next) => {
    const patientId = req.body.patientid
@@ -293,7 +325,27 @@ const generatePrescriptionTemplate = async (req, res, next) => {
    // file or res.send it with express for example.
    let filename = patient.first_name + '_' + patient.last_name + '_' + date + '_' + prescID + '_prescription.docx'
    fs.writeFileSync(path.resolve(__dirname, 'public/images/prescriptions', filename), buf);
-   req.chat_prescription = filename
+
+   // convert word to pdf
+   try {
+      const inputPath = path.resolve(__dirname, 'public/images/prescriptions', filename);
+      const outputPath = path.resolve(__dirname, `public/images/prescriptions/${filename.slice(0, -5)}.pdf`);
+      const main = async () => {
+         const pdfdoc = await PDFNet.PDFDoc.create();
+         await pdfdoc.initSecurityHandler();
+         await PDFNet.Convert.toPdf(pdfdoc, inputPath);
+         pdfdoc.save(
+            outputPath,
+            PDFNet.SDFDoc.SaveOptions.e_linearized);
+      };
+      PDFNetEndpoint(main, inputPath, outputPath, res);
+
+      filename = patient.first_name + '_' + patient.last_name + '_' + date + '_' + prescID + '_prescription.pdf'
+      req.chat_prescription = filename
+
+   } catch (error) {
+      console.log(error)
+   }
 
    //  ADD RECORD TO BLOCKCHAIN IF CONSENT
 
