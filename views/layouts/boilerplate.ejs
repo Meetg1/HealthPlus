@@ -20,6 +20,9 @@
   </script>
   <script type="text/javascript"
     src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+  <link rel="stylesheet" href="../../stylesheets/chatbot.css">
+  
 </head>
 
 
@@ -213,8 +216,37 @@
 </style>
 
 <%#- messages('../messages.ejs', locals) %>
+
   <div id="google_translate_element"></div>
 
+  
+  <!-- CHATBOT WINDOW -->
+  <div class="chatbox">
+    <div class="chatbox__support">
+        <div class="chatbox__header">
+            <div class="chatbox__image--header">
+                <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png"
+                    alt="image">
+            </div>
+            <div class="chatbox__content--header">
+                <h4 class="chatbox__heading--header">HealthPlus Chatbot</h4>
+                <p class="chatbox__description--header">Hi. My name is HP bot. How can I help you?</p>
+            </div>
+        </div>
+        <div class="chatbox__messages">
+            <div></div>
+        </div>
+        <div class="chatbox__footer">
+            <input type="text" placeholder="Write a message...">
+            <button class="chatbox__send--footer send__button">Send</button>
+        </div>
+    </div>
+    <div class="chatbox__button">
+        <button><img style="width: 100%;" src="../images/websitePics/chatbot.png" /></button>
+    </div>
+  </div>
+
+  <!-- GOOGLE TRANSLATE WINDOW -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
@@ -283,5 +315,6 @@
 
       </script>
 
+      <script src="../../javascripts/chatbot.js"></script>
 
 </html>
