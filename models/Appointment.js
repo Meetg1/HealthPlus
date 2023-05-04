@@ -35,6 +35,7 @@ const AppointmentSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
+   fees: Number,
    email: String,
    phoneno: String,
    message: String

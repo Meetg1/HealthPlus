@@ -71,6 +71,10 @@ const DoctorSchema = new mongoose.Schema({
       type: Number,
       default: 0,
    },
+   wallet: {
+      type: Number,
+      default: 0,
+   },
    mondayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {
