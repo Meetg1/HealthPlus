@@ -1016,7 +1016,7 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
          const appointmentid = req.params.appointmentid;
          const appointment = await Appointment.findOne({ _id: appointmentid });
          const patient = await Patient.findById(appointment.patientid)
-         const filter = { _id: patient };
+         const filter = { _id: patient._id };
          const update = { $set: { wallet: patient.wallet + appointment.fees } };
          const result = await Patient.updateOne(filter, update);
          console.log(result);
@@ -1159,8 +1159,13 @@ app.post('/feedback/:appointmentid', async (req, res) => {
    const patient_name = document.patientName;
    const reviews = await Review.find({ doctorid: doctorid });
    const no_of_review = (await reviews).length;
-   const tempdoctor = await Doctor.find(doctorid);
-   const oldrating = tempdoctor[0].ratings;
+   const tempdoctor = await Doctor.findById(doctorid);
+   console.log(document);
+   console.log(tempdoctor);
+   const filter = { _id: doctorid };
+   const update = { $set: { wallet: tempdoctor.wallet + document.fees } };
+   const result = await Doctor.updateOne(filter, update);
+   const oldrating = tempdoctor.ratings;
    const id = doctorid.toString();
    console.log(no_of_review);
    console.log(oldrating);
