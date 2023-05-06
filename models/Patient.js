@@ -41,6 +41,11 @@ const PatientSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
    },
+   wallet: {
+      type: Number,
+      default: 0,
+
+   },
    usernameToken: String,
 })
 

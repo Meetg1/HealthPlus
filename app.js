@@ -1010,11 +1010,84 @@ app.get('/doctor_specific/profile/:doctorId', async function (req, res, next) {
 })
 
 
-app.get('/cancel_appointment/:appointmentid', async function (req, res, next) {
-   const appointmentid = req.params.appointmentid;
-   await Appointment.findByIdAndDelete(appointmentid);
-   req.flash('success', 'Appointment has been cancelled.')
-   res.redirect('/profile');
+app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, res, next) {
+   try {
+      if (req.user instanceof Doctor) {
+         const appointmentid = req.params.appointmentid;
+         const appointment = await Appointment.findOne({ _id: appointmentid });
+         const patient = await Patient.findById(appointment.patientid)
+         const filter = { _id: patient._id };
+         const update = { $set: { wallet: patient.wallet + appointment.fees } };
+         const result = await Patient.updateOne(filter, update);
+         console.log(result);
+         await Appointment.findByIdAndDelete(appointmentid);
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: patient.username,
+            subject: 'Appointment Cancel',
+            html: `Your Appointment with Dr. "${req.user.first_name}" is cancelled,Extremely sorry for the Inconvenience`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
+         req.flash('success', 'Appointment has been cancelled.')
+         res.redirect('/profile');
+      }
+      else if (req.user instanceof Patient) {
+         const appointmentid = req.params.appointmentid;
+         const appointment = await Appointment.findOne({ _id: appointmentid });
+         const patient = await Patient.findById(appointment.patientid)
+         const doctor = await Doctor.findById(appointment.doctorid)
+         const filter = { _id: patient._id };
+         const update = { $set: { wallet: patient.wallet + (appointment.fees * 0.5) } };
+         const result = await Patient.updateOne(filter, update);
+         const filter1 = { _id: doctor._id };
+         const update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.5) } };
+         const result1 = await Doctor.updateOne(filter1, update1);
+         console.log(result);
+         await Appointment.findByIdAndDelete(appointmentid);
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: doctor.username,
+            subject: 'Appointment Cancel',
+            html: `Your Appointment with Patient "${req.user.first_name}" is cancelled,Extremely sorry for the Inconvenience`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               console.log('Email sent: ' + info.response);
+            }
+         });
+         req.flash('success', 'Appointment has been cancelled.')
+         res.redirect('/profile');
+      }
+   } catch (error) {
+      res.status(500).send({ message: error.message || 'Error Occured' })
+   }
+
 })
 
 app.get('/profile', isLoggedIn, async function (req, res, next) {
@@ -1086,8 +1159,13 @@ app.post('/feedback/:appointmentid', async (req, res) => {
    const patient_name = document.patientName;
    const reviews = await Review.find({ doctorid: doctorid });
    const no_of_review = (await reviews).length;
-   const tempdoctor = await Doctor.find(doctorid);
-   const oldrating = tempdoctor[0].ratings;
+   const tempdoctor = await Doctor.findById(doctorid);
+   console.log(document);
+   console.log(tempdoctor);
+   const filter = { _id: doctorid };
+   const update = { $set: { wallet: tempdoctor.wallet + document.fees } };
+   const result = await Doctor.updateOne(filter, update);
+   const oldrating = tempdoctor.ratings;
    const id = doctorid.toString();
    console.log(no_of_review);
    console.log(oldrating);
@@ -1398,26 +1476,35 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
       // const slot = await AppointmentSlot.findOne({ slotId: req.body.selectedSlot })
       // const dateOfAppointment = moment(req.params.pickedDate, 'DD-MM-YYYY').toDate();
 
-      const appointment = new Appointment({
-         patientid, doctorid, patientName, email, phoneno, mode, message, slotId: parseInt(selectedSlot), dateOfAppointment: req.params.pickedDate
-      })
-
-
-      const ap = await appointment.save()
 
       const doctor = await Doctor.findById(doctorid)
-      doctor.scheduledAppointments.push(ap)
-      await doctor.save()
+      const fees = doctor.consultationFee;
 
       const patient = await Patient.findById(patientid)
-      patient.scheduledAppointments.push(ap)
-      await patient.save()
+      let balance = patient.wallet;
 
-      // console.log(ap)
+      if (balance >= fees) {
+         const filter = { _id: patientid };
+         const update = { $set: { wallet: balance - fees } };
 
-      // res.redirect(/slotBookingSucesss)
-      req.flash('success', 'Appointment booked successfully.')
-      res.redirect('/')
+         const result = await Patient.updateOne(filter, update);
+         console.log(result)
+         const appointment = new Appointment({
+            patientid, doctorid, patientName, email, phoneno, mode, message, slotId: parseInt(selectedSlot), dateOfAppointment: req.params.pickedDate, fees
+         })
+         const ap = await appointment.save()
+         patient.scheduledAppointments.push(ap)
+         doctor.scheduledAppointments.push(ap)
+         await patient.save()
+         await doctor.save()
+         req.flash('success', 'Appointment booked successfully.')
+         res.redirect('/')
+      }
+      else {
+         req.flash('danger', 'Not enough balance.')
+         res.redirect('/')
+      }
+
    } catch (error) {
       console.log(error)
       req.flash('danger', 'Something went wrong')
