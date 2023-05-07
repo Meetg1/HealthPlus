@@ -7,7 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+  <!-- <link rel="stylesheet" href="/public/stylesheets/bootstrapcss_4.6.0.css"> -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <!-- <link rel="stylesheet" href="/public/stylesheets/fontawesome_6.2.1.css"> -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
@@ -233,16 +235,16 @@
         </div>
       </div>
       <div class="chatbox__messages" id="chatbox__messages__id">
-        
-          <div class="messages__item messages__item--visitor">
-            Hello. My name is HP bot. How can I help you today?
-          </div>
-          <div class="messages__item messages__item--visitor">
-            <button class="action-btn btn btn-outline-primary mb-2">Find nearby doctors</button>
-            <button class="action-btn btn btn-outline-primary mb-2">Disease Predictor</button>
-            <button class="action-btn btn btn-outline-primary">Ask FAQs about HealthPlus</button>
-          </div>
-           
+
+        <div class="messages__item messages__item--visitor">
+          Hello. My name is HP bot. How can I help you today?
+        </div>
+        <div class="messages__item messages__item--visitor">
+          <button class="action-btn btn btn-outline-primary mb-2">Find nearby doctors</button>
+          <button class="action-btn btn btn-outline-primary mb-2">Disease Predictor</button>
+          <button class="action-btn btn btn-outline-primary">Ask FAQs about HealthPlus</button>
+        </div>
+
       </div>
       <div class="chatbox__footer">
         <input type="text" placeholder="Write a message...">
@@ -299,7 +301,7 @@
 
 
       <script>
-        const currUser = <%-JSON.stringify(user) %>;
+        const currUser = <% -JSON.stringify(user) %>;
 
         $(document).ready(function () {
           if (currUser && currUser.preferredLanguage == -1) {
