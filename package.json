@@ -40,6 +40,7 @@
       "peer": "^0.6.1",
       "pizzip": "^3.1.4",
       "socket.io": "^4.5.3",
-      "socket.io-client": "^4.5.3"
+      "socket.io-client": "^4.5.3",
+      "stripe": "^12.4.0"
    }
 }

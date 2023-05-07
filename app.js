@@ -1051,13 +1051,32 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
          const appointment = await Appointment.findOne({ _id: appointmentid });
          const patient = await Patient.findById(appointment.patientid)
          const doctor = await Doctor.findById(appointment.doctorid)
+         const appointment_date = appointment.dateOfAppointment
+         const curr_date = new Date();
+         const date1Str = moment(curr_date).format('DD-MM-YYYY');
+         const date2Str = appointment_date
+         const date1 = new Date(date1Str.split('-').reverse().join('-'));
+         const date2 = new Date(date2Str.split('-').reverse().join('-'));
+         const diffTime = Math.abs(date2 - date1); // Get the difference in milliseconds
+         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Convert to days
+         console.log(diffDays);
          const filter = { _id: patient._id };
-         const update = { $set: { wallet: patient.wallet + (appointment.fees * 0.5) } };
-         const result = await Patient.updateOne(filter, update);
          const filter1 = { _id: doctor._id };
-         const update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.5) } };
+         let update;
+         let update1;
+         if (diffDays > 2) {
+            update = { $set: { wallet: patient.wallet + (appointment.fees * 0.85) } };
+            update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.15) } };
+            console.log(result);
+         } else if (diffDays == 2 || diffDays == 1) {
+            update = { $set: { wallet: patient.wallet + (appointment.fees * 0.70) } };
+            update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.30) } };
+         } else {
+            update = { $set: { wallet: patient.wallet + (appointment.fees * 0.50) } };
+            update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.50) } };
+         }
+         const result = await Patient.updateOne(filter, update);
          const result1 = await Doctor.updateOne(filter1, update1);
-         console.log(result);
          await Appointment.findByIdAndDelete(appointmentid);
          const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -1136,6 +1155,41 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
 // app.get('/patient/profile/edit', loggedInPatient, function (req, res, next) {
 //    res.render('patient/edit_patient.ejs')
 // })
+
+// Payment through Stripe
+// var Publishable_Key = 'pk_test_51IcQRZSAJlPHwnjvBO2nbghgiNPwNfGeM4mBreqNwoCpBzhUQWS80u1OkmwvnwIBxn03erlCVRy3ZO02yWfiFL8a00YOPBGeoz'
+// var Secret_Key = 'sk_test_51IcQRZSAJlPHwnjvS0ETYgfbaHbzMPGFR2kNA3xEgf5FLaNdZLNSAOHUT2gFgQ8Iu4G5CYjWMCp5POQZjKD87skL005ujUGAi4'
+
+// const stripe = require('stripe')(Secret_Key)
+// app.get('/add_balance', function (req, res) {
+//    res.render('payment', {
+//       key: Publishable_Key
+//    })
+// })
+
+// app.post("/api/create-checkout-session", isLoggedIn, async (req, res) => {
+//    const id = req.user._id;
+//    const userr = await Patient.findById(id);
+//    const session = await stripe.checkout.sessions.create({
+//       payment_method_types: ["card"],
+//       line_items: [
+//          {
+//             price_data: {
+//                currency: "inr",
+//                product_data: {
+//                   name: userr.first_name,
+//                },
+//                unit_amount: 300 * 100,
+//             },
+//             quantity: 1,
+//          },
+//       ],
+//       mode: "payment",
+//       success_url: "http://localhost:3000",
+//       cancel_url: "http://localhost:3000",
+//    });
+//    res.render('home');
+// });
 
 app.get('/feedback/:appointmentid', async (req, res) => {
    const appointmentid = req.params.appointmentid;
@@ -1801,6 +1855,7 @@ app.get('/:filename', (req, res) => {
       __dirname + '/public/images/prescriptions/' + req.params.filename,
    )
 })
+
 
 const PORT = 3000
 app.listen(PORT, () => console.log(`SERVER STARTED AT ${PORT}!`))
