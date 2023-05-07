@@ -74,8 +74,11 @@ html {
 .chatbox__messages {
    margin-top: auto;
    display: flex;
-   overflow-y: scroll;
-   flex-direction: column-reverse;
+   /* min-height: 550px; */
+   max-height: 550px;
+   /* overflow-y: scroll; */
+   overflow-y: auto;
+   flex-direction: column;
 }
 
 .messages__item {
@@ -101,10 +104,11 @@ html {
 .chatbox__support {
    background: #f9f9f9;
    height: 550px;
-   width: 350px;
+   width: 450px;
    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
    border-top-left-radius: 20px;
    border-top-right-radius: 20px;
+   /* overflow-y: scroll; */
 }
 
 /* HEADER */
@@ -113,7 +117,7 @@ html {
    display: flex;
    flex-direction: row;
    align-items: center;
-   justify-content: center;
+   /* justify-content: center; */
    padding: 15px 20px;
    border-top-left-radius: 20px;
    border-top-right-radius: 20px;
@@ -144,6 +148,7 @@ html {
    background: #e0e0e0;
    padding: 8px 12px;
    max-width: 70%;
+   color: #000;
 }
 
 .messages__item--visitor,

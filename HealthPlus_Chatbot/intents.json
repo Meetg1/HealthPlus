@@ -1,0 +1,58 @@
+{
+   "intents": [
+      {
+         "tag": "greeting",
+         "patterns": [
+            "Hi",
+            "Hey",
+            "How are you",
+            "Is anyone there?",
+            "Hello",
+            "Good day"
+         ],
+         "responses": [
+            "Hey :-)",
+            "Hello, thanks for visiting",
+            "Hi there, what can I do for you?",
+            "Hi there, how can I help?"
+         ]
+      },
+      {
+         "tag": "goodbye",
+         "patterns": ["Bye", "See you later", "Goodbye"],
+         "responses": [
+            "See you later, thanks for visiting",
+            "Have a nice day",
+            "Bye! Come back again soon."
+         ]
+      },
+      {
+         "tag": "thanks",
+         "patterns": [
+            "Thanks",
+            "Thank you",
+            "That's helpful",
+            "Thank's a lot!"
+         ],
+         "responses": ["Happy to help!", "Any time!", "My pleasure"]
+      },
+      {
+         "tag": "faq",
+         "patterns": [
+            "FAQ",
+            "FAQs",
+            "Frequently asked questions",
+            "Ask FAQs about HealthPlus",
+            "wanted to know about healthplus",
+            "wanted to know about your platform",
+            "tell me something about healthplus",
+            "tell me something about your platform",
+            "what is healthplus",
+            "how to use healthplus"
+         ],
+         "responses": [
+            "Hey, HealthPlus is a platform designed to be a virtual medical practice platform where certified and licensed doctors would be available in everything from general medicine to mental health and more. Patients can visit HealthPlus to connect quickly with a medical professional, hence avoiding limitations of physical appointment."
+         ]
+      }
+   ]
+}

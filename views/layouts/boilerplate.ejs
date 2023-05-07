@@ -22,7 +22,7 @@
     src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <link rel="stylesheet" href="../../stylesheets/chatbot.css">
-  
+
 </head>
 
 
@@ -219,30 +219,38 @@
 
   <div id="google_translate_element"></div>
 
-  
+
   <!-- CHATBOT WINDOW -->
   <div class="chatbox">
     <div class="chatbox__support">
-        <div class="chatbox__header">
-            <div class="chatbox__image--header">
-                <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png"
-                    alt="image">
-            </div>
-            <div class="chatbox__content--header">
-                <h4 class="chatbox__heading--header">HealthPlus Chatbot</h4>
-                <p class="chatbox__description--header">Hi. My name is HP bot. How can I help you?</p>
-            </div>
+      <div class="chatbox__header">
+        <div class="chatbox__image--header">
+          <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-5--v1.png" alt="image">
         </div>
-        <div class="chatbox__messages">
-            <div></div>
+        <div class="chatbox__content--header">
+          <h4 class="chatbox__heading--header mb-0">HealthPlus Chatbot</h4>
+          <!-- <p class="chatbox__description--header">Hi. My name is HP bot. How can I help you?</p> -->
         </div>
-        <div class="chatbox__footer">
-            <input type="text" placeholder="Write a message...">
-            <button class="chatbox__send--footer send__button">Send</button>
-        </div>
+      </div>
+      <div class="chatbox__messages" id="chatbox__messages__id">
+        
+          <div class="messages__item messages__item--visitor">
+            Hello. My name is HP bot. How can I help you today?
+          </div>
+          <div class="messages__item messages__item--visitor">
+            <button class="action-btn btn btn-outline-primary mb-2">Find nearby doctors</button>
+            <button class="action-btn btn btn-outline-primary mb-2">Disease Predictor</button>
+            <button class="action-btn btn btn-outline-primary">Ask FAQs about HealthPlus</button>
+          </div>
+           
+      </div>
+      <div class="chatbox__footer">
+        <input type="text" placeholder="Write a message...">
+        <button class="chatbox__send--footer send__button">Send</button>
+      </div>
     </div>
     <div class="chatbox__button">
-        <button><img style="width: 100%;" src="../images/websitePics/chatbot.png" /></button>
+      <button><img style="width: 100%;" src="../images/websitePics/chatbot.png" /></button>
     </div>
   </div>
 
