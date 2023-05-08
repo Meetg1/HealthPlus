@@ -46,6 +46,12 @@ const PatientSchema = new mongoose.Schema({
       default: 0,
 
    },
+   notifications: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Notification",
+      },
+   ],
    usernameToken: String,
 })
 
