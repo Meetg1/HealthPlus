@@ -661,7 +661,7 @@ section {
 .customer-service {
     position: fixed;
     z-index: 10;
-    right: 10px;
+    left: 10px;
     /* bottom: 10px; */
 }
 .customer-service .item {
@@ -671,8 +671,11 @@ section {
     height: 35px; */
     border-radius: 50px;
     text-align: center;
-    position: relative;
+    position: relative; 
     box-sizing: border-box;
+}
+.customer-service .item i{
+    font-size: 34px;
 }
 .chevron-circle-up {
     font-style: normal;

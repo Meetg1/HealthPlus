@@ -27,9 +27,12 @@ html {
 /* CHATBOX
 =============== */
 .chatbox {
-   position: absolute;
-   top: 25vh;
-   right: 20px;
+   /* position: absolute; */
+   position: fixed;
+   bottom: 10px;
+   /* top: 25vh; */
+   right: 14px;
+   z-index: 20;
 }
 
 /* CONTENT IS CLOSE */
@@ -52,7 +55,8 @@ html {
 /* BUTTON */
 .chatbox__button {
    float: right;
-   width: 100px;
+   width: 80px;
+   /* position: absolute; */
 }
 
 .send__button {

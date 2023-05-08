@@ -53,6 +53,47 @@
          "responses": [
             "Hey, HealthPlus is a platform designed to be a virtual medical practice platform where certified and licensed doctors would be available in everything from general medicine to mental health and more. Patients can visit HealthPlus to connect quickly with a medical professional, hence avoiding limitations of physical appointment."
          ]
+      },
+      {
+         "tag": "faqQuestion1",
+         "patterns": [
+            "vision",
+            "goals",
+            "motive",
+            "vision of healthplus",
+            "goals of healthplus",
+            "motive of healthplus",
+            "vision of your platform",
+            "goals of your platform",
+            "motive of your platform"
+         ],
+         "responses": [
+            "We, at HealthPlus, have a very broad and clear vision towards the betterment of the society keeping in mind their convenience, adaptability and affordability. Our vision includes the following but not limited to:",
+            "1. Connect Patients to Doctors: We are more concerned for people, less educated and the ones living in remote areas due to their lack of medical reach. We aim to connect them with the best doctors of their choice.",
+            "2. Privacy and Integrity: We try our best at providing a proper patient medical history management system while preserving privacy and integrity for both doctors as well as patient users.",
+            "3. Certified Doctors: We have associated with us only certified and licensed doctors right from general medicine to mental health and much more and we also aim to provide essential medical services at lowest possible cost."
+         ]
+      },
+      {
+         "tag": "faqQuestion2",
+         "patterns": [
+            "services",
+            "what services provided by healthplus",
+            "what services do you provide",
+            "what is use of healthplus",
+            "features of healthplus",
+            "importance of healthplus",
+            "why should i use healthplus"
+         ],
+         "responses": [
+            "HealthPlus provides users with a plethora of services which makes it a unique and one-of-a-kind online medical platform and their favourite go-to place for all types of medical problems.",
+            "1. Video Call with Doctor: A comfortable video calling session with your choice of doctor at a convenient time",
+            "2. Chat with Doctor: A convenient chatting session with your choice of doctor at a convenient time",
+            "3. Customised Disease Prediction: Talk to the chatbot and get your disease predicted with high accuracy",
+            "4. Safe Medical Storage: A safe storage of your medical record history and transaction details on our blockchain",
+            "5. Choose a Doctor: You get to filter a doctor based on various criteria like his speciality, years of experience, consultation fee, location, etc",
+            "6. Doctor Verification: A doctor will be only assigned to you after his complete real-time background verification"
+         ]
       }
    ]
 }
