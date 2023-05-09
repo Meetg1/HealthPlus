@@ -29,7 +29,7 @@ html {
 .chatbox {
    /* position: absolute; */
    position: fixed;
-   bottom: 10px;
+   bottom: 15px;
    /* top: 25vh; */
    right: 14px;
    z-index: 20;
@@ -55,7 +55,7 @@ html {
 /* BUTTON */
 .chatbox__button {
    float: right;
-   width: 80px;
+   width: 90px;
    /* position: absolute; */
 }
 
@@ -89,6 +89,7 @@ html {
    background: orange;
    max-width: 60.6%;
    width: fit-content;
+   word-wrap: break-word;
 }
 
 .messages__item--operator {
@@ -208,4 +209,63 @@ html {
    border-bottom-left-radius: 50px;
    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.1);
    cursor: pointer;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+   position: relative;
+   left: 40%;
+}
+
+#container-dropdown {
+   /* min-width: 1130px;
+   min-height: 200px; */
+}
+
+/* Dropdown Content (Hidden by Default) */
+.drop-content {
+   position: fixed;
+   bottom: 15px;
+   right: 111px;
+   z-index: 10;
+   width: 750px;
+   height: 110px;
+   display: none;
+   background-color: #fdffff;
+
+   text-shadow: 0px 1px 20px rgb(7, 97, 231);
+   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+   position: relative;
+   min-width: 100px;
+   text-align: center !important;
+   width: auto !important;
+   display: inline-block;
+   cursor: pointer;
+
+   clear: both;
+   text-align: center;
+   border: 0;
+
+   margin: 10px !important;
+
+   background-color: #fdffff;
+   text-shadow: 0px 1px 20px rgba(3, 169, 244, 0.78);
+   box-shadow: 0px 8px 16px 0px rgba(3, 169, 244, 0.05);
+
+   line-height: 2;
+   padding: 4px !important;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+   background-color: rgb(90, 181, 241);
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container
+  when the user clicks on the dropdown button) */
+.show {
+   display: inline-block;
 }

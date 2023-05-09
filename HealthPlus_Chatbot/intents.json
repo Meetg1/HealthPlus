@@ -37,6 +37,19 @@
          "responses": ["Happy to help!", "Any time!", "My pleasure"]
       },
       {
+         "tag": "diseasePrediction",
+         "patterns": [
+            "disease predict",
+            "disease predictor",
+            "can you predict my disease",
+            "enter symptoms",
+            "predict disease from symptoms"
+         ],
+         "responses": [
+            "For disease prediction, please enter your symptoms, one at a time. You can use the symptom suggestor to select symptoms. Enter STOP when done."
+         ]
+      },
+      {
          "tag": "faq",
          "patterns": [
             "FAQ",
