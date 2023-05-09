@@ -138,6 +138,12 @@ const DoctorSchema = new mongoose.Schema({
          ref: 'Review',
       },
    ],
+   notifications: [
+      {
+         type: mongoose.Schema.Types.ObjectId,
+         ref: "Notification",
+      },
+   ],
 
    usernameToken: String,
 })

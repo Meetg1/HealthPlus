@@ -12,6 +12,7 @@ const AppointmentSlot = require('./models/AppointmentSlot')
 const Appointment = require('./models/Appointment')
 const Chat = require('./models/Chat')
 const Review = require('./models/Review');
+const Notification = require('./models/Notification');
 const multer = require('multer')
 const { v1: uuidv1 } = require('uuid')
 const bodyParser = require('body-parser')
@@ -94,12 +95,33 @@ passport.deserializeUser((obj, done) => {
 
 //Express Messages Middle ware
 app.use(require('connect-flash')())
-app.use(function (req, res, next) {
+app.use(async function (req, res, next) {
    //giving access of loggedIn user to every templates(in views dir)
    if (req.user) {
       res.locals.currentUser = req.user
    } else {
       res.locals.currentUser = undefined
+   }
+   //giving access of loggedIn user's notifications to every templates(in views dir) (have to populate first though)
+   if (req.user) {
+      try {
+         if (req.user instanceof Doctor) {
+            const user = await Doctor.findById(req.user._id)
+               .populate('notifications')
+               .exec()
+            res.locals.notifications = user.notifications.reverse() //latest notifications first
+         }
+         else {
+            const user = await Patient.findById(req.user._id)
+               .populate('notifications')
+               .exec()
+            res.locals.notifications = user.notifications.reverse() //latest notifications first
+         }
+
+
+      } catch (error) {
+         console.error(error.message)
+      }
    }
 
    // res.locals.currentUserPrefLang = req.user.preferredLanguage
@@ -1043,6 +1065,16 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
                console.log('Email sent: ' + info.response);
             }
          });
+
+         let newNotification = {
+            username: patient.username,
+            message: `Your Appointment with Dr. ${req.user.first_name} is cancelled`,
+            icon: 'bell',
+         }
+         let notification = await Notification.create(newNotification)
+         patient.notifications.push(notification)
+         await patient.save()
+
          req.flash('success', 'Appointment has been cancelled.')
          res.redirect('/profile');
       }
@@ -1100,6 +1132,16 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
                console.log('Email sent: ' + info.response);
             }
          });
+
+         let newNotification = {
+            username: doctor.username,
+            message: `Your Appointment with Patient ${req.user.first_name} is cancelled`,
+            icon: 'bell',
+         }
+         let notification = await Notification.create(newNotification)
+         doctor.notifications.push(notification)
+         await doctor.save()
+
          req.flash('success', 'Appointment has been cancelled.')
          res.redirect('/profile');
       }
@@ -1369,22 +1411,45 @@ app.get('/verify-email/:token', async (req, res, next) => {
    }
 })
 
-app.post('/patientlogin', isPatientVerified, (req, res, next) => {
+app.post('/patientlogin', isPatientVerified, async (req, res, next) => {
    passport.authenticate('local.patient', {
       failureRedirect: '/patientlogin',
       successRedirect: '/',
       failureFlash: true,
       successFlash: 'Welcome to HealthPlus ' + req.body.username + '!',
    })(req, res, next)
+   // let newNotification = {
+   //    username: req.body.username,
+   //    message: 'Logged in successfully',
+   //    icon: 'bell',
+   // }
+
+   // let notification = await Notification.create(newNotification)
+   // let loggedinuser = await Patient.findByUsername(req.body.username)
+   // // console.log(loggedinuser);
+   // loggedinuser.notifications.push(notification)
+   // await loggedinuser.save()
 })
 
-app.post('/doctorlogin', isDoctorVerified, (req, res, next) => {
+app.post('/doctorlogin', isDoctorVerified, async (req, res, next) => {
    passport.authenticate('local.doctor', {
       failureRedirect: '/doctorlogin',
       successRedirect: '/',
       failureFlash: true,
       successFlash: 'Welcome to HealthPlus ' + req.body.username + '!',
    })(req, res, next)
+   // let newNotification = {
+   //    username: req.body.username,
+   //    message: 'Logged in successfully',
+   //    icon: 'bell',
+   // }
+
+   // let notification = await Notification.create(newNotification)
+   // let loggedinuser = await Doctor.findByUsername(req.body.username)
+   // console.log(loggedinuser);
+   // loggedinuser.notifications.push(notification)
+   // await loggedinuser.save()
+   // console.log(loggedinuser.notifications);
 })
 
 app.post('/admin_login', isAdmin, (req, res, next) => {
@@ -1404,6 +1469,48 @@ app.get('/logout', (req, res) => {
    req.flash('success', 'Logged Out Successfully.')
    res.redirect('/')
 })
+
+// delete notification if it has been read(clicked)
+app.get('/notification/:notificationId', isLoggedIn, async (req, res) => {
+   try {
+      if (req.user instanceof Doctor) {
+         const user = await Doctor.findById(req.user._id)
+         let noti = await Notification.findByIdAndDelete(req.params.notificationId)
+         let i = 0
+         while (i < user.notifications.length) {
+            if (user.notifications[i].equals(req.params.notificationId)) {
+               break
+            }
+            i++
+         }
+         if (i > -1) {
+            user.notifications.splice(i, 1)
+         }
+         user.save()
+         return res.redirect('/');
+      }
+      else {
+         const user = await Patient.findById(req.user._id)
+         let noti = await Notification.findByIdAndDelete(req.params.notificationId)
+         let i = 0
+         while (i < user.notifications.length) {
+            if (user.notifications[i].equals(req.params.notificationId)) {
+               break
+            }
+            i++
+         }
+         if (i > -1) {
+            user.notifications.splice(i, 1)
+         }
+         user.save()
+         return res.redirect('/');
+      }
+
+   } catch (error) {
+      console.log(error.message)
+   }
+})
+
 
 app.get('/appointment/:doctorid', (req, res) => {
    const doctorid = req.params.doctorid
@@ -1551,6 +1658,17 @@ app.post('/bookslot/:doctorid&:pickedDate', async (req, res) => {
          doctor.scheduledAppointments.push(ap)
          await patient.save()
          await doctor.save()
+
+         let newNotification = {
+            username: doctor.username,
+            message: `You have a new appointment with Patient ${patientName} `,
+            icon: 'bell',
+         }
+
+         let notification = await Notification.create(newNotification)
+         doctor.notifications.push(notification)
+         await doctor.save()
+
          req.flash('success', 'Appointment booked successfully.')
          res.redirect('/')
       }
