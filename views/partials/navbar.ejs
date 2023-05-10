@@ -27,39 +27,29 @@
                     No notifications.
                   </span>
                 </div>
-                
+
                 <% }else{ %>
-                  <div style="height: 300px; width: 400px"> 
-                  <% notifications.forEach(function(notification) { %>
-                    
+                  <div style="height: 300px; width: 400px">
+                    <% notifications.forEach(function(notification) { %>
+
                       <a href="/notification/<%= notification._id %>" class="dropdown-item">
                         <i class="fa fa-<%= notification.icon %>" aria-hidden="false"></i>
                         <span style="color: black" class="dropdown-item">
                           <%= notification.message %>
                         </span>
-                          
+
                       </a>
                       <div class="dropdown-divider"></div>
-                    
-                    <% }); %>
-                   </div>
-                     <% } %>
+
+                      <% }); %>
+                  </div>
+                  <% } %>
             </div>
           </li>
           <li class="dropdown">
             <a class="nav-link scrollto" href="#" style="text-decoration: none;" data-toggle="dropdown"><span>My
                 Account &nbsp;<img src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png" height="23"
                   width="23"></span> <i class="fa fa-chevron-down"></i></a>
-            <div class="dropdown-menu">
-              <a href="profile" class="dropdown-item">Profile</a>
-              <a href="/logout" class="dropdown-item">Logout</a>
-            </div>
-          </li>
-          <li class="dropdown">
-            <a class="nav-link scrollto" href="#" style="text-decoration: none;"
-              data-toggle="dropdown"><span>Notifications
-                &nbsp;<img src="https://cdn-icons-png.flaticon.com/512/1177/1177514.png" height="23" width="23"></span>
-              <i class="fa fa-chevron-down"></i></a>
             <div class="dropdown-menu">
               <a href="profile" class="dropdown-item">Profile</a>
               <a href="/logout" class="dropdown-item">Logout</a>
