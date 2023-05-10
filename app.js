@@ -33,6 +33,7 @@ const Docxtemplater = require("docxtemplater");
 const server = http.createServer(app)
 const nodemailer = require('nodemailer');
 const { readdir } = require('fs/promises');
+const specialities = require('./specialities')
 const socketio = require('socket.io')
 const io = socketio(server, {
    cors: {
@@ -670,7 +671,7 @@ app.get('/registerChoice', (req, res) => {
 })
 
 app.get('/doctorRegister', (req, res) => {
-   res.render('doctor/doctorRegister.ejs')
+   res.render('doctor/doctorRegister.ejs', { specialities })
 })
 
 const dbSlots = []
@@ -682,14 +683,14 @@ async function fetchAppointmentSlots() {
 }
 fetchAppointmentSlots()
 
-const dbSpecialities = []
-async function fetchSpecialityTypes() {
-   for (let i = 0; i < 9; i++) {
-      let spec = await Speciality.findOne({ specId: i + 1 })
-      dbSpecialities.push(spec)
-   }
-}
-fetchSpecialityTypes()
+// const dbSpecialities = []
+// async function fetchSpecialityTypes() {
+//    for (let i = 0; i < 9; i++) {
+//       let spec = await Speciality.findOne({ specId: i + 1 })
+//       dbSpecialities.push(spec)
+//    }
+// }
+// fetchSpecialityTypes()
 
 app.post(
    '/doctorRegister',
@@ -734,7 +735,7 @@ app.post(
             const digitalKYC = req.files.digitalKYC[0].filename
 
             // console.log('availableAppointmentSlots')
-            const specType = req.body.specType
+            // const specType = req.body.specType
             const monday = req.body.monday
             const tuesday = req.body.tuesday
             const wednesday = req.body.wednesday
@@ -745,7 +746,7 @@ app.post(
 
             // console.log(monday)
 
-            const speciality = []
+            // const speciality = []
             const mondayAvailableAppointmentSlots = []
             const tuesdayAvailableAppointmentSlots = []
             const wednesdayAvailableAppointmentSlots = []
@@ -754,14 +755,21 @@ app.post(
             const saturdayAvailableAppointmentSlots = []
             const sundayAvailableAppointmentSlots = []
 
-            if (specType) {
-               for (let index = 0; index < specType.length; index++) {
-                  spec = specType[index]
-                  index = parseInt(spec) - 1
-                  speciality.push(dbSpecialities[index]._id)
+            // console.log('specType')
+            // console.log(specType)
+            // console.log('dbSpecialities')
+            // console.log(dbSpecialities)
 
-               }
-            }
+            // if (specType) {
+            //    for (let index = 0; index < specType.length; index++) {
+            //       spec = specType[index]
+            //       index = parseInt(spec) - 1
+            //       speciality.push(dbSpecialities[index]._id)
+            //    }
+            // }
+
+            // console.log('speciality')
+            // console.log(speciality)
 
             if (monday) {
                for (let index = 0; index < monday.length; index++) {
@@ -824,37 +832,41 @@ app.post(
                }
             }
 
-            const doctor = new Doctor({
-               username: req.body.username,
-               usernameToken: crypto.randomBytes(64).toString('hex'),
-               isVerified: false,
-               first_name: req.body.fname,
-               last_name: req.body.lname,
-               phone: req.body.contact,
-               speciality,
-               yearsOfExperience: req.body.exp,
-               consultationFee: req.body.fee,
-               clinicLocation: req.body.location,
-               description: req.body.desc,
-               uprn: req.body.uprn,
-               aadharCard: aadharCard,
-               panCard: panCard,
-               degreeCertificates: degreeCertificates,
-               profilePic: profilePic,
-               digitalKYC: digitalKYC,
-               mondayAvailableAppointmentSlots,
-               tuesdayAvailableAppointmentSlots,
-               wednesdayAvailableAppointmentSlots,
-               thursdayAvailableAppointmentSlots,
-               fridayAvailableAppointmentSlots,
-               saturdayAvailableAppointmentSlots,
-               sundayAvailableAppointmentSlots
-            })
-            const registeredDoctor = await Doctor.register(doctor, req.body.pwd)
-            // console.log(registeredDoctor)
-            console.log(speciality)
-            req.flash('success', 'Details received successfully! Your verification process has been started.')
-            res.redirect('/doctorRegister')
+
+            setTimeout(async () => {
+               const doctor = new Doctor({
+                  username: req.body.username,
+                  usernameToken: crypto.randomBytes(64).toString('hex'),
+                  isVerified: false,
+                  first_name: req.body.fname,
+                  last_name: req.body.lname,
+                  phone: req.body.contact,
+                  speciality: req.body.specType,
+                  yearsOfExperience: req.body.exp,
+                  consultationFee: req.body.fee,
+                  clinicLocation: req.body.location,
+                  description: req.body.desc,
+                  uprn: req.body.uprn,
+                  aadharCard: aadharCard,
+                  panCard: panCard,
+                  degreeCertificates: degreeCertificates,
+                  profilePic: profilePic,
+                  digitalKYC: digitalKYC,
+                  mondayAvailableAppointmentSlots,
+                  tuesdayAvailableAppointmentSlots,
+                  wednesdayAvailableAppointmentSlots,
+                  thursdayAvailableAppointmentSlots,
+                  fridayAvailableAppointmentSlots,
+                  saturdayAvailableAppointmentSlots,
+                  sundayAvailableAppointmentSlots
+               })
+               const registeredDoctor = await Doctor.register(doctor, req.body.pwd)
+               // console.log(registeredDoctor)
+               // console.log(speciality)
+               req.flash('success', 'Details received successfully! Your verification process has been started.')
+               res.redirect('/doctorRegister')
+            }, 3000);
+
          }
       } catch (error) {
          console.log('error')
@@ -2004,6 +2016,16 @@ app.post('/verify_prescription/', async (req, res) => {
 
 app.get('/add_record', (req, res) => {
    res.render('patient/addRecord.ejs')
+})
+
+app.post('/getDoctorBySpecialization', async (req, res) => {
+
+   const spec = req.body.spec
+
+   const specDoctors = await Doctor.find({ speciality: spec })
+   // console.log(specDoctors)
+
+   res.send({ status: 'success', doctors: specDoctors })
 })
 
 app.get('/:filename', (req, res) => {

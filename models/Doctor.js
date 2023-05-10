@@ -76,8 +76,7 @@ const DoctorSchema = new mongoose.Schema({
    },
    speciality: [
       {
-         type: mongoose.Schema.Types.ObjectId,
-         ref: 'Speciality',
+         type: String,
       },
    ],
    mondayAvailableAppointmentSlots: [
