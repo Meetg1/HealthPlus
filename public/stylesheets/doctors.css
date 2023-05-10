@@ -168,7 +168,8 @@ a {
 }
 .img-fluid {
     max-width: 100%;
-    height: auto;
+    width: 20px;
+    height: 14px;
 }
 img, svg {
     vertical-align: middle;

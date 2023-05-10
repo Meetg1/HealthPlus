@@ -9,6 +9,7 @@ const Admin = require('./models/Admin')
 const Patient = require('./models/Patient')
 const Doctor = require('./models/Doctor')
 const AppointmentSlot = require('./models/AppointmentSlot')
+const Speciality = require('./models/Speciality')
 const Appointment = require('./models/Appointment')
 const Chat = require('./models/Chat')
 const Review = require('./models/Review');
@@ -566,7 +567,6 @@ var validator = function (req, res, next) {
       min: 2,
    })
    req.checkBody('cpwd', 'Passwords do not match').equals(req.body.pwd)
-   req.checkBody('speciality', 'Select a speciality').notEmpty()
    req.checkBody('exp', 'Years of Experience is required').notEmpty()
    req.checkBody('fee', 'Consultation Fee is required').notEmpty()
    req.checkBody('location', 'Clinic Location is required').notEmpty()
@@ -660,6 +660,15 @@ async function fetchAppointmentSlots() {
 }
 fetchAppointmentSlots()
 
+const dbSpecialities = []
+async function fetchSpecialityTypes() {
+   for (let i = 0; i < 9; i++) {
+      let spec = await Speciality.findOne({ specId: i + 1 })
+      dbSpecialities.push(spec)
+   }
+}
+fetchSpecialityTypes()
+
 app.post(
    '/doctorRegister',
    upload2.fields([
@@ -703,6 +712,7 @@ app.post(
             const digitalKYC = req.files.digitalKYC[0].filename
 
             // console.log('availableAppointmentSlots')
+            const specType = req.body.specType
             const monday = req.body.monday
             const tuesday = req.body.tuesday
             const wednesday = req.body.wednesday
@@ -713,6 +723,7 @@ app.post(
 
             // console.log(monday)
 
+            const speciality = []
             const mondayAvailableAppointmentSlots = []
             const tuesdayAvailableAppointmentSlots = []
             const wednesdayAvailableAppointmentSlots = []
@@ -720,6 +731,15 @@ app.post(
             const fridayAvailableAppointmentSlots = []
             const saturdayAvailableAppointmentSlots = []
             const sundayAvailableAppointmentSlots = []
+
+            if (specType) {
+               for (let index = 0; index < specType.length; index++) {
+                  spec = specType[index]
+                  index = parseInt(spec) - 1
+                  speciality.push(dbSpecialities[index]._id)
+
+               }
+            }
 
             if (monday) {
                for (let index = 0; index < monday.length; index++) {
@@ -789,7 +809,7 @@ app.post(
                first_name: req.body.fname,
                last_name: req.body.lname,
                phone: req.body.contact,
-               speciality: req.body.speciality,
+               speciality,
                yearsOfExperience: req.body.exp,
                consultationFee: req.body.fee,
                clinicLocation: req.body.location,
@@ -810,6 +830,7 @@ app.post(
             })
             const registeredDoctor = await Doctor.register(doctor, req.body.pwd)
             // console.log(registeredDoctor)
+            console.log(speciality)
             req.flash('success', 'Details received successfully! Your verification process has been started.')
             res.redirect('/doctorRegister')
          }
@@ -1114,7 +1135,8 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
       if (req.user instanceof Doctor) {
          let doc = req.user;
          let doctorId = req.user._id;
-         const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots');
+         const doctor = await Doctor.findById(doctorId).populate('mondayAvailableAppointmentSlots').populate('tuesdayAvailableAppointmentSlots').populate('wednesdayAvailableAppointmentSlots').populate('thursdayAvailableAppointmentSlots').populate('fridayAvailableAppointmentSlots').populate('saturdayAvailableAppointmentSlots').populate('sundayAvailableAppointmentSlots').populate('speciality');
+         // const doctorSpec = await Doctor.findById(doctorId).populate('speciality')
          // console.log(doctor.wednesdayAvailableAppointmentSlots[0]);
          const review = await Review.find({ doctorid: doctorId });
 
@@ -1131,7 +1153,19 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
          }
          const tempdoctor = await Doctor.find(doctorId);
          const oldrating = tempdoctor[0].ratings;
-         res.render('doctor/doctor_profile.ejs', { doctor: doctor, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, doctorAppointments: doctorAppointments, slots: arr, rating: oldrating })
+
+         // const doctorSpeciality = await Speciality.find({ specId })
+         let newArr = []
+         // const 
+         for (i = 0; i < doctor.speciality.length; i++) {
+            const specs = await Speciality.findOne({ specId: doctor.speciality[i].specId });
+            newArr.push(doctor.speciality[i].specialType)
+            // console.log(doctor.speciality[i])
+         }
+         console.log(newArr)
+         // console.log(doctor.speciality)
+         // conso]
+         res.render('doctor/doctor_profile.ejs', { doctor: doctor, speciality: newArr, monday: doctor.mondayAvailableAppointmentSlots, tuesday: doctor.tuesdayAvailableAppointmentSlots, wednesday: doctor.wednesdayAvailableAppointmentSlots, thursday: doctor.thursdayAvailableAppointmentSlots, friday: doctor.fridayAvailableAppointmentSlots, saturday: doctor.saturdayAvailableAppointmentSlots, sunday: doctor.sundayAvailableAppointmentSlots, review: review, doctorAppointments: doctorAppointments, slots: arr, rating: oldrating })
       }
       else if (req.user instanceof Patient) {
          let patientid = req.user._id;
@@ -1190,6 +1224,10 @@ app.get('/profile', isLoggedIn, async function (req, res, next) {
 //    });
 //    res.render('home');
 // });
+
+app.get('/terms', (req, res) => {
+   res.render('tnc.ejs')
+})
 
 app.get('/feedback/:appointmentid', async (req, res) => {
    const appointmentid = req.params.appointmentid;

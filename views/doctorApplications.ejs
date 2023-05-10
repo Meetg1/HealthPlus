@@ -1,17 +1,19 @@
 <% layout('layouts/boilerplate') %>
 
 
-<body>
+    <body>
 
-    <link rel="stylesheet" href="../stylesheets/doctors.css" />
+        <link rel="stylesheet" href="../stylesheets/doctors.css" />
 
-    <%- include('./partials/navbar')%>
+        <%- include('./partials/navbar')%>
 
-    <section id="doctors" class="doctors">
-        <div class="container">
-            <div class="section-title"><br><br><br><h2>Doctor Applications</h2></div>
-            <div class="row">
-                <!-- <div class="col-lg-4">
+            <section id="doctors" class="doctors">
+                <div class="container">
+                    <div class="section-title"><br><br><br>
+                        <h2>Doctor Applications</h2>
+                    </div>
+                    <div class="row">
+                        <!-- <div class="col-lg-4">
                     <div class="member d-flex align-items-start">
                         <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
                         <div class="member-info"><h4>Walter White</h4> <span>Chief Medical Officer</span><p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
@@ -25,24 +27,40 @@
                         <br>
                     </div>
                 </div> -->
-                <% if(doctors != '') { %>
-                    <% doctors.forEach(function(doctor, index) { %>
-                        <div class="col-lg-4 mt-4 mt-lg-0">
-                            <div class="member d-flex align-items-start">
-                                <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg" class="img-fluid" alt=""></div>
-                                <div class="member-info"><h4><%- doctor.first_name + ' ' + doctor.last_name %></h4> <span><%- doctor.speciality %></span><p><%- doctor.description %></p>
-                                    <p style="padding-right: 15px;"><b>Years of Experience: </b><%- doctor.yearsOfExperience %></p>
-                                    <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i><%- doctor.consultationFee %></p>
-                                    <p><b>Location: </b><%- doctor.clinicLocation %></p>
-                                    <div>
-                                        <a class="btn btn-primary" href="/admin/doctors/<%- doctor._id %>">View Details</a>
+                        <% if(doctors !='' ) { %>
+                            <% doctors.forEach(function(doctor, index) { %>
+                                <div class="col-lg-4 mt-4 mt-lg-0">
+                                    <div class="member d-flex align-items-start">
+                                        <div class="pic"><img src="/images/doctorProfilePics/<%- doctor.profilePic %>"
+                                                class="img-fluid" alt=""></div>
+                                        <div class="member-info">
+                                            <h4>
+                                                <%- doctor.first_name + ' ' + doctor.last_name %>
+                                            </h4> <span>
+                                                <%- doctor.speciality %>
+                                            </span>
+                                            <p>
+                                                <%- doctor.description %>
+                                            </p>
+                                            <p style="padding-right: 15px;"><b>Years of Experience: </b>
+                                                <%- doctor.yearsOfExperience %>
+                                            </p>
+                                            <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>
+                                                <%- doctor.consultationFee %>
+                                            </p>
+                                            <p><b>Location: </b>
+                                                <%- doctor.clinicLocation %>
+                                            </p>
+                                            <div>
+                                                <a class="btn btn-primary" href="/admin/doctors/<%- doctor._id %>">View
+                                                    Details</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    <% }) %>
-                <% } %>
-                <!-- <div class="col-lg-4">
+                                <% }) %>
+                                    <% } %>
+                                        <!-- <div class="col-lg-4">
                     <div class="member d-flex align-items-start">
                         <div class="pic"><img src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-3.jpg" class="img-fluid" alt=""></div>
                         <div class="member-info"><h4>William Anderson</h4> <span>Cardiology</span><p>Quisquam facilis cum velit laborum corrupti fuga rerum quia</p>
@@ -94,13 +112,11 @@
                         </div>
                     </div>
                 </div> -->
-            </div>
-        </div>
-    </section>
-    <br><br>
+                    </div>
+                </div>
+            </section>
+            <br><br>
 
-    <%- include('./partials/footer')%>
+            <%- include('./partials/footer')%>
 
-</body>
-
-
+    </body>

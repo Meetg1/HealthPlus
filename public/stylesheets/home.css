@@ -173,6 +173,14 @@ section {
     font-weight: 500;
     line-height: 1.2;
 }
+#hero .container{
+    /* margin-left: 8rem; */
+    /* width: 90%; */
+    position: absolute;
+    left: 100px;
+    /* margin-top: auto;
+    margin-bottom: auto; */
+}
 #hero .btn-get-started {
     font-family: "Raleway", sans-serif;
     text-transform: uppercase;
