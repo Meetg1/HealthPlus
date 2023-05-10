@@ -82,6 +82,8 @@ def get_response_predictDisease(symptoms):
     # creating input data for the models
     input_data = [0] * len(data_dict["symptom_index"])
     for symptom in symptomList:
+        if symptom not in data_dict["symptom_index"]:
+            continue
         index = data_dict["symptom_index"][symptom]
         input_data[index] = 1
 
