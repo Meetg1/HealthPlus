@@ -191,8 +191,6 @@ class Chatbox {
         // Returns a Promise that resolves after "ms" Milliseconds
         const timer = ms => new Promise(res => setTimeout(res, ms))
 
-
-
         async function load() { // We need to wrap the loop into an async function for this to work
 
             await timer(2500);
@@ -220,7 +218,7 @@ class Chatbox {
                     a.textContent = `Doctor Name: ${doc.first_name + ' ' + doc.last_name}`
                     div.appendChild(a)
                     const p = document.createElement("p")
-                    p.textContent = `Experience: ${doc.yearsOfExperience} years,                           Rating: ${doc.ratings}, Clinic location: ${doc.clinicLocation}, Consultation fee: ${doc.consultationFee} ₹  `
+                    p.textContent = `Experience: ${doc.yearsOfExperience} years, Rating: ${doc.ratings}, Clinic location: ${doc.clinicLocation}, Consultation fee: ${doc.consultationFee} ₹  `
                     div.appendChild(p)
 
                     const chatmessage = chatbox.querySelector('.chatbox__messages');
@@ -252,8 +250,6 @@ class Chatbox {
         var objDiv = document.getElementById("chatbox__messages__id");
         objDiv.scrollTop = objDiv.scrollHeight;
     }
-
-
 
     handleFaqQuestionAction(chatbox, msges) {
 
@@ -297,7 +293,7 @@ class Chatbox {
                 a.textContent = `Doctor Name: ${doctor.first_name + ' ' + doctor.last_name}`
                 div.appendChild(a)
                 const p = document.createElement("p")
-                p.textContent = `Experience: ${doctor.yearsOfExperience} years,                            Rating: ${doctor.ratings}, Clinic location: ${doctor.clinicLocation}, Consultation fee: ${doctor.consultationFee} ₹  `
+                p.textContent = `Experience: ${doctor.yearsOfExperience} years, Rating: ${doctor.ratings}, Clinic location: ${doctor.clinicLocation}, Consultation fee: ${doctor.consultationFee} ₹  `
                 div.appendChild(p)
 
                 const chatmessage = chatbox.querySelector('.chatbox__messages');

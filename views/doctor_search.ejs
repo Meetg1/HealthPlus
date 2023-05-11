@@ -108,15 +108,17 @@
                                     <div class="member-info">
                                         <a href="doctor_specific/profile/<%= doctors[i]._id %>">
                                             <h4>
-                                                <%= doctors[i].first_name %>
+                                                <%= doctors[i].first_name + ' ' + doctors[i].last_name %>
                                             </h4>
-                                        </a> <span>
-                                            <%= doctors[i].speciality %>
-                                        </span>
-                                        <p>
-                                            <%= doctors[i].description %>
-                                        </p>
-                                        <p style="padding-right: 15px;"><b>Years of Experience: </b>
+                                        </a> 
+                                        
+                                        <% for( let idx = 0; idx < doctors[i].speciality.length; idx++ ) { %>
+                                            <span style="padding-bottom: 5px;">
+                                                <%= doctors[i].speciality[idx]  %>
+                                            </span>
+                                        <% } %>
+
+                                        <p style="padding-right: 15px; margin-top: 5px;"><b>Years of Experience: </b>
                                             <%= doctors[i].yearsOfExperience %>
                                         </p>
                                         <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>

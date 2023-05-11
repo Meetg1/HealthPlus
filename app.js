@@ -1359,6 +1359,12 @@ app.get('/register/pending', (req, res) => {
 app.post('/patientRegister', async (req, res) => {
    try {
       const { username, fname, lname, phone, gender, age, location, pswd } = req.body
+      let blockchain_consent
+      if (req.body.blockchain_consent == 'on') {
+         blockchain_consent = true
+      } else {
+         blockchain_consent = false
+      }
       req.checkBody('fname', 'Name is required').notEmpty()
       req.checkBody('lname', 'Name is required').notEmpty()
       req.checkBody('phone', 'Phone is required').notEmpty()
@@ -1388,6 +1394,7 @@ app.post('/patientRegister', async (req, res) => {
             gender: gender,
             age: age,
             location: location,
+            blockchainConsent: blockchain_consent
          })
          const registedUser = await Patient.register(patient, pswd)
          console.log(registedUser)
