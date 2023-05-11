@@ -1,8 +1,349 @@
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+   --dark-color-a: #055296;
+   --dark-color-b: #1977cc;
+   --light-color: #e6e9ff;
+   --success-color: #5cb85c;
+   --error-color: #d9534f;
 }
+
+* {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+body {
+   font-family: 'Roboto', sans-serif;
+   font-size: 16px;
+   background: var(--light-color);
+   /* margin: 20px; */
+}
+
+ul {
+   list-style: none;
+}
+
+a {
+   text-decoration: none;
+}
+
+.btn1 {
+   cursor: pointer;
+   padding: 5px 15px;
+   background: var(--light-color);
+   color: var(--dark-color-a);
+   border: 0;
+   font-size: 17px;
+}
+
+/* Chat Page */
+
+.prescriptionTab {
+   background-color: var(--light-color);
+   margin-left: 2%;
+   margin-top: 3%;
+   margin-right: 2%;
+   margin-bottom: 3%;
+   width: 30%;
+   border: 1px solid var(--dark-color-a);
+   border-radius: 6px;
+   padding: 5px;
+}
+
+.no_presc_msg {
+   font-size: 1.1rem;
+}
+
+.main-chat-container {
+   /* margin-top: 15vh;
+   margin-bottom: 10vh; */
+   display: flex;
+   /* justify-content: center; */
+}
+
+.chat-container {
+   width: 70%;
+   display: inline-block;
+   background: #fff;
+   overflow: hidden;
+}
+
+.chat-header {
+   background: var(--dark-color-a);
+   color: #fff;
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+   padding: 15px;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+}
+
+.chat-main {
+   display: grid;
+   grid-template-columns: 1fr 3fr;
+}
+
+.chat-sidebar {
+   background: var(--dark-color-b);
+   color: #fff;
+   padding: 20px 20px 60px;
+   overflow-y: scroll;
+}
+
+.chat-sidebar h2 {
+   font-size: 20px;
+   background: rgba(0, 0, 0, 0.1);
+   padding: 10px;
+   margin-bottom: 20px;
+}
+
+.chat-sidebar h3 {
+   margin-bottom: 15px;
+}
+
+.chat-sidebar ul li {
+   padding: 10px 0;
+}
+
+.chat-messages {
+   padding: 30px;
+   min-height: 500px;
+   max-height: 500px;
+   overflow-y: scroll;
+}
+
+.chat-messages .message {
+   padding: 10px;
+   max-width: 30%;
+   margin-bottom: 15px;
+   background-color: var(--light-color);
+   border-radius: 5px;
+   overflow-wrap: break-word;
+}
+
+.chat-messages .message.mymessage {
+   margin-left: 70%;
+   background: #eee;
+   box-shadow: 0 8px 8px -4px lightblue;
+}
+
+.chat-messages .message.othermessage {
+   background: #eee;
+   box-shadow: 0 8px 8px -4px #1977cc;
+}
+
+.chat-messages .message.update {
+   margin: auto;
+   text-align: center;
+   font-style: italic;
+}
+
+.chat-messages .message .meta {
+   font-size: 15px;
+   font-weight: bold;
+   color: var(--dark-color-b);
+   opacity: 0.7;
+   margin-bottom: 7px;
+}
+
+.chat-messages .message .meta span {
+   color: #777;
+}
+
+.chat-img {
+   width: 100%;
+   cursor: pointer;
+   transition: 0.3s;
+}
+
+.chat-img {
+   opacity: 0.7;
+}
+
+/* The Modal (background) */
+.modal {
+   display: none; /* Hidden by default */
+   position: fixed; /* Stay in place */
+   z-index: 1; /* Sit on top */
+   padding-top: 100px; /* Location of the box */
+   left: 0;
+   top: 0;
+   width: 100%; /* Full width */
+   height: 100%; /* Full height */
+   overflow: auto; /* Enable scroll if needed */
+   background-color: rgb(0, 0, 0); /* Fallback color */
+   background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+   margin: auto;
+   display: block;
+   width: 80%;
+   max-width: 700px;
+}
+
+/* Caption of Modal Image (Image Text) - Same Width as the Image */
+#caption {
+   margin: auto;
+   display: block;
+   width: 80%;
+   max-width: 700px;
+   text-align: center;
+   color: #ccc;
+   padding: 10px 0;
+   height: 150px;
+}
+
+/* Add Animation - Zoom in the Modal */
+.modal-content,
+#caption {
+   animation-name: zoom;
+   animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+   from {
+      transform: scale(0);
+   }
+   to {
+      transform: scale(1);
+   }
+}
+
+/* The Close Button */
+.close {
+   position: absolute;
+   top: 85px;
+   right: 35px;
+   color: #f1f1f1;
+   font-size: 40px;
+   font-weight: bold;
+   transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+   color: #bbb;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px) {
+   .modal-content {
+      width: 100%;
+   }
+}
+
+.customm-file-input {
+   color: transparent;
+   width: 13%;
+}
+
+.customm-file-input::-webkit-file-upload-button {
+   visibility: hidden;
+}
+.customm-file-input::before {
+   content: 'Send A Photo';
+   display: inline-block;
+   background: var(--light-color);
+   color: var(--dark-color-a);
+   border: 2px solid #999;
+   border-radius: 3px;
+   padding: 5px 8px;
+   outline: none;
+   white-space: nowrap;
+   -webkit-user-select: none;
+   cursor: pointer;
+   font-size: 17px;
+}
+
+#msg {
+   border-radius: 6px;
+}
+
+.chat-form-container {
+   padding: 20px 30px;
+   background-color: var(--dark-color-a);
+}
+
+.chat-form-container form {
+   display: flex;
+}
+
+.chat-form-container input[type='text'] {
+   font-size: 16px;
+   padding: 5px;
+   height: 40px;
+   flex: 1;
+}
+
+/* Join Page */
+.join-container {
+   max-width: 500px;
+   margin: 80px auto;
+   color: #fff;
+}
+
+.join-header {
+   text-align: center;
+   padding: 20px;
+   background: var(--dark-color-a);
+   border-top-left-radius: 5px;
+   border-top-right-radius: 5px;
+}
+
+.join-main {
+   padding: 30px 40px;
+   background: var(--dark-color-b);
+}
+
+.join-main p {
+   margin-bottom: 20px;
+}
+
+.join-main .form-control {
+   margin-bottom: 20px;
+}
+
+.join-main label {
+   display: block;
+   margin-bottom: 5px;
+}
+
+.join-main input[type='text'] {
+   font-size: 16px;
+   padding: 5px;
+   height: 40px;
+   width: 100%;
+}
+
+.join-main select {
+   font-size: 16px;
+   padding: 5px;
+   height: 40px;
+   width: 100%;
+}
+
+.join-main .btn {
+   margin-top: 20px;
+   width: 100%;
+}
+
+@media (max-width: 700px) {
+   .chat-main {
+      display: block;
+   }
+
+   .chat-sidebar {
+      display: none;
+   }
+}
+
 
 #videos{
   display: grid;
@@ -39,7 +380,7 @@
 #controls{
   position: fixed;
   bottom: 20px;
-  left: 50%;
+  left: 35%;
   transform:translateX(-50%);
   display: flex;
   gap: 1em;

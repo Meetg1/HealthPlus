@@ -6,39 +6,117 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Healthplus</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" type="text/css" href="/stylesheets/bootstrapcss_4.6.0.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+  <!-- <link rel="stylesheet" href="/stylesheets/fontawesome_6.2.1.css"> -->
+  <!-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script> -->
+  <script type="text/javascript" src="/javascripts/jquery_3.5.1.js"></script>
+  <script type="text/javascript" src="/javascripts/bootstrapjs_4.6.0.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+    crossorigin="anonymous"></script> -->
     <link rel='stylesheet' type='text/css' media='screen' href='../stylesheets/video_call.css'>
 </head>
 
 <body>
-
-    <div id="videos">
-        <video class="video-player" id="user-1" autoplay playsinline></video>
-        <video class="video-player" id="user-2" autoplay playsinline></video>
-    </div>
-
-    <div id="controls">
-
-        <div class="control-container" id="camera-btn">
-            <img src="../images/websitePics/camera.png" />
-        </div>
-
-        <div class="control-container" id="mic-btn">
-            <img src="../images/websitePics/mic.png" />
-        </div>
-        <% if(usertype=='patient' ){ %>
-            <a href="/feedback/<%= roomId %>">
-                <div class="control-container" id="leave-btn">
-                    <img src="../images/websitePics/phone.png" />
-                </div>
-            </a>
-            <% } else {%>
-                <a href="/">
-                    <div class="control-container" id="leave-btn">
-                        <img src="../images/websitePics/phone.png" />
+    
+    <div class="main-chat-container">
+        <div class="chat-container">
+            <div id="videos">
+                <video class="video-player" id="user-1" autoplay playsinline></video>
+                <video class="video-player" id="user-2" autoplay playsinline></video>
+                <div id="controls">
+        
+                    <div class="control-container" id="camera-btn">
+                        <img src="../images/websitePics/camera.png" />
                     </div>
-                </a>
-                <% } %>
+            
+                    <div class="control-container" id="mic-btn">
+                        <img src="../images/websitePics/mic.png" />
+                    </div>
+                    <% if(usertype=='patient' ){ %>
+                        <a href="/feedback/<%= appointmentid %>">
+                            <div class="control-container" id="leave-btn">
+                                <img src="../images/websitePics/phone.png" />
+                            </div>
+                        </a>
+                        <% } else {%>
+                            <a href="/">
+                                <div class="control-container" id="leave-btn">
+                                    <img src="../images/websitePics/phone.png" />
+                                </div>
+                            </a>
+                            <% } %>
+                </div>
+            </div>
+        
+            
+        </div>
+            <div class="prescriptionTab prescriptionTabDoctor">
+                <h2 class="text-center">Prescription</h2>
+                <% if (usertype=='doctor' ) { %>
+                    <form action="#" enctype="multipart/form-data" method="POST" style="display: grid;"
+                        id="chatPresc">
+                        <input type="hidden" name="patientid" value="<%=patientid%>">
+                        <hr>
+                        <div class="mt-2" id="diagnosis">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="diag">Diagnosis</label>
+                                    <input type="text" class="form-control" id="diag" placeholder="Diabetes"
+                                        name="diagnosis[]" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="dosage">Comment</label>
+                                    <input type="text" class="form-control" id="dosage"
+                                        placeholder="initial stage, severe..." name="diagnosis_comment[]" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="rowAdder1" type="button" class="btn btn1 btn-dark">
+                            <span class="bi bi-plus-square-dotted">
+                            </span> ADD more diagnosis
+                        </button>
+                        <hr>
+                        <div id="meds">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="medicineName">Medicine Name</label>
+                                    <input type="text" class="form-control" id="medicineName" name="medicineName[]"
+                                        placeholder="Crocin 500mg" required>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="dosage">Dosage</label>
+                                    <input type="text" class="form-control" id="dosage" name="dosage[]"
+                                        placeholder="0-1-0 / 1-1-1 / 2-1-2 for 12 days..." required>
+                                </div>
+                            </div>
+                        </div>
+                        <button id="rowAdder2" type="button" class="btn btn1 btn-dark">
+                            <span class="bi bi-plus-square-dotted">
+                            </span> ADD more medicines
+                        </button>
+                        <label for="info">Any other comments</label>
+                        <textarea class="form-control" id="info" rows="3" name="info" required></textarea>
+                        <br>
+                        <input type="submit" class="btn btn-primary" value="Generate Prescription" />
+        
+                    </form>
+                    <% }else{ %>
+                        <div class="patient_pres_div">
+                            <p class="no_presc_msg">No prescription has been uploaded yet.</p> <br>
+                            <a href="" class="presc_link invisible"></a>
+                        </div>
+                        <% } %>
+            </div>
+    
+        
     </div>
+    
+
+    
 
 </body>
 <script>
@@ -46,5 +124,6 @@
 </script>
 <script src='../javascripts/agora-rtm-sdk-1.4.4.js'></script>
 <script src='../javascripts/video_call.js'></script>
+<script src='../javascripts/video_call_rtm.js'></script>
 
 </html>

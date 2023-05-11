@@ -96,7 +96,7 @@ let createPeerConnection = async (MemberId) => {
 
 
     if (!localStream) {
-        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
         document.getElementById('user-1').srcObject = localStream
     }
 
@@ -159,7 +159,7 @@ let toggleCamera = async () => {
         document.getElementById('camera-btn').style.backgroundColor = 'rgb(255, 80, 80)'
     } else {
         videoTrack.enabled = true
-        document.getElementById('camera-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)'
+        document.getElementById('camera-btn').style.backgroundColor = '#1977cc'
     }
 }
 
@@ -171,13 +171,36 @@ let toggleMic = async () => {
         document.getElementById('mic-btn').style.backgroundColor = 'rgb(255, 80, 80)'
     } else {
         audioTrack.enabled = true
-        document.getElementById('mic-btn').style.backgroundColor = 'rgb(179, 102, 249, .9)'
+        document.getElementById('mic-btn').style.backgroundColor = '#1977cc'
     }
 }
+
 
 window.addEventListener('beforeunload', leaveChannel)
 
 document.getElementById('camera-btn').addEventListener('click', toggleCamera)
 document.getElementById('mic-btn').addEventListener('click', toggleMic)
+
+// document.getElementById('rowAdder1').addEventListener('click', diagRow)
+// document.getElementById('rowAdder2').addEventListener('click', medRow)
+
+// let PrescForm = document.getElementById('chatPresc')
+// PrescForm.addEventListener('submit', sendPresc)
+
+// $('#chatPresc').submit(function (e) {
+//     e.preventDefault()
+//     client.sendMessage({
+//         text: $(this).serialize(),
+//         messageType: 'text',
+//         destination: `/${room}/uploadChatPrescription`
+//     }, function (err) {
+//         if (!err) {
+//             alert('Prescription submitted successfully!')
+//         } else {
+//             alert('Something went wrong! Please try again.')
+//         }
+//     })
+// })
+
 
 init()

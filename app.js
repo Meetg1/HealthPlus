@@ -1817,6 +1817,7 @@ app.get(
 app.get("/videocall/:appointmentid", async (req, res) => {
    try {
       const appointmentid = req.params.appointmentid
+      const foundAppointment = await Appointment.findById(appointmentid)
       var usertype
       if (req.user instanceof Doctor) {  // if specilaity field exists,user is a doctor else a patient
          usertype = 'doctor'
@@ -1826,11 +1827,14 @@ app.get("/videocall/:appointmentid", async (req, res) => {
       }
 
       const fullname = `${req.user.first_name} ${req.user.last_name}`
+      const patientid = foundAppointment.patientid
 
       res.render("video_call.ejs", {
          roomId: appointmentid,
          username: fullname,
-         usertype: usertype
+         usertype: usertype,
+         patientid: patientid,
+         appointmentid: appointmentid
       });
    } catch (error) {
       console.log(error)
