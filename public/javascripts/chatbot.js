@@ -132,6 +132,28 @@ class Chatbox {
                     symptomContainer.style.display = 'block'
 
                     this.isDiseasePredictor = true
+                } else if (tag == 'nearbyDoctors') {
+                    const userLocation = currUser.location
+                    this.updateChatText(chatbox, { name: "Sam", message: `You are located in the city: ${userLocation}. Searching doctors nearby.......` })
+
+                    fetch(`/getNearbyDoctors/${userLocation}`, {
+                        method: 'GET',
+                    })
+                        .then(r => r.json())
+                        .then(r => {
+
+                            if (r.status == "nodoctors") {
+                                this.updateChatText(chatbox, { name: "Sam", message: "Sorry, no doctors found near your location." })
+                                return
+                            }
+
+                            this.nearByDoctorsDiv(chatbox, r.doctors)
+
+
+                        }).catch((error) => {
+                            console.error('Error:', error);
+                        });
+
                 }
 
                 // this.updateChatText(chatbox, msg2)
@@ -163,6 +185,56 @@ class Chatbox {
         var objDiv = document.getElementById("chatbox__messages__id");
         objDiv.scrollTop = objDiv.scrollHeight;
     }
+
+    nearByDoctorsDiv(chatbox, doctors) {
+
+        // Returns a Promise that resolves after "ms" Milliseconds
+        const timer = ms => new Promise(res => setTimeout(res, ms))
+
+        async function load() { // We need to wrap the loop into an async function for this to work
+
+            await timer(2500);
+
+            for (const doctor of doctors) {
+
+                const div = document.createElement("div")
+                div.classList.add('messages__item', 'messages__item--visitor')
+                div.textContent = `Doctors found in the city: ${doctor.loc}`
+
+                const chatmessage = chatbox.querySelector('.chatbox__messages');
+                chatmessage.appendChild(div);
+
+                var objDiv = document.getElementById("chatbox__messages__id");
+                objDiv.scrollTop = objDiv.scrollHeight;
+
+                await timer(2500); // then the created Promise can be awaited
+
+                for (const doc of doctor.doctors) {
+
+                    const div = document.createElement("div")
+                    div.classList.add('messages__item', 'messages__item--visitor')
+                    const a = document.createElement("a")
+                    a.setAttribute('href', `/doctor_specific/profile/${doc._id.toString()}`)
+                    a.textContent = `Doctor Name: ${doc.first_name + ' ' + doc.last_name}`
+                    div.appendChild(a)
+                    const p = document.createElement("p")
+                    p.textContent = `Experience: ${doc.yearsOfExperience} years, Rating: ${doc.ratings}, Clinic location: ${doc.clinicLocation}, Consultation fee: ${doc.consultationFee} ₹  `
+                    div.appendChild(p)
+
+                    const chatmessage = chatbox.querySelector('.chatbox__messages');
+                    chatmessage.appendChild(div);
+
+                    var objDiv = document.getElementById("chatbox__messages__id");
+                    objDiv.scrollTop = objDiv.scrollHeight;
+
+                    // await timer(2500); // then the created Promise can be awaited
+                }
+
+            }
+        }
+        load();
+    }
+
 
     handleFaqAction(chatbox) {
         const div = document.createElement("div")
@@ -221,7 +293,7 @@ class Chatbox {
                 a.textContent = `Doctor Name: ${doctor.first_name + ' ' + doctor.last_name}`
                 div.appendChild(a)
                 const p = document.createElement("p")
-                p.textContent = `Experience: ${doctor.yearsOfExperience}, Rating: ${doctor.ratings}, Clinic location: ${doctor.clinicLocation}, Consultation fee: ${doctor.consultationFee} `
+                p.textContent = `Experience: ${doctor.yearsOfExperience} years, Rating: ${doctor.ratings}, Clinic location: ${doctor.clinicLocation}, Consultation fee: ${doctor.consultationFee} ₹  `
                 div.appendChild(p)
 
                 const chatmessage = chatbox.querySelector('.chatbox__messages');

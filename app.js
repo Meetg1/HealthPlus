@@ -996,18 +996,18 @@ app.post('/search', (req, res) => {
       $lt: upperBound2
    };
    filter = {
-      speciality: speciality,
+      speciality: { $in: [speciality] },
       consultationFee: feeobj,
       yearsOfExperience: expobj
    };
-   // console.log(filter);
+   console.log(filter);
    res.redirect('/search');
 })
 app.get('/search', (req, res) => {
    axios
       .get('http://localhost:3000/searchdoc')
       .then(function (response) {
-         // console.log(response.data)
+         console.log(response.data)
          res.render('doctor_search.ejs', { doctors: response.data })
       })
       .catch((err) => {
@@ -1073,8 +1073,7 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
          const patient = await Patient.findById(appointment.patientid)
          const filter = { _id: patient._id };
          const update = { $set: { wallet: patient.wallet + appointment.fees } };
-         const result = await Patient.updateOne(filter, update);
-         console.log(result);
+         await Patient.updateOne(filter, update);
          await Appointment.findByIdAndDelete(appointmentid);
          const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -1132,7 +1131,6 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
          if (diffDays > 2) {
             update = { $set: { wallet: patient.wallet + (appointment.fees * 0.85) } };
             update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.15) } };
-            console.log(result);
          } else if (diffDays == 2 || diffDays == 1) {
             update = { $set: { wallet: patient.wallet + (appointment.fees * 0.70) } };
             update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.30) } };
@@ -1140,8 +1138,8 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
             update = { $set: { wallet: patient.wallet + (appointment.fees * 0.50) } };
             update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.50) } };
          }
-         const result = await Patient.updateOne(filter, update);
-         const result1 = await Doctor.updateOne(filter1, update1);
+         await Patient.updateOne(filter, update);
+         await Doctor.updateOne(filter1, update1);
          await Appointment.findByIdAndDelete(appointmentid);
          const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -1361,6 +1359,12 @@ app.get('/register/pending', (req, res) => {
 app.post('/patientRegister', async (req, res) => {
    try {
       const { username, fname, lname, phone, gender, age, location, pswd } = req.body
+      let blockchain_consent
+      if (req.body.blockchain_consent == 'on') {
+         blockchain_consent = true
+      } else {
+         blockchain_consent = false
+      }
       req.checkBody('fname', 'Name is required').notEmpty()
       req.checkBody('lname', 'Name is required').notEmpty()
       req.checkBody('phone', 'Phone is required').notEmpty()
@@ -1390,6 +1394,8 @@ app.post('/patientRegister', async (req, res) => {
             gender: gender,
             age: age,
             location: location,
+            blockchainConsent: blockchain_consent,
+            wallet: 5000,
          })
          const registedUser = await Patient.register(patient, pswd)
          console.log(registedUser)
@@ -2030,6 +2036,39 @@ app.post('/getDoctorBySpecialization', async (req, res) => {
    // console.log(specDoctors)
 
    res.send({ status: 'success', doctors: specDoctors })
+})
+
+app.get('/getNearbyDoctors/:location', async (req, res) => {
+
+   const location = req.params.location
+
+   axios
+      .get(`http://getnearbycities.geobytes.com/GetNearbyCities?radius=100&locationcode=${location}`)
+      .then(async function (response) {
+         // console.log(response.data)
+         var foundDoctors = []
+
+         for (let idx = 0; idx < response.data.length; idx++) {
+            const element = response.data[idx];
+            // console.log('element[1]')
+            // console.log(element[1])
+            const doctors = await Doctor.find({ clinicLocation: element[1] })
+            if (doctors.length == 0) continue
+            foundDoctors.push({ loc: element[1], doctors: doctors })
+         }
+         // console.log('foundDoctors')
+         // console.log(foundDoctors)
+
+         if (foundDoctors.length > 0) {
+            res.send({ status: 'success', doctors: foundDoctors })
+         } else {
+            res.send({ status: 'nodoctors' })
+         }
+
+      })
+      .catch((err) => {
+         res.send(err)
+      })
 })
 
 app.get('/:filename', (req, res) => {

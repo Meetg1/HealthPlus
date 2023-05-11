@@ -46,17 +46,28 @@
                                         <!-- <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> -->
                                         <select id="speciality" class="form-control search-slt" name="speciality">
                                             <option selected disabled>Select Speciality</option>
-                                            <option value="Anatomical Pathology">Anatomical Pathologist</option>
-                                            <option value="Anesthesiology">Anesthesiologist</option>
-                                            <option value="Cardiology">Cardiologist</option>
-                                            <option value="Cardiovascular/Thoracic Surgery">Cardiovascular/Thoracic
+                                            <option value="Anatomical Pathologist">Anatomical Pathologist</option>
+                                            <option value="Anesthesiologist">Anesthesiologist</option>
+                                            <option value="Cardiologist">Cardiologist</option>
+                                            <option value="Cardiovascular/Thoracic
+                                            Surgeon">Cardiovascular/Thoracic
                                                 Surgeon</option>
-                                            <option value="Clinical Immunology/Allergy">Clinical Immunologist/Allergy
-                                            </option>
                                             <option value="Critical Care Medicine">Critical Care Medicine</option>
-                                            <option value="Diagnostic Radiology">Diagnostic Radiologist</option>
+                                            <option value="Dermatologist">Dermatologist</option>
+                                            <option value="Diagnostic Radiologist">Diagnostic Radiologist</option>
                                             <option value="Emergency Medicine">Emergency Medicine</option>
-                                            <option value="Endocrinology and Metabolism">Endocrinologist and Metabolism
+                                            <option value="Endocrinologist and Metabolism">Endocrinologist and
+                                                Metabolism
+                                            </option>
+                                            <option value="Gastroenterologist">Gastroenterologist
+                                            </option>
+                                            <option value="Neurologist">Neurologist
+                                            </option>
+                                            <option value="Orthopedist">Orthopedist
+                                            </option>
+                                            <option value="Rheumatologist">Rheumatologist
+                                            </option>
+                                            <option value="Urologist">Urologist
                                             </option>
                                         </select>
                                     </div>
@@ -81,14 +92,7 @@
                                             <option value="10-80">More than 10 years</option>
                                         </select>
                                     </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
-                                        <select class="form-control search-slt" id="location">
-                                            <option selected disabled>Select Location</option>
-                                            <option>In Mumbai</option>
-                                            <option>Outside Mumbai but within Maharashtra</option>
-                                            <option>Outside Maharashtra</option>
-                                        </select>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -115,15 +119,17 @@
                                     <div class="member-info">
                                         <a href="doctor_specific/profile/<%= doctors[i]._id %>">
                                             <h4>
-                                                <%= doctors[i].first_name %>
+                                                <%= doctors[i].first_name + ' ' + doctors[i].last_name %>
                                             </h4>
-                                        </a> <span>
-                                            <%= doctors[i].speciality %>
-                                        </span>
-                                        <p>
-                                            <%= doctors[i].description %>
-                                        </p>
-                                        <p style="padding-right: 15px;"><b>Years of Experience: </b>
+                                        </a> 
+                                        
+                                        <% for( let idx = 0; idx < doctors[i].speciality.length; idx++ ) { %>
+                                            <span style="padding-bottom: 5px;">
+                                                <%= doctors[i].speciality[idx]  %>
+                                            </span>
+                                        <% } %>
+
+                                        <p style="padding-right: 15px; margin-top: 5px;"><b>Years of Experience: </b>
                                             <%= doctors[i].yearsOfExperience %>
                                         </p>
                                         <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>

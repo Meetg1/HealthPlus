@@ -78,19 +78,13 @@
                                         </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Username </span>: <%= patient.username%> <a href=""
-                                                class="useredit"><i class="fa fa-edit"
-                                                    style="margin-left: 12px;"></i></a></p>
+                                        <p style="color: rgb(92, 91, 91);"><span>Username </span>: <%= patient.username%> </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: <%= patient.username%> <a
-                                                href="" class="emailedit"><i class="fa fa-edit"
-                                                    style="margin-left: 12px;"></i></a></p>
+                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: <%= patient.username%> </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: <%= patient.phone %> <a
-                                                href="" class="contactedit"><i class="fa fa-edit"
-                                                    style="margin-left: 12px;"></i></a></p>
+                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: <%= patient.phone %> </p>
                                     </div>
                                     <div class="bio-row">
                                         <p style="color: rgb(92, 91, 91);"><span>Wallet </span>: ₹ <%= patient.wallet %> </p>
@@ -119,23 +113,24 @@
                                                                     doctor: <a href="/doctor_specific/profile/<%=item.doctorid%>"><%= item.doctorname%></a> </span> 
                                                         <br><br>          
                                                         <a href="/joinAppointment/<%=item.id%>" class="btn btn-outline-primary" >Join Session</a>
-                                                        <a href="/cancel_appointment/<%=item.id%>" class="ml-4 btn btn-primary" >Cancel Appointment</a>
+                                                        <a href="/cancel_appointment/<%= item.id %>" class="ml-4 btn btn-primary" id="myLink" onclick="return confirmCancel()">Cancel Appointment</a>
+                                                        
+                                                        <script>
+                                                            function confirmCancel() {
+
+                                                                if (confirm("Charges will be applied Are you sure you want to cancel the appointment?")) {
+                                                                    return true;
+                                                                }
+                                                                return false;
+                                                            }
+                                                        </script>
                                                     </div>
                                                     <% }); %>                                                        
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            <!-- <div class="bio-chart">
-                                          <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="63" data-fgcolor="#4CC5CD" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(76, 197, 205); padding: 0px; -webkit-appearance: none; background: none;"></div>
-                                      </div> -->
-                                           
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="col-md-6">
                                     <div class="panel">
                                         <div class="panel-body">      
@@ -154,25 +149,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12">
-                                    <div class="panel">
-                                        <div class="panel-body">
-                                            <!-- <div class="bio-chart">
-                                          <div style="display:inline;width:100px;height:100px;"><canvas width="100" height="100px"></canvas><input class="knob" data-width="100" data-height="100" data-displayprevious="true" data-thickness=".2" value="63" data-fgcolor="#4CC5CD" data-bgcolor="#e8e8e8" style="width: 54px; height: 33px; position: absolute; vertical-align: middle; margin-top: 33px; margin-left: -77px; border: 0px; font-weight: bold; font-style: normal; font-variant: normal; font-stretch: normal; font-size: 20px; line-height: normal; font-family: Arial; text-align: center; color: rgb(76, 197, 205); padding: 0px; -webkit-appearance: none; background: none;"></div>
-                                      </div> -->
-                                            <div class="bio-desk">
-                                                <h4 class="purple" style="color: rgb(156, 45, 156);">Previous Doctors
-                                                </h4>
-                                                <p style="margin-top: 8px; font: 600;">Dr. Walter White</p>
-                                                <p style="font: 600;">Dr. Alan Walker</p>
-                                                <a class="listmore"
-                                                    style="text-align: center; background: transparent; cursor: pointer;"><i
-                                                        class="fa fa-chevron-down"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
+                                
                             </div>
                         </div>
                     </div>
@@ -180,9 +157,9 @@
             </div>
 
             <br><br><br>
-            <div class="text-center"><button type="submit" style="margin-top: 3rem;">Consult Now</button></div>
+            
 
-            <%- include('../partials/footer')%>
+            <%- include(' ../partials/footer')%>
 
 
     </body>
@@ -1132,6 +1109,7 @@
     </style>
 
     <script>
+
         $(document).ready(function () {
             //   setTimeout(() => {
             //     if (!currUser || currUser.preferredLanguage == 0) {

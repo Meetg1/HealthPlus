@@ -36,12 +36,12 @@
                                         <div class="member-info">
                                             <h4>
                                                 <%- doctor.first_name + ' ' + doctor.last_name %>
-                                            </h4> <span>
-                                                <%- doctor.speciality %>
-                                            </span>
-                                            <p>
-                                                <%- doctor.description %>
-                                            </p>
+                                            </h4> 
+                                            <% for( let idx = 0; idx < doctor.speciality.length; idx++ ) { %>
+                                                <span style="padding-bottom: 5px;">
+                                                    <%= doctor.speciality[idx]  %>
+                                                </span>
+                                            <% } %>
                                             <p style="padding-right: 15px;"><b>Years of Experience: </b>
                                                 <%- doctor.yearsOfExperience %>
                                             </p>
