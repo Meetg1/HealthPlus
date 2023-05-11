@@ -1073,8 +1073,7 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
          const patient = await Patient.findById(appointment.patientid)
          const filter = { _id: patient._id };
          const update = { $set: { wallet: patient.wallet + appointment.fees } };
-         const result = await Patient.updateOne(filter, update);
-         console.log(result);
+         await Patient.updateOne(filter, update);
          await Appointment.findByIdAndDelete(appointmentid);
          const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -1132,7 +1131,6 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
          if (diffDays > 2) {
             update = { $set: { wallet: patient.wallet + (appointment.fees * 0.85) } };
             update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.15) } };
-            console.log(result);
          } else if (diffDays == 2 || diffDays == 1) {
             update = { $set: { wallet: patient.wallet + (appointment.fees * 0.70) } };
             update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.30) } };
@@ -1140,8 +1138,8 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
             update = { $set: { wallet: patient.wallet + (appointment.fees * 0.50) } };
             update1 = { $set: { wallet: doctor.wallet + (appointment.fees * 0.50) } };
          }
-         const result = await Patient.updateOne(filter, update);
-         const result1 = await Doctor.updateOne(filter1, update1);
+         await Patient.updateOne(filter, update);
+         await Doctor.updateOne(filter1, update1);
          await Appointment.findByIdAndDelete(appointmentid);
          const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
