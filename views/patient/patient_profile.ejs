@@ -78,19 +78,13 @@
                                         </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Username </span>: <%= patient.username%> <a href=""
-                                                class="useredit"><i class="fa fa-edit"
-                                                    style="margin-left: 12px;"></i></a></p>
+                                        <p style="color: rgb(92, 91, 91);"><span>Username </span>: <%= patient.username%> </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: <%= patient.username%> <a
-                                                href="" class="emailedit"><i class="fa fa-edit"
-                                                    style="margin-left: 12px;"></i></a></p>
+                                        <p style="color: rgb(92, 91, 91);"><span>Email </span>: <%= patient.username%> </p>
                                     </div>
                                     <div class="bio-row">
-                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: <%= patient.phone %> <a
-                                                href="" class="contactedit"><i class="fa fa-edit"
-                                                    style="margin-left: 12px;"></i></a></p>
+                                        <p style="color: rgb(92, 91, 91);"><span>Contact </span>: <%= patient.phone %> </p>
                                     </div>
                                     <div class="bio-row">
                                         <p style="color: rgb(92, 91, 91);"><span>Wallet </span>: ₹ <%= patient.wallet %> </p>
@@ -122,13 +116,13 @@
                                                         <a href="/cancel_appointment/<%= item.id %>" class="ml-4 btn btn-primary" id="myLink" onclick="return confirmCancel()">Cancel Appointment</a>
                                                         
                                                         <script>
-                                                                function confirmCancel() {
+                                                            function confirmCancel() {
 
-                                                                    if (confirm("Charges will be applied Are you sure you want to cancel the appointment?")) {
+                                                                if (confirm("Charges will be applied Are you sure you want to cancel the appointment?")) {
                                                                     return true;
-                                                                    }
-                                                                    return false;
                                                                 }
+                                                                return false;
+                                                            }
                                                         </script>
                                                     </div>
                                                     <% }); %>                                                        
@@ -165,7 +159,7 @@
             <br><br><br>
             
 
-            <%- include('../partials/footer')%>
+            <%- include(' ../partials/footer')%>
 
 
     </body>
@@ -1115,7 +1109,7 @@
     </style>
 
     <script>
-        
+
         $(document).ready(function () {
             //   setTimeout(() => {
             //     if (!currUser || currUser.preferredLanguage == 0) {

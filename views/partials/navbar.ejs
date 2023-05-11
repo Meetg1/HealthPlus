@@ -22,14 +22,14 @@
             </a>
             <div class="dropdown-menu">
               <% if (notifications.length==0) { %>
-                <div style="height: 300px; width: 400px">
+                <div style="height: 300px; ">
                   <span style="color: black" class="dropdown-item">
                     No notifications.
                   </span>
                 </div>
 
                 <% }else{ %>
-                  <div style="height: 300px; width: 400px">
+                  <div style="height: 300px; ">
                     <% notifications.forEach(function(notification) { %>
 
                       <a href="/notification/<%= notification._id %>" class="dropdown-item">
@@ -55,12 +55,18 @@
               <a href="/logout" class="dropdown-item">Logout</a>
             </div>
           </li>
+          <li>
+            <a class="nav-link scrollto">Rs.300 &nbsp;<img src="images/websitePics/wallet.png" height="23"
+                width="23"></a>
+          </li>
           <% } else { %>
             <li><a class="nav-link scrollto" href="/patientlogin">Patient Login</a></li>
             <li><a class="nav-link scrollto" href="/doctorlogin">Doctor Login</a></li>
+            <li>
+              <a class="nav-link scrollto" href="/search">Search</a>
+            </li>
+            </li>
             <% } %>
-              <!-- <li><a class="nav-link scrollto" href="#doctors">Doctors</a></li>
-              <li><a class="nav-link scrollto" href="#contact">Contact</a></li> -->
       </ul> <i class="bi bi-list mobile-nav-toggle"></i>
     </nav>
     <!-- <a href="#appointment" class="appointment-btn scrollto" style="color: white;text-decoration: none;"><span
