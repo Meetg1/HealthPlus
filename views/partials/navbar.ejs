@@ -27,23 +27,23 @@
                     No notifications.
                   </span>
                 </div>
-                
+
                 <% }else{ %>
-                  <div style="height: 300px; width: 400px"> 
-                  <% notifications.forEach(function(notification) { %>
-                    
+                  <div style="height: 300px; width: 400px">
+                    <% notifications.forEach(function(notification) { %>
+
                       <a href="/notification/<%= notification._id %>" class="dropdown-item">
                         <i class="fa fa-<%= notification.icon %>" aria-hidden="false"></i>
                         <span style="color: black" class="dropdown-item">
                           <%= notification.message %>
                         </span>
-                          
+
                       </a>
                       <div class="dropdown-divider"></div>
-                    
-                    <% }); %>
-                   </div>
-                     <% } %>
+
+                      <% }); %>
+                  </div>
+                  <% } %>
             </div>
           </li>
           <li class="dropdown">

@@ -55,10 +55,9 @@ const DoctorSchema = new mongoose.Schema({
       type: String,
       // required: true,
    },
-   speciality: {
-      type: String,
-      // required: true,
-   },
+   // speciality: {
+   //    type: String,
+   // },
    consultationFee: {
       type: Number,
       // required: true,
@@ -75,6 +74,11 @@ const DoctorSchema = new mongoose.Schema({
       type: Number,
       default: 0,
    },
+   speciality: [
+      {
+         type: String,
+      },
+   ],
    mondayAvailableAppointmentSlots: [
       // slots which the doctor declares as available during his registration
       {

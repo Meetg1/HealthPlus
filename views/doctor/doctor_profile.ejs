@@ -70,8 +70,14 @@
                                             </p>
                                         </div>
                                         <div class="bio-row">
-                                            <p style="color: rgb(92, 91, 91);"><span>Specialization </span> : <%-
-                                                    doctor.speciality %>
+                                            <p style="color: rgb(92, 91, 91);"><span>Specialization </span> :
+                                                <% for(var i=0;i<doctor.speciality.length;i++) { %>
+                                                    <p class="timings__time" data-qa-id="clinic-timings-session">
+                                                        <span>
+                                                            <%= doctor.speciality[i] %>
+                                                        </span>
+                                                    </p>
+                                                    <% } %>
                                             </p>
                                         </div>
                                         <div class="bio-row">

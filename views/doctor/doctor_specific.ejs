@@ -9,8 +9,8 @@
                 <div class="pure-g g-card">
                     <div class="pure-u-4-24">
                         <img alt="Dr. Sumanth Shetty Dentist in Bangalore" data-qa-id="doctor-profile-image"
-                            class="rounded-circle"
-                            src="https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100"
+                            class="rounded-circle" src="/images/doctorProfilePics/<%- doctor.profilePic %>" height="50"
+                            width="50"
                             srcset="https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-2x 2x,https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-3x 3x,https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-4x 4x">
                     </div>
                     <div class="pure-u-20-24">
@@ -51,7 +51,8 @@
                                     </div>
                                 </div>
                                 <h2 style="font-size: 15px; margin-top: 4px;">
-                                    <%= doctor.yearsOfExperience %><!-- -->&nbsp;<span>
+                                    <%= doctor.yearsOfExperience %>
+                                        <!-- -->&nbsp;<span>
                                             Experience
                                             Overall
                                         </span>
@@ -67,8 +68,9 @@
                                     src="https://cdn-icons-png.flaticon.com/128/8901/8901320.png" width="16px"
                                     height="16px"> <span data-qa-id="doctor-verification-label"
                                     class="u-valign--middle"><span>Medical Registration Verified</span></span></p>
-                                    <p class="c-profile__details mt-2">
-                                       <span>Unique Permanent Registration Number: <%=doctor.uprn%></span></span></p>
+                            <p class="c-profile__details mt-2">
+                                <span>Unique Permanent Registration Number: <%=doctor.uprn%></span></span>
+                            </p>
 
                             <p class="c-profile__details" data-qa-id="doctor-patient-experience-score"><i
                                     class="icon-ic_like_filled u-green-text u-bold u-jumbo-font"></i><span
@@ -76,8 +78,10 @@
                                     <% for(let i=0; i < rating; i++) { %>
                                         <i class="fa fa-star"></i>&nbsp;
                                         <% } %>
-                                </span><span class="u-smallest-font u-grey_3-text">(<!-- -->
-                                    <%= review.length %><!-- -->
+                                </span><span class="u-smallest-font u-grey_3-text">(
+                                    <!-- -->
+                                    <%= review.length %>
+                                        <!-- -->
                                         <span>votes</span>)
                                 </span></p>
                         </div>
@@ -125,7 +129,8 @@
                                         <div class="c-profile--clinic--item"><span></span>
                                             <div class="pure-g c-profile--clinic--details">
                                                 <div class="pure-u-1-3 u-cushion--right">
-                                                    <p class="c-profile--clinic__address" data-qa-id="clinic-address">Clinic Location : 
+                                                    <p class="c-profile--clinic__address" data-qa-id="clinic-address">
+                                                        Clinic Location :
                                                         <%= doctor.clinicLocation %>
                                                     </p>
                                                     <p class="c-profile--clinic__address" data-qa-id="clinic-address">
@@ -164,7 +169,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="pure-u-1-3">
-                                                    <a href="/appointment/<%=doctor._id%>" class="btn btn-lg btn-primary">Book Appointment</a>
+                                                    <a href="/appointment/<%=doctor._id%>"
+                                                        class="btn btn-lg btn-primary">Book Appointment</a>
                                                 </div>
                                             </div>
                                             <!-- <div class="c-profile--clinic__cta pure-g">

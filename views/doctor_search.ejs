@@ -46,17 +46,17 @@
                                         <!-- <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> -->
                                         <select id="speciality" class="form-control search-slt" name="speciality">
                                             <option selected disabled>Select Speciality</option>
-                                            <option value="Anatomical Pathology">Anatomical Pathology</option>
-                                            <option value="Anesthesiology">Anesthesiology</option>
-                                            <option value="Cardiology">Cardiology</option>
+                                            <option value="Anatomical Pathology">Anatomical Pathologist</option>
+                                            <option value="Anesthesiology">Anesthesiologist</option>
+                                            <option value="Cardiology">Cardiologist</option>
                                             <option value="Cardiovascular/Thoracic Surgery">Cardiovascular/Thoracic
-                                                Surgery</option>
-                                            <option value="Clinical Immunology/Allergy">Clinical Immunology/Allergy
+                                                Surgeon</option>
+                                            <option value="Clinical Immunology/Allergy">Clinical Immunologist/Allergy
                                             </option>
                                             <option value="Critical Care Medicine">Critical Care Medicine</option>
-                                            <option value="Diagnostic Radiology">Diagnostic Radiology</option>
+                                            <option value="Diagnostic Radiology">Diagnostic Radiologist</option>
                                             <option value="Emergency Medicine">Emergency Medicine</option>
-                                            <option value="Endocrinology and Metabolism">Endocrinology and Metabolism
+                                            <option value="Endocrinology and Metabolism">Endocrinologist and Metabolism
                                             </option>
                                         </select>
                                     </div>
@@ -103,9 +103,8 @@
                         <% for(var i=0;i<doctors.length;i++) {%>
                             <div class="col-lg-4">
                                 <div class="member d-flex align-items-start">
-                                    <div class="pic"><img
-                                            src="https://bootstrapmade.com/demo/templates/Medilab/assets/img/doctors/doctors-1.jpg"
-                                            class="img-fluid" alt=""></div>
+                                    <div class="pic"><img src="/images/doctorProfilePics/<%- doctors[i].profilePic %>"
+                                            class="img-fluid" alt="" height="20"></div>
                                     <div class="member-info">
                                         <a href="doctor_specific/profile/<%= doctors[i]._id %>">
                                             <h4>
@@ -114,7 +113,9 @@
                                         </a> <span>
                                             <%= doctors[i].speciality %>
                                         </span>
-                                        <p>Explicabo voluptatem mollitia et repellat qui dolorum quasi</p>
+                                        <p>
+                                            <%= doctors[i].description %>
+                                        </p>
                                         <p style="padding-right: 15px;"><b>Years of Experience: </b>
                                             <%= doctors[i].yearsOfExperience %>
                                         </p>

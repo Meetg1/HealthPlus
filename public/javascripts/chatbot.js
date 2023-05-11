@@ -74,7 +74,7 @@ class Chatbox {
                 .then(r => r.json())
                 .then(r => {
                     this.enteredSymptoms = ""
-                    this.handleDiseasePredictionAction(chatbox, r.answer)
+                    this.handleDiseasePredictionAction(chatbox, r.answer, r.specialization)
                     return
                 }).catch((error) => {
                     console.error('Error:', error);
@@ -108,8 +108,8 @@ class Chatbox {
         })
             .then(r => r.json())
             .then(r => {
-                console.log('rrrr')
-                console.log(r)
+                // console.log('rrrr')
+                // console.log(r)
                 let msg2 = { name: "Sam", message: r.answer[0] };
                 let tag = r.answer[1]
 
@@ -206,7 +206,37 @@ class Chatbox {
         load();
     }
 
-    handleDiseasePredictionAction(chatbox, msges) {
+    doctorSuggestDiv(chatbox, doctors) {
+
+        // Returns a Promise that resolves after "ms" Milliseconds
+        const timer = ms => new Promise(res => setTimeout(res, ms))
+
+        async function load() { // We need to wrap the loop into an async function for this to work
+
+            for (const doctor of doctors) {
+                const div = document.createElement("div")
+                div.classList.add('messages__item', 'messages__item--visitor')
+                const a = document.createElement("a")
+                a.setAttribute('href', `/doctor_specific/profile/${doctor._id.toString()}`)
+                a.textContent = `Doctor Name: ${doctor.first_name + ' ' + doctor.last_name}`
+                div.appendChild(a)
+                const p = document.createElement("p")
+                p.textContent = `Experience: ${doctor.yearsOfExperience}, Rating: ${doctor.ratings}, Clinic location: ${doctor.clinicLocation}, Consultation fee: ${doctor.consultationFee} `
+                div.appendChild(p)
+
+                const chatmessage = chatbox.querySelector('.chatbox__messages');
+                chatmessage.appendChild(div);
+
+                var objDiv = document.getElementById("chatbox__messages__id");
+                objDiv.scrollTop = objDiv.scrollHeight;
+
+                await timer(2500); // then the created Promise can be awaited
+            }
+        }
+        load();
+    }
+
+    async handleDiseasePredictionAction(chatbox, msges, spec) {
         // Returns a Promise that resolves after "ms" Milliseconds
         const timer = ms => new Promise(res => setTimeout(res, ms))
 
@@ -229,7 +259,35 @@ class Chatbox {
             }
         }
 
-        load();
+        await load();
+
+        fetch(`/getDoctorBySpecialization`, {
+            method: 'POST',
+            body: JSON.stringify({ spec: spec }),
+            // mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(r => r.json())
+            .then(r => {
+                // console.log('rrrr')
+                // console.log(r.doctors)
+
+                // chatResp = []
+
+                if (r.doctors.length == 0) {
+                    this.updateChatText(chatbox, { name: "Sam", message: "Sorry, no doctors found under that specialization." })
+                } else {
+                    this.updateChatText(chatbox, { name: "Sam", message: `${r.doctors.length} doctors found!` })
+                    this.doctorSuggestDiv(chatbox, r.doctors)
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // this.updateChatText(chatbox, error)
+                // textField.value = ''
+            });
     }
 
 }

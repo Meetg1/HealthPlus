@@ -58,19 +58,25 @@
                                         <div class="form-card">
                                             <h2 class="fs-title">Additional Details</h2><br>
                                             <!-- <input type="text" name="fname" placeholder="First Name"/> -->
-                                            <select class="list-dt" id="speciality" name="speciality"
-                                                required="required">
-                                                <option selected disabled>Speciality*</option>
-                                                <option>Anatomical Pathologist</option>
-                                                <option>Anesthesiologist</option>
-                                                <option>Cardiologist</option>
-                                                <option>Cardiovascular/Thoracic Surgeon</option>
-                                                <option>Clinical Immunologist/Allergy</option>
-                                                <option>Critical Care Medicine</option>
-                                                <option>Diagnostic Radiologist</option>
-                                                <option>Emergency Medicine</option>
-                                                <option>Endocrinologist and Metabolism</option>
+                                            <select name="specType" id="choices-multiple-remove-button"
+                                                placeholder="Select one or more Specialisation" multiple>
+
+                                                <% for( let idx=0; idx < specialities.length; idx++ ) { %>
+                                                    <option <%=specialities[idx]%>> <%=specialities[idx]%>
+                                                    </option>
+                                                    <% } %>
+
+                                                        <!-- <option value="1">Anatomical Pathologist</option>
+                                                <option value="2">Anesthesiologist</option>
+                                                <option value="3">Cardiologist</option>
+                                                <option value="4">Cardiovascular/Thoracic Surgeon</option>
+                                                <option value="5">Clinical Immunologist/Allergy</option>
+                                                <option value="6">Critical Care Medicine</option>
+                                                <option value="7">Diagnostic Radiologist</option>
+                                                <option value="8">Emergency Medicine</option>
+                                                <option value="9">Endocrinologist and Metabolism</option> -->
                                             </select>
+                                            <br>
                                             <input class="pqr" type="number" name="exp"
                                                 placeholder="Years of Experience*" />
                                             <input class="pqr" type="number" name="fee"
@@ -1072,4 +1078,16 @@
                         renderChoiceLimit: 22
                     });
                 });
+            </script>
+
+            <script>
+                document.getElementById('submit').onclick = function () {
+                    var selected = [];
+                    for (var option of document.getElementById('specType').options) {
+                        if (option.selected) {
+                            selected.push(option.value);
+                        }
+                    }
+                    // alert(selected);
+                }
             </script>
