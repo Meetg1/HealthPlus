@@ -996,18 +996,18 @@ app.post('/search', (req, res) => {
       $lt: upperBound2
    };
    filter = {
-      speciality: speciality,
+      speciality: { $in: [speciality] },
       consultationFee: feeobj,
       yearsOfExperience: expobj
    };
-   // console.log(filter);
+   console.log(filter);
    res.redirect('/search');
 })
 app.get('/search', (req, res) => {
    axios
       .get('http://localhost:3000/searchdoc')
       .then(function (response) {
-         // console.log(response.data)
+         console.log(response.data)
          res.render('doctor_search.ejs', { doctors: response.data })
       })
       .catch((err) => {
@@ -1394,7 +1394,8 @@ app.post('/patientRegister', async (req, res) => {
             gender: gender,
             age: age,
             location: location,
-            blockchainConsent: blockchain_consent
+            blockchainConsent: blockchain_consent,
+            wallet: 5000,
          })
          const registedUser = await Patient.register(patient, pswd)
          console.log(registedUser)
