@@ -2028,6 +2028,39 @@ app.post('/getDoctorBySpecialization', async (req, res) => {
    res.send({ status: 'success', doctors: specDoctors })
 })
 
+app.get('/getNearbyDoctors/:location', async (req, res) => {
+
+   const location = req.params.location
+
+   axios
+      .get(`http://getnearbycities.geobytes.com/GetNearbyCities?radius=100&locationcode=${location}`)
+      .then(async function (response) {
+         // console.log(response.data)
+         var foundDoctors = []
+
+         for (let idx = 0; idx < response.data.length; idx++) {
+            const element = response.data[idx];
+            // console.log('element[1]')
+            // console.log(element[1])
+            const doctors = await Doctor.find({ clinicLocation: element[1] })
+            if (doctors.length == 0) continue
+            foundDoctors.push({ loc: element[1], doctors: doctors })
+         }
+         // console.log('foundDoctors')
+         // console.log(foundDoctors)
+
+         if (foundDoctors.length > 0) {
+            res.send({ status: 'success', doctors: foundDoctors })
+         } else {
+            res.send({ status: 'nodoctors' })
+         }
+
+      })
+      .catch((err) => {
+         res.send(err)
+      })
+})
+
 app.get('/:filename', (req, res) => {
    res.download(
       __dirname + '/public/images/prescriptions/' + req.params.filename,

@@ -37,6 +37,17 @@
          "responses": ["Happy to help!", "Any time!", "My pleasure"]
       },
       {
+         "tag": "nearbyDoctors",
+         "patterns": [
+            "nearby doctors",
+            "doctors near me",
+            "find nearby doctors",
+            "find doctors in my location",
+            "find doctors near my location"
+         ],
+         "responses": ["Okay."]
+      },
+      {
          "tag": "diseasePrediction",
          "patterns": [
             "disease predict",
