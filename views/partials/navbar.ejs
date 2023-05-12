@@ -12,7 +12,7 @@
                 <%= notification.message %>
               
           <% }); %> -->
-          <li class="dropdown">
+          <li>
             <a class="nav-link scrollto" href="#" style="text-decoration: none;"
               data-toggle="dropdown"><span>Notifications </span>
               <span class="badge ml-1" style="color: white; background-color: black">
@@ -22,14 +22,14 @@
             </a>
             <div class="dropdown-menu">
               <% if (notifications.length==0) { %>
-                <div style="height: 300px; ">
+                <div style="height: 300px; width: 300px;">
                   <span style="color: black" class="dropdown-item">
                     No notifications.
                   </span>
                 </div>
 
                 <% }else{ %>
-                  <div style="height: 300px; ">
+                  <div style="height: 300px; width: 300px;">
                     <% notifications.forEach(function(notification) { %>
 
                       <a href="/notification/<%= notification._id %>" class="dropdown-item">
@@ -46,18 +46,21 @@
                   <% } %>
             </div>
           </li>
-          <li class="dropdown">
+          <li>
             <a class="nav-link scrollto" href="#" style="text-decoration: none;" data-toggle="dropdown"><span>My
                 Account &nbsp;<img src="https://cdn-icons-png.flaticon.com/512/1177/1177568.png" height="23"
                   width="23"></span> <i class="fa fa-chevron-down"></i></a>
             <div class="dropdown-menu">
-              <a href="profile" class="dropdown-item">Profile</a>
+              <a href="/profile" class="dropdown-item">Profile</a>
               <a href="/logout" class="dropdown-item">Logout</a>
             </div>
           </li>
           <li>
-            <a class="nav-link scrollto">Rs.300 &nbsp;<img src="images/websitePics/wallet.png" height="23"
-                width="23"></a>
+            <a class="nav-link scrollto">Rs. <%= currentUser.wallet %> &nbsp;<img src="images/websitePics/wallet.png"
+                  height="23" width="23"></a>
+          </li>
+          <li>
+            <a class="nav-link scrollto" href="/search">Search Doctors</a>
           </li>
           <% } else { %>
             <li><a class="nav-link scrollto" href="/patientlogin">Patient Login</a></li>
