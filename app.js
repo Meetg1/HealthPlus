@@ -1466,9 +1466,9 @@ app.post('/patientRegister', async (req, res) => {
                // console.log('Email sent: ' + info.response);
             }
          });
-         sendverifyMail(username, link).then((result) =>
-            console.log('Email sent....', result),
-         )
+         // sendverifyMail(username, link).then((result) =>
+         //    console.log('Email sent....', result),
+         // )
          res.redirect('back')
       }
    } catch (error) {
