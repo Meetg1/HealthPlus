@@ -46,6 +46,7 @@
                                         <!-- <input type="text" class="form-control search-slt" placeholder="Enter Pickup City"> -->
                                         <select id="speciality" class="form-control search-slt" name="speciality">
                                             <option selected disabled>Select Speciality</option>
+                                            <option value="Allergist_Immunologist">Allergist_Immunologist</option>
                                             <option value="Anatomical Pathologist">Anatomical Pathologist</option>
                                             <option value="Anesthesiologist">Anesthesiologist</option>
                                             <option value="Cardiologist">Cardiologist</option>
@@ -69,6 +70,8 @@
                                             </option>
                                             <option value="Urologist">Urologist
                                             </option>
+                                            <option value="Other">Other
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="col-lg-3 col-md-3 col-sm-12 p-0">
@@ -91,6 +94,11 @@
                                             <option value="5-10">5 - 10 years</option>
                                             <option value="10-80">More than 10 years</option>
                                         </select>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                                        <input class="form-control search-slt" type="text" name="location" id="loc"
+                                            placeholder="Select Clinic Location">
                                     </div>
 
                                 </div>
@@ -121,24 +129,25 @@
                                             <h4>
                                                 <%= doctors[i].first_name + ' ' + doctors[i].last_name %>
                                             </h4>
-                                        </a> 
-                                        
-                                        <% for( let idx = 0; idx < doctors[i].speciality.length; idx++ ) { %>
-                                            <span style="padding-bottom: 5px;">
-                                                <%= doctors[i].speciality[idx]  %>
-                                            </span>
-                                        <% } %>
+                                        </a>
 
-                                        <p style="padding-right: 15px; margin-top: 5px;"><b>Years of Experience: </b>
-                                            <%= doctors[i].yearsOfExperience %>
-                                        </p>
-                                        <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>
-                                            <%= doctors[i].consultationFee %>
-                                        </p>
-                                        <p><b>Location: </b>
-                                            <%= doctors[i].clinicLocation %>
-                                        </p>
-                                        <!-- <div class="social"> 
+                                        <% for( let idx=0; idx < doctors[i].speciality.length; idx++ ) { %>
+                                            <span style="padding-bottom: 5px;">
+                                                <%= doctors[i].speciality[idx] %>
+                                            </span>
+                                            <% } %>
+
+                                                <p style="padding-right: 15px; margin-top: 5px;"><b>Years of Experience:
+                                                    </b>
+                                                    <%= doctors[i].yearsOfExperience %>
+                                                </p>
+                                                <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>
+                                                    <%= doctors[i].consultationFee %>
+                                                </p>
+                                                <p><b>Location: </b>
+                                                    <%= doctors[i].clinicLocation %>
+                                                </p>
+                                                <!-- <div class="social"> 
                                 <a href=""><i class="fa-brands fa-twitter"></i></a> 
                                 <a href=""><i class="fa-brands fa-facebook"></i></a> 
                                 <a href=""><i class="fa-brands fa-instagram"></i></a> 

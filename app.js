@@ -948,6 +948,7 @@ app.post('/searchbar', (req, res) => {
          { first_name: { $regex: new RegExp(searchbar, "i") } },
          { last_name: { $regex: new RegExp(searchbar, "i") } },
          { speciality: { $regex: new RegExp(searchbar, "i") } },
+         { clinicLocation: { $regex: new RegExp(searchbar, "i") } },
          // ... add more properties to search as needed
       ]
    }, (err, response) => {
@@ -961,9 +962,13 @@ app.post('/searchbar', (req, res) => {
 })
 let filter = {};
 app.post('/search', (req, res) => {
-   const speciality = req.body.speciality;
+   let speciality = false
+   if (req.body.speciality) {
+      speciality = req.body.speciality
+   }
    const fee = req.body.fee;
    const experience = req.body.experience;
+   const location = req.body.location;
    // console.log(speciality);
    // console.log(fee);
    // console.log(experience);
@@ -973,42 +978,71 @@ app.post('/search', (req, res) => {
    // const dropdown1 = document.getElementById("fee");
    // const selectedOption1 = dropdown1.options[dropdown1.selectedIndex].value;
    // const string = selectedOption1;
-   const range = fee.split("-");
 
-   const lowerBound = Number(range[0]);
-   const upperBound = Number(range[1]);
+   let feeobj = false
+   let expobj = false
 
-   const feeobj = {
-      $gt: lowerBound,
-      $lt: upperBound
-   };
+   if (fee) {
+      const range = fee.split("-");
+      const lowerBound = Number(range[0]);
+      const upperBound = Number(range[1]);
+
+      feeobj = {
+         $gt: lowerBound - 1,
+         $lt: upperBound
+      };
+   }
+
+
+
 
    // const dropdown2 = document.getElementById("exp");
    // const selectedOption2 = dropdown2.options[dropdown2.selectedIndex].value;
    // const string2 = selectedOption2;
-   const range2 = experience.split("-");
+   if (experience) {
+      const range2 = experience.split("-");
 
-   const lowerBound2 = Number(range2[0]);
-   const upperBound2 = Number(range2[1]);
+      const lowerBound2 = Number(range2[0]);
+      const upperBound2 = Number(range2[1]);
 
-   const expobj = {
-      $gt: lowerBound2,
-      $lt: upperBound2
-   };
-   filter = {
-      speciality: { $in: [speciality] },
-      consultationFee: feeobj,
-      yearsOfExperience: expobj
-   };
-   console.log(filter);
+      expobj = {
+         $gt: lowerBound2 - 1,
+         $lt: upperBound2
+      };
+   }
+
+   filter = {}
+
+   if (speciality) {
+      filter['speciality'] = speciality
+   }
+   if (feeobj) {
+      filter['consultationFee'] = feeobj
+   }
+   if (expobj) {
+      filter['yearsOfExperience'] = expobj
+   }
+   if (location) {
+      filter['clinicLocation'] = location
+   }
+
+   // filter = {
+   //    speciality: { $in: [speciality] },
+   //    consultationFee: feeobj,
+   //    yearsOfExperience: expobj,
+   //    location: location
+   // };
+   // console.log('filter');
+   // console.log(filter);
    res.redirect('/search');
 })
 app.get('/search', (req, res) => {
    axios
       .get('http://localhost:3000/searchdoc')
       .then(function (response) {
-         console.log(response.data)
+         // console.log(response.data)
          res.render('doctor_search.ejs', { doctors: response.data })
+         filter = {};
       })
       .catch((err) => {
          res.send(err)
@@ -1088,7 +1122,7 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
             from: 'healthplus182@gmail.com',
             to: patient.username,
             subject: 'Appointment Cancel',
-            html: `Your Appointment with Dr. "${req.user.first_name}" is cancelled,Extremely sorry for the Inconvenience`
+            html: `Your Appointment with Dr. "${req.user.first_name}" has been cancelled by the doctor, extremely sorry for the inconvenience.`
          };
          transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -1154,7 +1188,7 @@ app.get('/cancel_appointment/:appointmentid', isLoggedIn, async function (req, r
             from: 'healthplus182@gmail.com',
             to: doctor.username,
             subject: 'Appointment Cancel',
-            html: `Your Appointment with Patient "${req.user.first_name}" is cancelled,Extremely sorry for the Inconvenience`
+            html: `Your Appointment with Patient "${req.user.first_name}" has been cancelled by the patient, extremely sorry for the inconvenience. The penalty incurred by the patient has been credited to your wallet.`
          };
          transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -1410,31 +1444,31 @@ app.post('/patientRegister', async (req, res) => {
             'You are now registered! Please verify your account through mail.',
          )
          console.log(link)
-         // const transporter = nodemailer.createTransport({
-         //    host: 'smtp.gmail.com',
-         //    port: 465,
-         //    secure: true, // use SSL
-         //    auth: {
-         //       user: 'healthplus182@gmail.com', // your email address
-         //       pass: 'aiwqesgsnywrsrcu' // your email password
-         //    }
-         // });
-         // const mailOptions = {
-         //    from: 'healthplus182@gmail.com',
-         //    to: username,
-         //    subject: 'Verify your email address',
-         //    html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
-         // };
-         // transporter.sendMail(mailOptions, (error, info) => {
-         //    if (error) {
-         //       console.log(error);
-         //    } else {
-         //       console.log('Email sent: ' + info.response);
-         //    }
-         // });
-         // sendverifyMail(username, link).then((result) =>
-         //    console.log('Email sent....', result),
-         // )
+         const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // use SSL
+            auth: {
+               user: 'healthplus182@gmail.com', // your email address
+               pass: 'aiwqesgsnywrsrcu' // your email password
+            }
+         });
+         const mailOptions = {
+            from: 'healthplus182@gmail.com',
+            to: username,
+            subject: 'Verify your email address',
+            html: `Please click this link to verify your email address: <a href="${link}">${link}</a>`
+         };
+         transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+               console.log(error);
+            } else {
+               // console.log('Email sent: ' + info.response);
+            }
+         });
+         sendverifyMail(username, link).then((result) =>
+            console.log('Email sent....', result),
+         )
          res.redirect('back')
       }
    } catch (error) {
