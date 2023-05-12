@@ -32,29 +32,30 @@
                                 <div class="col-lg-4 mt-4 mt-lg-0">
                                     <div class="member d-flex align-items-start">
                                         <div class="pic"><img src="/images/doctorProfilePics/<%- doctor.profilePic %>"
-                                                class="img-fluid" alt=""></div>
+                                                class="rounded-circle" alt="" height="45" width="45"></div>
                                         <div class="member-info">
                                             <h4>
                                                 <%- doctor.first_name + ' ' + doctor.last_name %>
-                                            </h4> 
-                                            <% for( let idx = 0; idx < doctor.speciality.length; idx++ ) { %>
+                                            </h4>
+                                            <% for( let idx=0; idx < doctor.speciality.length; idx++ ) { %>
                                                 <span style="padding-bottom: 5px;">
-                                                    <%= doctor.speciality[idx]  %>
+                                                    <%= doctor.speciality[idx] %>
                                                 </span>
-                                            <% } %>
-                                            <p style="padding-right: 15px;"><b>Years of Experience: </b>
-                                                <%- doctor.yearsOfExperience %>
-                                            </p>
-                                            <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>
-                                                <%- doctor.consultationFee %>
-                                            </p>
-                                            <p><b>Location: </b>
-                                                <%- doctor.clinicLocation %>
-                                            </p>
-                                            <div>
-                                                <a class="btn btn-primary" href="/admin/doctors/<%- doctor._id %>">View
-                                                    Details</a>
-                                            </div>
+                                                <% } %>
+                                                    <p style="padding-right: 15px;"><b>Years of Experience: </b>
+                                                        <%- doctor.yearsOfExperience %>
+                                                    </p>
+                                                    <p><b>Session Fee: </b><i class="fa-solid fa-indian-rupee-sign"></i>
+                                                        <%- doctor.consultationFee %>
+                                                    </p>
+                                                    <p><b>Location: </b>
+                                                        <%- doctor.clinicLocation %>
+                                                    </p>
+                                                    <div>
+                                                        <a class="btn btn-primary"
+                                                            href="/admin/doctors/<%- doctor._id %>">View
+                                                            Details</a>
+                                                    </div>
                                         </div>
                                     </div>
                                 </div>
