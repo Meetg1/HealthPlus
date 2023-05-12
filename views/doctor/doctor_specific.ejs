@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-    <body>
+    <body style="background-color: aliceblue;">
         <%- include('../partials/navbar')%>
 
             <br><br>
@@ -9,15 +9,15 @@
                 <div class="pure-g g-card">
                     <div class="pure-u-4-24">
                         <img alt="Dr. Sumanth Shetty Dentist in Bangalore" data-qa-id="doctor-profile-image"
-                            class="rounded-circle" src="/images/doctorProfilePics/<%- doctor.profilePic %>" height="50"
-                            width="50"
+                            class="rounded-circle" src="/images/doctorProfilePics/<%- doctor.profilePic %>" height="170"
+                            width="170"
                             srcset="https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-2x 2x,https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-3x 3x,https://imagesx.practo.com/providers/dr-sumanth-shetty-dentist-bangalore-f5bc373a-a7d6-4dc8-85ea-5f89d1f27406.jpg?i_type=t_100x100-4x 4x">
                     </div>
                     <div class="pure-u-20-24">
                         <div class="u-d-flex flex-jc-space-between">
                             <div>
-                                <h1 data-qa-id="doctor-name" class="c-profile__title u-bold u-d-inlineblock">
-                                    Dr. <%= doctor.first_name %>
+                                <h1 data-qa-id="doctor-name" class="c-profile__title u-bold u-d-inlineblock mb-3">
+                                    Dr. <%= doctor.first_name + ' ' + doctor.last_name %>
                                 </h1>
                                 <div class="u-d-inlineblock u-spacer--left-less">
                                     <div><span data-for="React-tooltip-claim" data-tip="React-tooltip-claim"
@@ -52,8 +52,8 @@
                                 </div>
                                 <h2 style="font-size: 15px; margin-top: 4px;">
                                     <%= doctor.yearsOfExperience %>
-                                        <!-- -->&nbsp;<span>
-                                            Experience
+                                        <span>
+                                            Years Experience
                                             Overall
                                         </span>
                                 </h2>
@@ -258,8 +258,7 @@
                                                         </div>
                                                     </div>
                                                     <span data-qa-id="web-review-time"
-                                                        class="u-spacer--left-thin u-f-right u-color--grey3">3&nbsp;<span>days
-                                                            ago</span>&nbsp;</span>
+                                                        class="u-spacer--left-thin u-f-right u-color--grey3">Posted&nbsp;<span>today</span>&nbsp;</span>
                                                 </div>
                                                 <div class="feedback__body">
                                                     <p class="feedback__content u-cushion--bottom u-title-font u-bold"

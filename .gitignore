@@ -2,7 +2,6 @@ node_modules/
 # Crypto/
 .env
 
-/public/doctorCertificates/
 /HealthPlus_Blockchain/virtualenv
 /HealthPlus_Blockchain/__pycache__
 /HealthPlus_Blockchain/utility/__pycache__
