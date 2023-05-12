@@ -178,6 +178,8 @@ section {
     /* width: 90%; */
     position: absolute;
     left: 100px;
+    margin-bottom: 80px;
+    /* top: 90px; */
     /* margin-top: auto;
     margin-bottom: auto; */
 }
