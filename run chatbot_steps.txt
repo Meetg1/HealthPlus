@@ -1,0 +1,17 @@
+python -m venv ./HealthPlus_Chatbot/virtualenv
+
+./HealthPlus_Chatbot/virtualenv/Scripts/Activate.ps1
+
+pip install -r ./HealthPlus_Chatbot/requirements.txt
+
+pip install Flask torch torchvision nltk flask-cors seaborn
+
+python		//(open python runtime by typing python and press enter)
+import nltk
+nltk.download('punkt')
+
+run diseasePrediction.ipynb in the folder "HealthPlus_Chatbot/disease_prediction"
+
+python .\HealthPlus_Chatbot\train.py
+
+python .\HealthPlus_Chatbot\app.py
