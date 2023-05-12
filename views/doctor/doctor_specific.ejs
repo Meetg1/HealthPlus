@@ -1,6 +1,6 @@
 <% layout('layouts/boilerplate') %>
 
-    <body>
+    <body style="background-color: aliceblue;">
         <%- include('../partials/navbar')%>
 
             <br><br>
@@ -16,8 +16,8 @@
                     <div class="pure-u-20-24">
                         <div class="u-d-flex flex-jc-space-between">
                             <div>
-                                <h1 data-qa-id="doctor-name" class="c-profile__title u-bold u-d-inlineblock">
-                                    Dr. <%= doctor.first_name %>
+                                <h1 data-qa-id="doctor-name" class="c-profile__title u-bold u-d-inlineblock mb-3">
+                                    Dr. <%= doctor.first_name + ' ' + doctor.last_name %>
                                 </h1>
                                 <div class="u-d-inlineblock u-spacer--left-less">
                                     <div><span data-for="React-tooltip-claim" data-tip="React-tooltip-claim"
@@ -52,8 +52,8 @@
                                 </div>
                                 <h2 style="font-size: 15px; margin-top: 4px;">
                                     <%= doctor.yearsOfExperience %>
-                                        <!-- -->&nbsp;<span>
-                                            Experience
+                                        <span>
+                                            Years Experience
                                             Overall
                                         </span>
                                 </h2>
